@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './client/index.js',
+  entry: './client/index.jsx',
   mode: 'development',
   resolve: {
     extensions: [
@@ -26,6 +26,13 @@ module.exports = {
       },
       {
         test: /\.?js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
+      {
+        test: /\.?jsx$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
