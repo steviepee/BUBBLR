@@ -9,6 +9,7 @@ const authRouter = require('./routes/auth');
 const { User } = require('./db');
 require('dotenv').config();
 
+const Router = express.Router();
 const { GOOGLE_CLIENT_ID } = process.env;
 const { GOOGLE_CLIENT_SECRET } = process.env;
 
@@ -44,6 +45,9 @@ passport.use(new GoogleStrategy(
 
 ));
 
+// const auth = express.Router();
+app.use('/auth', authRouter);
+
 passport.serializeUser((user, done) => {
   done(null, user);
 });
@@ -52,9 +56,9 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-app.get('/auth/google', passport.authenticate('google', {
-  scope: ['email', 'profile'],
-}));
+// app.get('/auth/google', passport.authenticate('google', {
+//   scope: ['email', 'profile'],
+// }));
 
 app.get('/auth/google/callback', passport.authenticate('google', {
   successRedirect: '/dashboard',

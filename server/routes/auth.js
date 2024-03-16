@@ -2,8 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 
-router.get('/auth/google', (req, res, next) => {
-  res.render('login');
+router.get('/google', (req, res, next) => {
+  res.send('Hiya');
 });
 
 module.exports = router;
