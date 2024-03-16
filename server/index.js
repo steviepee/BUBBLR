@@ -11,7 +11,7 @@ require('dotenv').config();
 
 const { GOOGLE_CLIENT_ID } = process.env;
 const { GOOGLE_CLIENT_SECRET } = process.env;
-// console.log(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET);
+
 const app = express();
 
 app.use(express.json());
@@ -35,13 +35,13 @@ passport.use(new GoogleStrategy(
     callbackURL: 'http://localhost:8080/auth/google/callback',
   },
   ((accessToken, refreshToken, profile, cb) => {
-    console.log(accessToken, refreshToken, profile.id, cb);
     User.findOrCreate({ where: { googleId: profile.id } })
       .then((user) => {
-        console.log(user);
+        cb(null, user);
       })
-      .catch((err) => console.log('Error creating a User: ', err));
+      .catch((err) => cb(err, null));
   }),
+
 ));
 
 passport.serializeUser((user, done) => {
@@ -61,6 +61,9 @@ app.get('/auth/google/callback', passport.authenticate('google', {
   failureRedirect: '/login',
 }));
 
+app.get('/dashboard', (req, res) => {
+  res.end('Hiya');
+});
 // app.post('/logout', (req, res) => {
 //   req.logOut((err) => {
 //     if (err) { return next(err); }
@@ -74,5 +77,5 @@ const PORT = 8080;
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
-  console.log(`Server listening on localhost:${PORT}`);
+  console.info(`Server listening on localhost:${PORT}`);
 });

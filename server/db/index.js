@@ -25,7 +25,6 @@ const User = sequelize.define('User', {
 });
 
 User.sync()
-  .then(() => User.create({ googleId: 'Jane' }))
   .catch((err) => console.error(err));
 
 // (async () => {
