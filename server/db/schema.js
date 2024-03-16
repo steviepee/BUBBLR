@@ -1,0 +1,1 @@
+const [results, metadata] = await sequelize.query("UPDATE users SET y = 42 WHERE x = 12");

@@ -1,46 +1,48 @@
 const path = require('path');
 const express = require('express');
+const session = require('express-session');
+const passport = require('passport');
+
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
-const passport = require('passport')
-const session = require('express-session')
-var GoogleStrategy = require('passport-google-oauth20').Strategy;
-require("dotenv").config()
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
+require('dotenv').config();
 
+// MIDDLEWARES
 const app = express();
 
 app.use(express.json());
-app.use (passport.initialize())
-app.use (passport.session())
+app.use(passport.initialize());
+app.use(session({
+  secret: 'bubblr',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true },
+}));
+app.use(passport.session());
 
+// SERVING REACT STATIC PAGES
 const CLIENT_PATH = path.resolve(__dirname, '../dist');
-
 app.use(express.static(CLIENT_PATH));
 
-passport.use(new GoogleStrategy({
-  clientID: GOOGLE_CLIENT_ID,
-  clientSecret: GOOGLE_CLIENT_SECRET,
-  callbackURL: "http://localhost:8080/auth/google/callback"
-},
-function(accessToken, refreshToken, profile, cb) {
-  User.findOrCreate({ googleId: profile.id }, function (err, user) {
-    return cb(err, user);
-  });
-}
-));
+// ROUTER SENDING TO WHEREVER
+app.use('/auth', authRouter);
 
-passport.serializeUser( (user, done) => {
-  done(null, user)
-})
-
-passport.deserializeUser((user, done) => {
-  done (null, user)
-})
+// ROUTES FOR THIS FILE
+app.get('/dashboard', (req, res) => {
+  res.end('Hiya');
+});
+// app.post('/logout', (req, res) => {
+//   req.logOut((err) => {
+//     if (err) { return next(err); }
+//     res.redirect('/');
+//   });
+//   res.redirect('/login');
+//   console.log('-------> User Logged out');
+// });
 
 const PORT = 8080;
 
 app.listen(PORT, () => {
-  console.log(`Server listening on localhost:${PORT}`);
+  // eslint-disable-next-line no-console
+  console.info(`Server listening on localhost:${PORT}`);
 });
