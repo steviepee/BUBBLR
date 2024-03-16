@@ -1,8 +1,8 @@
-var express = require('express');
+const express = require('express');
 
-var router = express.Router();
+const router = express.Router();
 
-router.get('/login', function(req, res, next) {
+router.get('/login', (req, res, next) => {
   res.render('login');
 });
 
