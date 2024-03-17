@@ -17,6 +17,7 @@ passport.use(new GoogleStrategy(
     callbackURL: 'http://localhost:8080/auth/google/callback',
   },
   ((accessToken, refreshToken, profile, cb) => {
+    console.log(profile);
     User.findOrCreate({ where: { googleId: profile.id } })
       .then((user) => {
         cb(null, user);
@@ -35,7 +36,14 @@ passport.deserializeUser((user, done) => {
 });
 
 router.get('/google', passport.authenticate('google', {
-  scope: ['email', 'profile'],
+  scope: ['email', 'profile', 'birthday'],
+}, (req) => {
+  console.log(req, 'hiiii');
+  req.login((err) => {
+    if (err) {
+      console.error(err);
+    }
+  });
 }));
 
 router.get('/google/callback', passport.authenticate('google', {
