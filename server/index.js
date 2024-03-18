@@ -11,6 +11,7 @@ require('dotenv').config();
 // MIDDLEWARES
 const app = express();
 app.set('view engine', 'ejs');
+// app.set('view engine', 'jsx');
 app.use(express.json());
 app.use(cookieParser());
 app.use(passport.initialize());
@@ -38,11 +39,15 @@ app.post('/logout', (req, res, next) => {
   req.logOut(
     (err) => {
       if (err) { return next(err); }
-      res.redirect('/');
+      res.redirect('/login');
     },
   );
   // res.redirect('/login');
   console.log('-------> User Logged out');
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(CLIENT_PATH, 'index.html'));
 });
 
 // app.post('/logout', (req, res) => {
