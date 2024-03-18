@@ -1,7 +1,8 @@
 import React from 'react';
 
 function Login() {
-  return (
+  return ( 
+    
     <div>
       <h2> Google Login </h2>
       <p>Click here to authenticate with Google</p>
