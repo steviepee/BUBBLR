@@ -4,7 +4,7 @@ const session = require('express-session');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 
-const indexRouter = require('./routes/index');
+// const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 require('dotenv').config();
 
@@ -44,10 +44,22 @@ app.post('/logout', (req, res, next) => {
   // res.redirect('/login');
   console.log('-------> User Logged out');
 });
+<<<<<<< HEAD
+=======
+
+// app.post('/logout', (req, res) => {
+//   req.logOut((err) => {
+//     if (err) { return next(err); }
+//     res.redirect('/');
+//   });
+//   res.redirect('/login');
+//   console.log('-------> User Logged out');
+// });
+>>>>>>> a27d9f3f71fef9ec67bf3728dfdd48fb8b5ac5c4
 
 const PORT = 8080;
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
-  console.info(`Server listening on localhost:${PORT}`);
+  console.info(`Server listening on http://localhost:${PORT}`);
 });

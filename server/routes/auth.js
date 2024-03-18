@@ -1,12 +1,12 @@
 const express = require('express');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const session = require('express-session');
+// const session = require('express-session');
 const { User } = require('../db/index');
 require('dotenv').config();
 
 const router = express.Router();
-const app = express();
+// const app = express();
 
 const { GOOGLE_CLIENT_SECRET, GOOGLE_CLIENT_ID } = process.env;
 
