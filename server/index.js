@@ -44,8 +44,6 @@ app.post('/logout', (req, res, next) => {
   // res.redirect('/login');
   console.log('-------> User Logged out');
 });
-<<<<<<< HEAD
-=======
 
 // app.post('/logout', (req, res) => {
 //   req.logOut((err) => {
@@ -55,7 +53,6 @@ app.post('/logout', (req, res, next) => {
 //   res.redirect('/login');
 //   console.log('-------> User Logged out');
 // });
->>>>>>> a27d9f3f71fef9ec67bf3728dfdd48fb8b5ac5c4
 
 const PORT = 8080;
 
