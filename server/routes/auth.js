@@ -36,7 +36,7 @@ passport.deserializeUser((user, done) => {
 });
 
 router.get('/google', passport.authenticate('google', {
-  scope: ['email', 'profile', 'birthday'],
+  scope: ['email', 'profile'],
 }, (req) => {
   console.log(req, 'hiiii');
   req.login((err) => {
