@@ -3,7 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 
-const indexRouter = require('./routes/index');
+// const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 require('dotenv').config();
 
@@ -31,6 +31,7 @@ app.use('/auth', authRouter);
 app.get('/dashboard', (req, res) => {
   res.end('Hiya');
 });
+
 // app.post('/logout', (req, res) => {
 //   req.logOut((err) => {
 //     if (err) { return next(err); }
@@ -44,5 +45,5 @@ const PORT = 8080;
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
-  console.info(`Server listening on localhost:${PORT}`);
+  console.info(`Server listening on http://localhost:${PORT}`);
 });
