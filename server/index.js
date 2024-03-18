@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
+const cookieParser = require('cookie-parser');
 
 // const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
@@ -9,8 +10,9 @@ require('dotenv').config();
 
 // MIDDLEWARES
 const app = express();
-
+app.set('view engine', 'ejs');
 app.use(express.json());
+app.use(cookieParser());
 app.use(passport.initialize());
 app.use(session({
   secret: 'bubblr',
@@ -29,7 +31,18 @@ app.use('/auth', authRouter);
 
 // ROUTES FOR THIS FILE
 app.get('/dashboard', (req, res) => {
-  res.end('Hiya');
+  // res.cookies()
+  res.render(path.join(__dirname, '../client/views/dashboard.ejs'), { url: '/dashboard' });
+});
+app.post('/logout', (req, res, next) => {
+  req.logOut(
+    (err) => {
+      if (err) { return next(err); }
+      res.redirect('/');
+    },
+  );
+  // res.redirect('/login');
+  console.log('-------> User Logged out');
 });
 
 // app.post('/logout', (req, res) => {
