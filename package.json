@@ -40,10 +40,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.1",
     "react-dom": "^18.2.0",
-<<<<<<< HEAD
-=======
     "react-router-dom": "^6.22.3",
->>>>>>> 83639a20a1cc5b4a6a5ce50ffb040229270af009
     "sequelize": "^6.37.1"
   }
 }
