@@ -16,13 +16,15 @@ app.set('view engine', 'ejs');
 // app.set('view engine', 'jsx');
 app.use(express.json());
 app.use(cookieParser());
-app.use(passport.initialize());
+
 app.use(session({
   secret: 'bubblr',
   resave: false,
   saveUninitialized: true,
   cookie: { secure: true },
 }));
+
+app.use(passport.initialize());
 app.use(passport.session());
 
 // SERVING REACT STATIC PAGES
@@ -45,25 +47,25 @@ app.post('/logout', (req, res, next) => {
     },
   );
   // res.redirect('/login');
-  console.log('-------> User Logged out');
+  // console.log('-------> User Logged out');
 });
 
 // for getting user info from db
 app.get('/profile/:id', (req, res) => {
-  console.log(req.params);
   const { id } = req.params;
   User.findByPk(id)
     .then((userObj) => {
-      console.log('find by pk result', userObj);
+      // console.log('find by pk result', userObj);
       res.send(userObj);
     })
     .catch((err) => {
-      console.error('failed finding user by pk: ', err);
+      // console.error('failed finding user by pk: ', err);
       res.send(500);
     })
 });
 
 app.get('*', (req, res) => {
+  // console.log('trying to find full url', req.hostname);
   res.sendFile(path.join(CLIENT_PATH, 'index.html'));
 });
 

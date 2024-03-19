@@ -1,8 +1,8 @@
 import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom'
-import Profile from  './Profile.jsx'
+import { Routes, Route, Link } from 'react-router-dom';
+import Profile from  './Profile.jsx';
 import Login from './Login.jsx';
-import NotFound from './NotFound.jsx'
+import NotFound from './NotFound.jsx';
 
 function App() {
   return (
