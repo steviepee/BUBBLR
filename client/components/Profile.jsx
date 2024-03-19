@@ -7,14 +7,15 @@ class Profile extends React.Component {
 
     this.state = {
       displayName: 'User',
+      createdAt: ' ',
     }
 
     this.getUser = () => {
       axios.get('/profile/1')
         .then((userResponse) => {
-          const { displayName } = userResponse.data;
+          const { displayName, createdAt } = userResponse.data;
 
-          this.setState({ displayName });
+          this.setState({ displayName, createdAt });
         })
         .catch((err) => console.error('Failed getting user data', err));
     }
@@ -26,13 +27,15 @@ class Profile extends React.Component {
   }
 
   render() {
-    const { displayName } = this.state;
+    const { displayName, createdAt } = this.state;
     return (
       <div>
         <h3>
-          User Profile { displayName }
+          User Profile
           {/* should have name, friends, and when joined */}
         </h3>
+        <h2>{ displayName }</h2>
+        <p>You joined on: { createdAt }</p>
         <div>
           User concoctions
           <ul>
