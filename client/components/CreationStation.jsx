@@ -4,8 +4,14 @@ import { useState } from 'react';
 
 
 function CreationStation() { 
-    
-
+    //array of all ingredients in drinks pulled from API
+    const [newIngredients, updateIngredients] = useState(0)
+    //array of all my saved drinks
+    const [savedDrinks, updateSavedDrinks] = useState(0)
+    //array of ingredients currently in my drink
+    const [activeIngredients, updateActiveIngredients] = useState(0)
+    //your custom drink name
+    const [drinkName, setDrinkName] = useState(0)
 
         return (
         <div>
