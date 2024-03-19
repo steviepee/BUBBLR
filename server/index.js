@@ -80,7 +80,15 @@ app.get('*', (req, res) => {
 
 const PORT = 8080;
 
+const devOrProd = () => {
+  if(process.env.npm_lifecycle_event === 'start'){
+    return 'localhost';
+  } else {
+    return '13.52.61.243';
+  }
+}
+
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
-  console.info(`Server listening on http://localhost:${PORT}`);
+  console.info(`Server listening on http://${devOrProd()}:${PORT}`);
 });

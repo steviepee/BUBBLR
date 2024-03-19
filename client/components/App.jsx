@@ -7,13 +7,13 @@ import NotFound from './NotFound.jsx';
 function App() {
   return (
     <>
-    <nav>
-      <ul>
-        <li><Link to="/profile">User Prof</Link></li>
-        
-
-      </ul>
-    </nav>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/profile">User Prof</Link>
+          </li>
+        </ul>
+      </nav>
       <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
@@ -21,7 +21,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
       </Routes>
-  </>
+    </>
   );
 }
 
