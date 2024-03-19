@@ -1,10 +1,24 @@
 import React from 'react';
+import axios from 'axios';
 
 function Profile() {
+  let displayName;
+  const getUser = () => {
+    axios.get('/profile/1')
+      .then((userResponse) => {
+        console.log('client side user response', userResponse);
+        displayName = userResponse.data.displayName;
+        console.log(displayName);
+      })
+      .catch((err) => console.error('Failed getting user data', err));
+  }
+
+  getUser();
+
   return (
     <div>
       <h3>
-        User Profile
+        User Profile {displayName}
         {/* should have name, friends, and when joined */}
       </h3>
       <div>
