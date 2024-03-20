@@ -26,14 +26,15 @@ class Profile extends React.Component {
         .then((userResponse) => {
           const { displayName, createdAt } = userResponse.data;
 
+          // need to update drinks/concoctions/friends this way as well
           this.setState({ displayName, createdAt });
         })
         .catch((err) => console.error('Failed getting user data', err));
     }
 
+    // this is working but has no persistence
     this.removeFavorite = (e) => {
       const { favFakeData } = this.state;
-      console.log(e.target.value);
       for(let i = 0; i < favFakeData.length; i++) {
         if(favFakeData[i].idDrink === e.target.value){
           favFakeData.splice(i, 1);
@@ -58,12 +59,17 @@ class Profile extends React.Component {
             <Card.Title>Profile</Card.Title>
             <Card.Text>{ displayName }</Card.Text>
             <Card.Text>You joined on: { createdAt }</Card.Text>
+            <Card>
+              <Card.Body>
+                <Card.Title>Your Friends</Card.Title>
+              </Card.Body>
+            </Card>
           </Card.Body>
         </Card>
         <Card>
           <Card.Body>
             <Card.Title>Your Concoctions</Card.Title>
-            <Accordion defaultActiveKey='0' >
+            <Accordion >
               {/* these items will need to be there own component possibly the accordion as well? */}
               <Accordion.Item eventKey='0' >
                 <Accordion.Header>Boozy Hibiscus Tea</Accordion.Header>

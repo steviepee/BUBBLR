@@ -17,7 +17,7 @@ const OgDrink = ({drink, removeFavorite}) => {
       <Col>
           <Card>
             <Card.Body>
-              <Button value={drink.idDrink} variant='danger' onClick={removeFavorite} >Remove</Button>
+              <Button size="sm" value={drink.idDrink} variant='danger' onClick={removeFavorite} >Remove</Button>
               <Card.Img variant='top' src={drink.strDrinkThumb} />
               <Accordion >
                 <Accordion.Header>
