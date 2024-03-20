@@ -31,6 +31,17 @@ class Profile extends React.Component {
         .catch((err) => console.error('Failed getting user data', err));
     }
 
+    this.removeFavorite = (e) => {
+      const { favFakeData } = this.state;
+      console.log(e.target.value);
+      for(let i = 0; i < favFakeData.length; i++) {
+        if(favFakeData[i].idDrink === e.target.value){
+          favFakeData.splice(i, 1);
+          this.setState({ favFakeData });
+        }
+      }
+    }
+
   };
 
   componentDidMount() {
@@ -66,7 +77,7 @@ class Profile extends React.Component {
             <Card.Title>Your Favorite Originals</Card.Title>
             <Container>
               <Row>
-                {favFakeData.map((drink) => <OgDrink key={drink.idDrink} drink={drink} />)}
+                {favFakeData.map((drink) => <OgDrink removeFavorite={this.removeFavorite} key={drink.idDrink} drink={drink} />)}
               </Row>
             </Container>
           </Card.Body>
