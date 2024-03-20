@@ -2,6 +2,11 @@ import React from 'react';
 import axios from 'axios';
 import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col'
+
+import fakeData from '../FakeData.json';
 
 // import 'bootstrap/dist/css/bootstrap.css';
 // import bootstrap from 'bootstrap';
@@ -44,16 +49,26 @@ class Profile extends React.Component {
         </Card>
         <Card>
           <Card.Body>
-            <Card.Title>Your concoctions</Card.Title>
+            <Card.Title>Your Concoctions</Card.Title>
+            <Accordion defaultActiveKey='0' >
+              {/* these items will need to be there own component possibly the accordion as well? */}
+              <Accordion.Item eventKey='0' >
+                <Accordion.Header>Boozy Hibiscus Tea</Accordion.Header>
+                <Accordion.Body> Info on this drink </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
           </Card.Body>
         </Card>
-        <Accordion defaultActiveKey='0' >
-          {/* these items will need to be there own component possibly the accordion as well? */}
-          <Accordion.Item eventKey='0' >
-            <Accordion.Header>Boozy Hibiscus Tea</Accordion.Header>
-            <Accordion.Body> Info on this drink </Accordion.Body>
-          </Accordion.Item>
-        </Accordion>
+        <Card>
+          <Card.Body>
+            <Card.Title>Your Favorite Originals</Card.Title>
+            <Container>
+              <Row>
+                {fakeData.drinks.map((drink) => <Col>one drink</Col>)}
+              </Row>
+            </Container>
+          </Card.Body>
+        </Card>
       </>
     )
   }
