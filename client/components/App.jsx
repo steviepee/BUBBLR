@@ -2,7 +2,10 @@ import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import Profile from  './Profile.jsx';
 import Login from './Login.jsx';
-import NotFound from './NotFound.jsx';
+import NotFound from './NotFound.jsx'
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import Community from './Community.jsx';
 
 function App() {
   return (
@@ -20,6 +23,7 @@ function App() {
           <Route path="/dashboard" element={<h1>Dash</h1>} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
+          <Route path='/community' element={ <Community />} />
       </Routes>
     </>
   );
