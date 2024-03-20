@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col'
+import OgDrink from './profileChildren/OgDrink.jsx';
 
 import fakeData from '../FakeData.json';
 
@@ -18,6 +18,7 @@ class Profile extends React.Component {
     this.state = {
       displayName: 'User',
       createdAt: ' ',
+      favFakeData: fakeData.drinks.slice(0, 5)
     }
 
     this.getUser = () => {
@@ -37,7 +38,8 @@ class Profile extends React.Component {
   }
 
   render() {
-    const { displayName, createdAt } = this.state;
+    const { displayName, createdAt, favFakeData } = this.state;
+    // const favFakeData = fakeData.drinks.slice(0, 5);
     return (
       <>
         <Card>
@@ -64,7 +66,7 @@ class Profile extends React.Component {
             <Card.Title>Your Favorite Originals</Card.Title>
             <Container>
               <Row>
-                {fakeData.drinks.map((drink) => <Col>one drink</Col>)}
+                {favFakeData.map((drink) => <OgDrink key={drink.idDrink} drink={drink} />)}
               </Row>
             </Container>
           </Card.Body>
