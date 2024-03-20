@@ -6,7 +6,7 @@ module.exports = {
   mode: 'development',
   resolve: {
     extensions: [
-      '.jsx',
+      '.jsx', '.js', '.css'
     ],
   },
   output: {
