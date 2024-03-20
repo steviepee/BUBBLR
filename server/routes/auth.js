@@ -55,7 +55,7 @@ passport.deserializeUser((user, done) => {
 router.get('/google', passport.authenticate('google', {
   scope: ['email', 'profile'],
 }, (req) => {
-  // console.log(req.hostname, 'hiiii'); // why is this not getting logged?
+  // console.log(req, 'hiiii');
   req.login((err) => {
     if (err) {
       console.error(err);
