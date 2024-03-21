@@ -1,12 +1,18 @@
 import React from 'react';
 import axios from 'axios';
+
 import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+
 import OgDrink from './profileChildren/OgDrink.jsx';
+import Concoction from './profileChildren/Concoction.jsx';
 
 import fakeData from '../FakeData.json';
+// import moreFakeData from '../MoreFakeData.json';
+import { drinks } from '../MoreFakeData.json';
+
 
 // import 'bootstrap/dist/css/bootstrap.css';
 // import bootstrap from 'bootstrap';
@@ -18,7 +24,8 @@ class Profile extends React.Component {
     this.state = {
       displayName: 'User',
       createdAt: ' ',
-      favFakeData: fakeData.drinks.slice(0, 5)
+      favFakeData: fakeData.drinks.slice(0, 5),
+      moreFakeData: drinks
     }
 
     this.getUser = () => {
@@ -43,6 +50,18 @@ class Profile extends React.Component {
       }
     }
 
+    this.getIngredients = (drink) => {
+      const ingredients = [];
+      for(let i = 1; i < 16; i++){
+        const stringIngredient = `strIngredient${i}`;
+        if(drink[stringIngredient]){
+          ingredients.push(drink[stringIngredient]);
+        }
+      }
+  
+      return ingredients;
+    }
+
   };
 
   componentDidMount() {
@@ -50,7 +69,7 @@ class Profile extends React.Component {
   }
 
   render() {
-    const { displayName, createdAt, favFakeData } = this.state;
+    const { displayName, createdAt, favFakeData, moreFakeData } = this.state;
     // const favFakeData = fakeData.drinks.slice(0, 5);
     return (
       <>
@@ -71,10 +90,7 @@ class Profile extends React.Component {
             <Card.Title>Your Concoctions</Card.Title>
             <Accordion >
               {/* these items will need to be there own component possibly the accordion as well? */}
-              <Accordion.Item eventKey='0' >
-                <Accordion.Header>Boozy Hibiscus Tea</Accordion.Header>
-                <Accordion.Body> Info on this drink </Accordion.Body>
-              </Accordion.Item>
+              {moreFakeData.map((drink, index) => <Concoction drink={drink} key={`conc-${drink.idDrink}`} index={index} getIngredients={this.getIngredients} />)}
             </Accordion>
           </Card.Body>
         </Card>
@@ -83,7 +99,7 @@ class Profile extends React.Component {
             <Card.Title>Your Favorite Originals</Card.Title>
             <Container>
               <Row>
-                {favFakeData.map((drink) => <OgDrink removeFavorite={this.removeFavorite} key={drink.idDrink} drink={drink} />)}
+                {favFakeData.map((drink) => <OgDrink removeFavorite={this.removeFavorite} key={drink.idDrink} drink={drink} getIngredients={this.getIngredients} />)}
               </Row>
             </Container>
           </Card.Body>
@@ -92,27 +108,5 @@ class Profile extends React.Component {
     )
   }
 }
-
-    // <div>
-    //     <h3>
-    //       User Profile
-    //       {/* should have name, friends, and when joined */}
-    //     </h3>
-    //     <h2>{ displayName }</h2>
-    //     <p>You joined on: { createdAt }</p>
-    //     <div>
-    //       User concoctions
-    //       <ul>
-    //         <li>Boozy Hibiscus Tea</li>
-    //       </ul>
-    //     </div>
-    //     <div>
-    //       Favorite drinks
-    //       <ul>
-    //         <li>Bushwacker</li>
-    //         <li>French 75</li>
-    //       </ul>
-    //     </div>
-    //   </div>
 
 export default Profile;
