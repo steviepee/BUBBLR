@@ -11,26 +11,42 @@ class EditConcoction extends React.Component {
   constructor({ drink, handleClose, show }) {
     super({ show });
 
-    // this.state = {
-    //   show,
-    // };
-
     this.drink = drink;
-    this.props.show = show;
+    // this.props.show = show;
+    this.handleClose = handleClose;
 
-    this.handleSubmit = (e) => {
-      console.log(e);
+    this.state = {
+      strDrink: this.drink.strDrink,
+      strCategory: this.drink.strCategory,
+    };
+
+    // this function will need to make an axios request to update db
+    this.handleSubmit = () => {
+      const { strDrink, strCategory } = this.state;
+      console.log(strDrink, strCategory);
       handleClose();
     };
 
     this.handleChange = (e) => {
       console.log(e.target.value, e.target.className);
+      switch (e.target.className.split(' ')[0]) {
+        case 'name':
+          this.setState({ strDrink: e.target.value });
+          break;
+        case 'category':
+          this.setState({ strCategory: e.target.value });
+          break;
+        default:
+          break;
+      }
     };
   }
 
   render() {
+    const { show } = this.props;
+    const { strDrink, strCategory } = this.drink;
     return (
-      <Modal show={this.props.show} onHide={this.handleClose}>
+      <Modal show={show} onHide={this.handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Your Concoction</Modal.Title>
         </Modal.Header>
@@ -38,11 +54,11 @@ class EditConcoction extends React.Component {
           <Form>
             <Form.Group className="mb-3" controlId="formDrinkName">
               <Form.Label>Drink Name</Form.Label>
-              <Form.Control type="drinkName" className="drinkName" defaultValue={this.drink.strDrink} onChange={this.handleChange} />
+              <Form.Control type="drinkName" className="name" defaultValue={strDrink} onChange={this.handleChange} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formDrinkCategory">
               <Form.Label>Category</Form.Label>
-              <Form.Control type="drinkCategory" defaultValue={this.drink.strCategory} onChange={this.handleChange} />
+              <Form.Control type="drinkCategory" className="category" defaultValue={strCategory} onChange={this.handleChange} />
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -58,45 +74,6 @@ class EditConcoction extends React.Component {
     );
   }
 }
-
-// function EditConcoction({ drink, handleClose, show }) {
-//   const handleSubmit = (e) => {
-//     console.log(e);
-//     handleClose();
-//   };
-
-//   const handleChange = (e) => {
-//     console.log(e.target.value);
-//   };
-
-//   return (
-//     <Modal show={show} onHide={handleClose}>
-//       <Modal.Header closeButton>
-//         <Modal.Title>Edit Your Concoction</Modal.Title>
-//       </Modal.Header>
-//       <Modal.Body>
-//         <Form>
-//           <Form.Group className="mb-3" controlId="formDrinkName">
-//             <Form.Label>Drink Name</Form.Label>
-//             <Form.Control type="drinkName" defaultValue={drink.strDrink} onChange={handleChange} />
-//           </Form.Group>
-//           <Form.Group className="mb-3" controlId="formDrinkCategory">
-//             <Form.Label>Category</Form.Label>
-//             <Form.Control type="drinkCategory" defaultValue={drink.strCategory} />
-//           </Form.Group>
-//         </Form>
-//       </Modal.Body>
-//       <Modal.Footer>
-//         <Button variant="secondary" onClick={handleClose}>
-//           Close
-//         </Button>
-//         <Button variant="primary" type="submit" onClick={handleSubmit}>
-//           Save Changes
-//         </Button>
-//       </Modal.Footer>
-//     </Modal>
-//   );
-// }
 
 EditConcoction.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
