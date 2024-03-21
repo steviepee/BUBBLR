@@ -22,6 +22,7 @@ class Profile extends React.Component {
       createdAt: ' ',
       ogDrinkData: fakeData.drinks.slice(0, 5),
       concoctionData: drinks,
+      show: false,
     };
 
     this.getUser = () => {
@@ -35,6 +36,10 @@ class Profile extends React.Component {
         })
         .catch((err) => console.error('Failed getting user data', err));
     };
+
+    this.handleClose = () => this.setState({ show: false });
+
+    this.handleShow = () => this.setState({ show: true });
 
     // this is working but has no persistence
     this.removeDrink = (e) => {
@@ -79,7 +84,7 @@ class Profile extends React.Component {
 
   render() {
     const {
-      displayName, createdAt, ogDrinkData, concoctionData,
+      displayName, createdAt, ogDrinkData, concoctionData, show,
     } = this.state;
     return (
       <>
@@ -103,6 +108,9 @@ class Profile extends React.Component {
               <Row>
                 {concoctionData.map((drink, index) => (
                   <Concoction
+                    handleClose={this.handleClose}
+                    handleShow={this.handleShow}
+                    show={show}
                     removeDrink={this.removeDrink}
                     drink={drink}
                     key={`conc-${drink.idDrink}`}
