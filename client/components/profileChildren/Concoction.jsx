@@ -1,21 +1,29 @@
 /* eslint-disable jsx-quotes */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
+
+import EditConcoction from './EditConcoction';
 
 function Concoction({
   drink, getIngredients, removeDrink,
 }) {
   const { idDrink, strDrink, strCategory } = drink;
   const ingredients = getIngredients(drink).toString();
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   return (
     <Col>
       <Card>
-        <Button size='sm' value={drink.idDrink}>
+        <Button onClick={handleShow} size='sm' value={drink.idDrink}>
           Edit
         </Button>
+        <EditConcoction drink={drink} handleClose={handleClose} show={show} />
         <Button size='sm' value={drink.idDrink} variant='danger' className='concoction' onClick={removeDrink}>
           Remove
         </Button>
