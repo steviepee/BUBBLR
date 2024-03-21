@@ -55,7 +55,9 @@ class Profile extends React.Component {
       for(let i = 1; i < 16; i++){
         const stringIngredient = `strIngredient${i}`;
         if(drink[stringIngredient]){
-          ingredients.push(drink[stringIngredient]);
+          ingredients.push(` ${drink[stringIngredient]}`);
+        } else {
+          return ingredients;
         }
       }
   

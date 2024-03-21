@@ -5,27 +5,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import Button from 'react-bootstrap/Button';
 
 const OgDrink = ({ drink, removeFavorite, getIngredients }) => {
-  // const ingredients = drink.reduce((acc, curr) => {
-  //   if(curr){
-  //     acc.push(cur);
-  //   }
-  // }, [])
-
-  // console.log(ingredients);
-  // console.log(drink);
-  // const ingredients = () => {
-  //   const ingredients = [];
-  //   for(let i = 1; i < 16; i++){
-  //     const stringIngredient = `strIngredient${i}`;
-  //     if(drink[stringIngredient]){
-  //       ingredients.push(drink[stringIngredient]);
-  //     }
-  //   }
-
-  //   return ingredients;
-  // }
-
-  console.log(getIngredients(drink));
+  const ingredients = getIngredients(drink);
   return (
     <Col>
       <Card>
@@ -48,8 +28,7 @@ const OgDrink = ({ drink, removeFavorite, getIngredients }) => {
                 <Card.Body>
                   <Card.Title>{drink.strCategory}</Card.Title>
                   <Card.Text>{drink.strTags}</Card.Text>
-                  <Card.Text>Ingredients: {}</Card.Text>
-                  <Card.Text>Instructions: {drink.strInstructions}</Card.Text>
+                  <Card.Text>Ingredients: {ingredients.toString()}</Card.Text>
                 </Card.Body>
               </Card>
             </Accordion.Body>
