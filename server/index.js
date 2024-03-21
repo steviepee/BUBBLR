@@ -64,6 +64,16 @@ app.get('/profile/:id', (req, res) => {
     });
 });
 
+// for user search
+app.get('/profile/users/:name', (req, res) => {
+  const { name } = req.params;
+  User.findAll({ where: { displayName: name } })
+    .then((userArr) => {
+      res.send(userArr);
+    })
+    .catch((err) => console.error('failed search for user by name: ', err));
+});
+
 app.get('*', (req, res) => {
   // console.log('trying to find full url', req.hostname);
   res.sendFile(path.join(CLIENT_PATH, 'index.html'));

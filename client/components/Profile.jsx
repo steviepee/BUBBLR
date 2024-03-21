@@ -9,6 +9,7 @@ import Row from 'react-bootstrap/Row';
 
 import OgDrink from './profileChildren/OgDrink';
 import Concoction from './profileChildren/Concoction';
+import UserSearch from './profileChildren/UserSearch';
 
 import fakeData from '../FakeData.json';
 import { drinks } from '../moreFakeData.json';
@@ -39,19 +40,16 @@ class Profile extends React.Component {
     };
 
     this.handleClose = (scope) => scope(false);
-
-    // currently controlling every modal
     this.handleShow = (scope) => scope(true);
 
     // this function will need to make an axios request to update db
     this.handleSubmit = (scope) => {
-      console.log('scope', scope);
       const { strDrink, strCategory } = scope.state;
       console.log(strDrink, strCategory);
       this.handleClose(scope.setShow);
     };
 
-    // this is working but has no persistence
+    // this function will need to make an axios request to update db
     this.removeDrink = (e) => {
       const { ogDrinkData, concoctionData } = this.state;
       let targetDrinkGroup;
@@ -98,6 +96,7 @@ class Profile extends React.Component {
     } = this.state;
     return (
       <>
+        <UserSearch />
         <Card>
           <Card.Body>
             <Card.Title>Profile</Card.Title>

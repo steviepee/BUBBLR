@@ -14,32 +14,31 @@ class EditConcoction extends React.Component {
     super({ show });
 
     this.drink = drink;
-    
+
     // this.props.show = show;
     this.handleClose = handleClose;
     this.handleSubmit = handleSubmit;
     this.setShow = setShow;
 
     this.state = {
+      // these states are accessed in profile
+      // eslint-disable-next-line react/no-unused-state
       strDrink: this.drink.strDrink,
+      // eslint-disable-next-line react/no-unused-state
       strCategory: this.drink.strCategory,
     };
-
-    // // this function will need to make an axios request to update db
-    // this.handleSubmit = (scope) => {
-    //   console.log('scope', scope);
-    //   const { strDrink, strCategory } = scope.state;
-    //   console.log(strDrink, strCategory);
-    //   handleClose();
-    // };
 
     this.handleChange = (e) => {
       // console.log(e.target.value, e.target.className);
       switch (e.target.className.split(' ')[0]) {
         case 'name':
+          // this state is being accessed from profile
+          // eslint-disable-next-line react/no-unused-state
           this.setState({ strDrink: e.target.value });
           break;
         case 'category':
+          // this state is being accessed from profile
+          // eslint-disable-next-line react/no-unused-state
           this.setState({ strCategory: e.target.value });
           break;
         default:
@@ -87,6 +86,7 @@ EditConcoction.propTypes = {
   handleClose: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   show: PropTypes.bool.isRequired,
+  setShow: PropTypes.func.isRequired,
 };
 
 export default EditConcoction;
