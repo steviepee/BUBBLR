@@ -1,5 +1,5 @@
 /* eslint-disable jsx-quotes */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
@@ -13,22 +13,25 @@ function Concoction({
   removeDrink,
   handleClose,
   handleShow,
-  show,
+  // show,
   handleSubmit,
 }) {
   const { idDrink, strDrink, strCategory } = drink;
   const ingredients = getIngredients(drink).toString();
 
+  const [show, setShow] = useState(false);
+
   return (
     <Col>
       <Card>
-        <Button onClick={handleShow} size='sm' value={drink.idDrink}>
+        <Button onClick={() => handleShow(setShow)} size='sm' value={drink.idDrink}>
           Edit
         </Button>
         <EditConcoction
           drink={drink}
           handleClose={handleClose}
           show={show}
+          setShow={setShow}
           handleSubmit={handleSubmit}
         />
         <Button
@@ -60,7 +63,7 @@ Concoction.propTypes = {
   handleClose: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  show: PropTypes.bool.isRequired,
+  // show: PropTypes.bool.isRequired,
 };
 
 export default Concoction;

@@ -9,14 +9,16 @@ import Button from 'react-bootstrap/Button';
 
 class EditConcoction extends React.Component {
   constructor({
-    drink, handleClose, show, handleSubmit,
+    drink, handleClose, show, handleSubmit, setShow,
   }) {
     super({ show });
 
     this.drink = drink;
+    
     // this.props.show = show;
     this.handleClose = handleClose;
     this.handleSubmit = handleSubmit;
+    this.setShow = setShow;
 
     this.state = {
       strDrink: this.drink.strDrink,
@@ -50,7 +52,7 @@ class EditConcoction extends React.Component {
     const { show } = this.props;
     const { strDrink, strCategory } = this.drink;
     return (
-      <Modal show={show} onHide={this.handleClose}>
+      <Modal show={show} onHide={() => this.handleClose(this.setShow)}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Your Concoction</Modal.Title>
         </Modal.Header>
@@ -67,7 +69,7 @@ class EditConcoction extends React.Component {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={this.handleClose}>
+          <Button variant="secondary" onClick={() => this.handleClose(this.setShow)}>
             Close
           </Button>
           <Button variant="primary" type="submit" onClick={() => this.handleSubmit(this)}>
