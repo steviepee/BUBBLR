@@ -4,8 +4,8 @@ import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
 import Button from 'react-bootstrap/Button';
 
-const OgDrink = ({ drink, removeFavorite, getIngredients }) => {
-  const ingredients = getIngredients(drink);
+function OgDrink({ drink, removeDrink, getIngredients }) {
+  const ingredients = getIngredients(drink).toString();
   return (
     <Col>
       <Card>
@@ -14,7 +14,8 @@ const OgDrink = ({ drink, removeFavorite, getIngredients }) => {
             size='sm'
             value={drink.idDrink}
             variant='danger'
-            onClick={removeFavorite}
+            onClick={removeDrink}
+            className='ogDrink'
           >
             Remove
           </Button>
@@ -28,7 +29,7 @@ const OgDrink = ({ drink, removeFavorite, getIngredients }) => {
                 <Card.Body>
                   <Card.Title>{drink.strCategory}</Card.Title>
                   <Card.Text>{drink.strTags}</Card.Text>
-                  <Card.Text>Ingredients: {ingredients.toString()}</Card.Text>
+                  <Card.Text>{`Ingredients: ${ingredients}`}</Card.Text>
                 </Card.Body>
               </Card>
             </Accordion.Body>
