@@ -1,10 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-import HomeRandom from './HomeRandom';
-import Search from './Search.jsx'
-import HomeResults from './HomeResults.jsx'
-import EstDrinkPage from './EstDrinkPage.jsx';
+import HomeRandom from './homepageChildren/HomeRandom.jsx';
+import Search from './homepageChildren/Search.jsx'
+import HomeResults from './homepageChildren/HomeResults.jsx'
+import EstDrinkPage from './homepageChildren/EstDrinkPage.jsx';
 import { Routes, Route, Link } from 'react-router-dom'
+import { Container, Row, Col } from 'react-bootstrap';
+
 
 
 class Homepage extends React.Component {

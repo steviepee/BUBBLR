@@ -1,6 +1,8 @@
 import React from 'react';
 import { Component } from 'react';
 import axios from 'axios';
+import { Routes, Route, Link } from 'react-router-dom';
+
 
 class HomeRandom extends Component {
     constructor(props) {
@@ -26,10 +28,11 @@ class HomeRandom extends Component {
             <div>
                 <h3>Bubblr Random Picks</h3>
                 
-                    <div>
+                <Link to={`/estdrink/${randomDrink && randomDrink.idDrink}`}>
+
                         <h4>{randomDrink && randomDrink.strDrink}</h4>
-                        <img src={randomDrink && randomDrink.strDrinkThumb} style={{ width: '220px', height: '220px'}} />
-                    </div>
+                        <img src={randomDrink && randomDrink.strDrinkThumb} style={{ width: '350px', height: '350px'}} />
+                </Link>
         
             </div>
         )

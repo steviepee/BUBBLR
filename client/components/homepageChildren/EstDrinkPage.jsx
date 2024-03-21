@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
@@ -36,7 +35,7 @@ function EstDrinkPage() {
                     </ul>
                     <h3>Instructions:</h3>
                     <p>{drink.strInstructions}</p>
-                    <h7>Please drink responsibly.</h7>
+                    <h6>Please drink responsibly.</h6>
                 </div>
             )}
         </div>
