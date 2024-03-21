@@ -98,17 +98,21 @@ class Profile extends React.Component {
         <Card>
           <Card.Body>
             <Card.Title>Your Concoctions</Card.Title>
-            <Accordion>
-              {concoctionData.map((drink, index) => (
-                <Concoction
-                  removeDrink={this.removeDrink}
-                  drink={drink}
-                  key={`conc-${drink.idDrink}`}
-                  index={index}
-                  getIngredients={this.getIngredients}
-                />
-              ))}
-            </Accordion>
+            {/* <Accordion> */}
+            <Container>
+              <Row>
+                {concoctionData.map((drink, index) => (
+                  <Concoction
+                    removeDrink={this.removeDrink}
+                    drink={drink}
+                    key={`conc-${drink.idDrink}`}
+                    index={index}
+                    getIngredients={this.getIngredients}
+                  />
+                ))}
+              </Row>
+            </Container>
+            {/* </Accordion> */}
           </Card.Body>
         </Card>
         <Card>
