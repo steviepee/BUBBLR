@@ -1,4 +1,7 @@
+/* eslint-disable jsx-quotes */
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
@@ -38,6 +41,13 @@ function OgDrink({ drink, removeDrink, getIngredients }) {
       </Card>
     </Col>
   );
+}
+
+OgDrink.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  drink: PropTypes.object.isRequired,
+  getIngredients: PropTypes.func.isRequired,
+  removeDrink: PropTypes.func.isRequired,
 };
 
 export default OgDrink;

@@ -2,7 +2,8 @@
   "extends": "airbnb",
   "env": {
     "browser": true
-  }//,
+  },
+  //"jsx-quotes": ["error", "prefer-single"]
   // "console": {
   //   "allow": ["warn", "error"]
   // }

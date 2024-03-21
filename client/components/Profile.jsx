@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 import React from 'react';
 import axios from 'axios';
 
@@ -10,21 +11,17 @@ import OgDrink from './profileChildren/OgDrink';
 import Concoction from './profileChildren/Concoction';
 
 import fakeData from '../FakeData.json';
-// import moreFakeData from '../MoreFakeData.json';
 import { drinks } from '../moreFakeData.json';
 
-// import 'bootstrap/dist/css/bootstrap.css';
-// import bootstrap from 'bootstrap';
-
 class Profile extends React.Component {
-  constructor(props) {
+  constructor() {
     super();
 
     this.state = {
       displayName: 'User',
       createdAt: ' ',
-      favFakeData: fakeData.drinks.slice(0, 5),
-      moreFakeData: drinks,
+      ogDrinkData: fakeData.drinks.slice(0, 5),
+      concoctionData: drinks,
     };
 
     this.getUser = () => {
@@ -41,25 +38,22 @@ class Profile extends React.Component {
 
     // this is working but has no persistence
     this.removeDrink = (e) => {
-      const { favFakeData, moreFakeData } = this.state;
-      console.log(e.target.className);
+      const { ogDrinkData, concoctionData } = this.state;
       let targetDrinkGroup;
       let isOgDrink = false;
       if (e.target.className.includes('ogDrink')) {
-        targetDrinkGroup = favFakeData;
+        targetDrinkGroup = ogDrinkData;
         isOgDrink = true;
       } else if (e.target.className.includes('concoction')) {
-        targetDrinkGroup = moreFakeData;
+        targetDrinkGroup = concoctionData;
       }
       for (let i = 0; i < targetDrinkGroup.length; i++) {
         if (targetDrinkGroup[i].idDrink === e.target.value) {
           targetDrinkGroup.splice(i, 1);
-          // this.setState({ favFakeData });
-          if (isOgDrink) {
-            this.setState({ favFakeData });
-          } else {
-            this.setState({ moreFakeData });
-          }
+          // eslint-disable-next-line no-unused-expressions
+          isOgDrink
+            ? this.setState({ ogDrinkData })
+            : this.setState({ concoctionData });
         }
       }
     };
@@ -85,10 +79,7 @@ class Profile extends React.Component {
 
   render() {
     const {
-      displayName,
-      createdAt,
-      favFakeData,
-      moreFakeData,
+      displayName, createdAt, ogDrinkData, concoctionData,
     } = this.state;
     return (
       <>
@@ -108,7 +99,7 @@ class Profile extends React.Component {
           <Card.Body>
             <Card.Title>Your Concoctions</Card.Title>
             <Accordion>
-              {moreFakeData.map((drink, index) => (
+              {concoctionData.map((drink, index) => (
                 <Concoction
                   removeDrink={this.removeDrink}
                   drink={drink}
@@ -125,7 +116,7 @@ class Profile extends React.Component {
             <Card.Title>Your Favorite Originals</Card.Title>
             <Container>
               <Row>
-                {favFakeData.map((drink) => (
+                {ogDrinkData.map((drink) => (
                   <OgDrink
                     removeDrink={this.removeDrink}
                     key={drink.idDrink}
