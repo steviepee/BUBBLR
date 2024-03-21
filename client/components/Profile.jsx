@@ -3,7 +3,7 @@ import React from 'react';
 import axios from 'axios';
 
 import Card from 'react-bootstrap/Card';
-import Accordion from 'react-bootstrap/Accordion';
+// import Accordion from 'react-bootstrap/Accordion';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
