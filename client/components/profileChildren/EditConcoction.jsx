@@ -8,27 +8,31 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 class EditConcoction extends React.Component {
-  constructor({ drink, handleClose, show }) {
+  constructor({
+    drink, handleClose, show, handleSubmit,
+  }) {
     super({ show });
 
     this.drink = drink;
     // this.props.show = show;
     this.handleClose = handleClose;
+    this.handleSubmit = handleSubmit;
 
     this.state = {
       strDrink: this.drink.strDrink,
       strCategory: this.drink.strCategory,
     };
 
-    // this function will need to make an axios request to update db
-    this.handleSubmit = () => {
-      const { strDrink, strCategory } = this.state;
-      console.log(strDrink, strCategory);
-      handleClose();
-    };
+    // // this function will need to make an axios request to update db
+    // this.handleSubmit = (scope) => {
+    //   console.log('scope', scope);
+    //   const { strDrink, strCategory } = scope.state;
+    //   console.log(strDrink, strCategory);
+    //   handleClose();
+    // };
 
     this.handleChange = (e) => {
-      console.log(e.target.value, e.target.className);
+      // console.log(e.target.value, e.target.className);
       switch (e.target.className.split(' ')[0]) {
         case 'name':
           this.setState({ strDrink: e.target.value });
@@ -66,7 +70,7 @@ class EditConcoction extends React.Component {
           <Button variant="secondary" onClick={this.handleClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit" onClick={this.handleSubmit}>
+          <Button variant="primary" type="submit" onClick={() => this.handleSubmit(this)}>
             Save Changes
           </Button>
         </Modal.Footer>
@@ -79,6 +83,7 @@ EditConcoction.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   drink: PropTypes.object.isRequired,
   handleClose: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   show: PropTypes.bool.isRequired,
 };
 

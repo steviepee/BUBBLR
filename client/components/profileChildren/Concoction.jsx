@@ -8,7 +8,13 @@ import Col from 'react-bootstrap/Col';
 import EditConcoction from './EditConcoction';
 
 function Concoction({
-  drink, getIngredients, removeDrink, handleClose, handleShow, show,
+  drink,
+  getIngredients,
+  removeDrink,
+  handleClose,
+  handleShow,
+  show,
+  handleSubmit,
 }) {
   const { idDrink, strDrink, strCategory } = drink;
   const ingredients = getIngredients(drink).toString();
@@ -19,8 +25,19 @@ function Concoction({
         <Button onClick={handleShow} size='sm' value={drink.idDrink}>
           Edit
         </Button>
-        <EditConcoction drink={drink} handleClose={handleClose} show={show} />
-        <Button size='sm' value={drink.idDrink} variant='danger' className='concoction' onClick={removeDrink}>
+        <EditConcoction
+          drink={drink}
+          handleClose={handleClose}
+          show={show}
+          handleSubmit={handleSubmit}
+        />
+        <Button
+          size='sm'
+          value={drink.idDrink}
+          variant='danger'
+          className='concoction'
+          onClick={removeDrink}
+        >
           Remove
         </Button>
         <Card.Title>{strDrink}</Card.Title>
@@ -42,6 +59,7 @@ Concoction.propTypes = {
   removeDrink: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   show: PropTypes.bool.isRequired,
 };
 

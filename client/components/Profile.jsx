@@ -22,6 +22,7 @@ class Profile extends React.Component {
       createdAt: ' ',
       ogDrinkData: fakeData.drinks.slice(0, 5),
       concoctionData: drinks,
+      // currently is controlling every modal
       show: false,
     };
 
@@ -39,7 +40,16 @@ class Profile extends React.Component {
 
     this.handleClose = () => this.setState({ show: false });
 
+    // currently controlling every modal
     this.handleShow = () => this.setState({ show: true });
+
+    // this function will need to make an axios request to update db
+    this.handleSubmit = (scope) => {
+      console.log('scope', scope);
+      const { strDrink, strCategory } = scope.state;
+      console.log(strDrink, strCategory);
+      this.handleClose();
+    };
 
     // this is working but has no persistence
     this.removeDrink = (e) => {
@@ -111,6 +121,7 @@ class Profile extends React.Component {
                     handleClose={this.handleClose}
                     handleShow={this.handleShow}
                     show={show}
+                    handleSubmit={this.handleSubmit}
                     removeDrink={this.removeDrink}
                     drink={drink}
                     key={`conc-${drink.idDrink}`}
