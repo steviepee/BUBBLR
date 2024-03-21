@@ -10,14 +10,23 @@ import InputGroup from 'react-bootstrap/InputGroup';
 function UserSearch() {
   const [search, updateSearch] = useState('');
 
+  const [searchBool, hasSearched] = useState(false);
+
+  const [searchedUsers, updateUsers] = useState([]);
+
   const onChange = (e) => {
     updateSearch(e.target.value);
   };
 
   const onSearch = () => {
-    console.log(search);
     axios.get(`/profile/users/${search}`)
-      .then(({ data }) => console.log(data))
+      .then(({ data }) => {
+        console.log(data);
+        hasSearched(true);
+        if (data) {
+          updateUsers(data);
+        }
+      })
       .catch((err) => console.error('failed searching users: ', err));
   };
 
@@ -35,6 +44,7 @@ function UserSearch() {
             Search
           </Button>
         </InputGroup>
+        { searchBool ? <Card.Text>{`Found ${searchedUsers.length} user(s) matching "${search}"`}</Card.Text> : <Card.Text>No Search</Card.Text> }
       </Card.Body>
     </Card>
   );
