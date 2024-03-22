@@ -4,7 +4,7 @@ const session = require('express-session');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 
-const { User } = require('./db/index');
+const { User, UserFriends } = require('./db/index');
 
 // const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
@@ -65,13 +65,22 @@ app.get('/profile/:id', (req, res) => {
 });
 
 // for user search
-app.get('/profile/users/:name', (req, res) => {
-  const { name } = req.params;
-  User.findAll({ where: { displayName: name } })
+app.get('/profile/users/:displayName', (req, res) => {
+  const { displayName } = req.params;
+  User.findAll({ where: { displayName } })
     .then((userArr) => {
       res.send(userArr);
     })
     .catch((err) => console.error('failed search for user by name: ', err));
+});
+
+// for user follow
+app.post('/profile/follow', (req, res) => {
+  // represents the user ids in db
+  const { id, idFollow } = req.body;
+  UserFriends.create({ friend1Id: id, friend2Id: idFollow })
+    .then((response) => console.log(response))
+    .catch((err) => console.error('failed following: ', err));
 });
 
 app.get('*', (req, res) => {

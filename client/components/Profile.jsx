@@ -25,18 +25,25 @@ class Profile extends React.Component {
       concoctionData: drinks,
       // currently is controlling every modal
       // show: false,
+      id: 1,
     };
 
     this.getUser = () => {
+      const { id } = this.state;
       axios
-        .get('/profile/1')
+        .get(`/profile/${id}`)
         .then((userResponse) => {
           const { displayName, createdAt } = userResponse.data;
 
           // need to update drinks/concoctions/friends this way as well
-          this.setState({ displayName, createdAt });
+          this.setState({ displayName, createdAt, id });
         })
         .catch((err) => console.error('Failed getting user data', err));
+    };
+
+    this.followUser = (idFollow) => {
+      const { id } = this.state;
+      axios.post('/profile/follow', { id, idFollow });
     };
 
     this.handleClose = (scope) => scope(false);
@@ -96,7 +103,7 @@ class Profile extends React.Component {
     } = this.state;
     return (
       <>
-        <UserSearch />
+        <UserSearch followUser={this.followUser} />
         <Card>
           <Card.Body>
             <Card.Title>Profile</Card.Title>
@@ -112,7 +119,6 @@ class Profile extends React.Component {
         <Card>
           <Card.Body>
             <Card.Title>Your Concoctions</Card.Title>
-            {/* <Accordion> */}
             <Container>
               <Row>
                 {concoctionData.map((drink, index) => (
@@ -130,7 +136,6 @@ class Profile extends React.Component {
                 ))}
               </Row>
             </Container>
-            {/* </Accordion> */}
           </Card.Body>
         </Card>
         <Card>
