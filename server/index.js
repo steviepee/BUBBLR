@@ -106,9 +106,8 @@ app.post('/profile/follow', (req, res) => {
 
 app.delete('/profile/unfollow', (req, res) => {
   const { friend1Id, friend2Id } = req.body;
-  console.log(friend1Id, friend2Id);
   UserFriends.destroy({ where: { friend1Id, friend2Id } })
-    .then((response) => console.log(response))
+    .then(() => res.sendStatus(200))
     .catch((err) => console.error('failed to unfollow user: ', err));
 });
 

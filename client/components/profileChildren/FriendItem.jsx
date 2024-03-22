@@ -16,6 +16,7 @@ function FriendItem({ friend, unfollowUser }) {
 
 FriendItem.propTypes = {
   friend: PropTypes.object.isRequired,
+  unfollowUser: PropTypes.func.isRequired,
 };
 
 export default FriendItem;

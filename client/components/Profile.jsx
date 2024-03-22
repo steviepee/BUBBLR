@@ -45,7 +45,7 @@ class Profile extends React.Component {
         .then(({ data }) => {
           // console.log(data);
           this.setState({ friends: data });
-          console.log(this.state.friends);
+          // console.log(this.state.friends);
         })
         .catch((err) => console.error('Failed getting user data', err));
     };
@@ -54,18 +54,18 @@ class Profile extends React.Component {
       const { id } = this.state;
       axios
         .post('/profile/follow', { id, idFollow })
-        .then(() => axios.get(`/profile/friends/${id}`))
-        .then(({ data }) => {
-          // this is not updating state atm
-          this.setState({ friends: data });
-        });
+        .then(() => {
+          this.getUser();
+        })
+        .catch((err) => console.error('failed following user: ', err));
     };
 
     this.unfollowUser = (idUnfollow) => {
-      console.log(idUnfollow);
       const { id } = this.state;
       axios.delete('/profile/unfollow', { data: { friend1Id: id, friend2Id: idUnfollow } })
-        .then((response) => console.log(response))
+        .then(() => {
+          this.getUser();
+        })
         .catch((err) => console.error('failed unfollowing user: ', err));
     };
 
@@ -139,16 +139,15 @@ class Profile extends React.Component {
             <Card>
               <Card.Body>
                 <Card.Title>Your Friends</Card.Title>
-                <Card.Text>
-                  <ListGroup>
-                    {friends.map((friend) => (
-                      <FriendItem
-                        friend={friend}
-                        unfollowUser={this.unfollowUser}
-                      />
-                    ))}
-                  </ListGroup>
-                </Card.Text>
+                <ListGroup>
+                  {friends.map((friend) => (
+                    <FriendItem
+                      friend={friend}
+                      unfollowUser={this.unfollowUser}
+                      key={`friend-${friend.id}`}
+                    />
+                  ))}
+                </ListGroup>
               </Card.Body>
             </Card>
           </Card.Body>
