@@ -104,6 +104,14 @@ app.post('/profile/follow', (req, res) => {
     .catch((err) => console.error('failed following: ', err));
 });
 
+app.delete('/profile/unfollow', (req, res) => {
+  const { friend1Id, friend2Id } = req.body;
+  console.log(friend1Id, friend2Id);
+  UserFriends.destroy({ where: { friend1Id, friend2Id } })
+    .then((response) => console.log(response))
+    .catch((err) => console.error('failed to unfollow user: ', err));
+});
+
 app.get('*', (req, res) => {
   // console.log('trying to find full url', req.hostname);
   res.sendFile(path.join(CLIENT_PATH, 'index.html'));

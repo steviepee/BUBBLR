@@ -52,12 +52,21 @@ class Profile extends React.Component {
 
     this.followUser = (idFollow) => {
       const { id } = this.state;
-      axios.post('/profile/follow', { id, idFollow })
+      axios
+        .post('/profile/follow', { id, idFollow })
         .then(() => axios.get(`/profile/friends/${id}`))
         .then(({ data }) => {
           // this is not updating state atm
           this.setState({ friends: data });
         });
+    };
+
+    this.unfollowUser = (idUnfollow) => {
+      console.log(idUnfollow);
+      const { id } = this.state;
+      axios.delete('/profile/unfollow', { data: { friend1Id: id, friend2Id: idUnfollow } })
+        .then((response) => console.log(response))
+        .catch((err) => console.error('failed unfollowing user: ', err));
     };
 
     this.handleClose = (scope) => scope(false);
@@ -113,7 +122,11 @@ class Profile extends React.Component {
 
   render() {
     const {
-      displayName, createdAt, ogDrinkData, concoctionData, friends, // show,
+      displayName,
+      createdAt,
+      ogDrinkData,
+      concoctionData,
+      friends, // show,
     } = this.state;
     return (
       <>
@@ -128,7 +141,12 @@ class Profile extends React.Component {
                 <Card.Title>Your Friends</Card.Title>
                 <Card.Text>
                   <ListGroup>
-                    {friends.map((friend) => <FriendItem friend={friend} />)}
+                    {friends.map((friend) => (
+                      <FriendItem
+                        friend={friend}
+                        unfollowUser={this.unfollowUser}
+                      />
+                    ))}
                   </ListGroup>
                 </Card.Text>
               </Card.Body>
