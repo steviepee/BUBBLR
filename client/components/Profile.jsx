@@ -6,10 +6,12 @@ import Card from 'react-bootstrap/Card';
 // import Accordion from 'react-bootstrap/Accordion';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 import OgDrink from './profileChildren/OgDrink';
 import Concoction from './profileChildren/Concoction';
 import UserSearch from './profileChildren/UserSearch';
+import FriendItem from './profileChildren/FriendItem';
 
 import fakeData from '../FakeData.json';
 import { drinks } from '../moreFakeData.json';
@@ -111,7 +113,7 @@ class Profile extends React.Component {
 
   render() {
     const {
-      displayName, createdAt, ogDrinkData, concoctionData, // show,
+      displayName, createdAt, ogDrinkData, concoctionData, friends, // show,
     } = this.state;
     return (
       <>
@@ -124,6 +126,11 @@ class Profile extends React.Component {
             <Card>
               <Card.Body>
                 <Card.Title>Your Friends</Card.Title>
+                <Card.Text>
+                  <ListGroup>
+                    {friends.map((friend) => <FriendItem friend={friend} />)}
+                  </ListGroup>
+                </Card.Text>
               </Card.Body>
             </Card>
           </Card.Body>

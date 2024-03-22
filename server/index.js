@@ -98,6 +98,7 @@ app.get('/profile/users/:displayName', (req, res) => {
 app.post('/profile/follow', (req, res) => {
   // represents the user ids in db
   const { id, idFollow } = req.body;
+  // currently is creating even if exists
   UserFriends.create({ friend1Id: id, friend2Id: idFollow })
     // .then((response) => console.log(response))
     .catch((err) => console.error('failed following: ', err));
