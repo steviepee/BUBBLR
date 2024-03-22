@@ -4,6 +4,7 @@ const session = require('express-session');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 
+const { Op } = require('sequelize');
 const { User, UserFriends } = require('./db/index');
 
 // const indexRouter = require('./routes/index');
@@ -64,6 +65,25 @@ app.get('/profile/:id', (req, res) => {
     });
 });
 
+// this grabs a users friends when opening profile, not able to do in one query...
+app.get('/profile/friends/:id', (req, res) => {
+  const { id } = req.params;
+  UserFriends.findAll({ attributes: ['friend2Id'], where: { friend1Id: id }, raw: true })
+    .then((arrFriend2IdObj) => {
+      if (arrFriend2IdObj) {
+        const userIdArr = [];
+        for (let i = 0; i < arrFriend2IdObj.length; i++) {
+          userIdArr.push({ id: arrFriend2IdObj[i].friend2Id });
+        }
+        return User.findAll({ where: { [Op.or]: userIdArr }, raw: true });
+      }
+    })
+    .then((userArr) => {
+      res.send(userArr);
+    })
+    .catch((err) => console.error('Failed finding friends: ', err));
+});
+
 // for user search
 app.get('/profile/users/:displayName', (req, res) => {
   const { displayName } = req.params;
@@ -79,7 +99,7 @@ app.post('/profile/follow', (req, res) => {
   // represents the user ids in db
   const { id, idFollow } = req.body;
   UserFriends.create({ friend1Id: id, friend2Id: idFollow })
-    .then((response) => console.log(response))
+    // .then((response) => console.log(response))
     .catch((err) => console.error('failed following: ', err));
 });
 

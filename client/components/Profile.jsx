@@ -26,6 +26,7 @@ class Profile extends React.Component {
       // currently is controlling every modal
       // show: false,
       id: 1,
+      friends: [],
     };
 
     this.getUser = () => {
@@ -37,13 +38,24 @@ class Profile extends React.Component {
 
           // need to update drinks/concoctions/friends this way as well
           this.setState({ displayName, createdAt, id });
+          return axios.get(`/profile/friends/${id}`);
+        })
+        .then(({ data }) => {
+          // console.log(data);
+          this.setState({ friends: data });
+          console.log(this.state.friends);
         })
         .catch((err) => console.error('Failed getting user data', err));
     };
 
     this.followUser = (idFollow) => {
       const { id } = this.state;
-      axios.post('/profile/follow', { id, idFollow });
+      axios.post('/profile/follow', { id, idFollow })
+        .then(() => axios.get(`/profile/friends/${id}`))
+        .then(({ data }) => {
+          // this is not updating state atm
+          this.setState({ friends: data });
+        });
     };
 
     this.handleClose = (scope) => scope(false);
