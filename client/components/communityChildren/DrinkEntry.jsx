@@ -2,11 +2,16 @@ import React from 'react';
 import DrinkTags from './DrinkTags.jsx';
 import Card from 'react-bootstrap/Card';
 
-function DrinkEntry({ currDrink }) {
+function DrinkEntry({ currDrink, tags }) {
   const { strIngredient1, strIngredient2, strIngredient3 } = currDrink;
-  const threeMainIngredients = [strIngredient1, strIngredient2, strIngredient3];
-  const splitStringTags =
-    currDrink.strTags !== null ? currDrink.strTags.split(',') : [''];
+  const threeMainIngredients = [strIngredient1, strIngredient2];
+  
+  if(strIngredient3 !== null){
+    threeMainIngredients.push(strIngredient3)
+  }
+  
+  // const splitStringTags =
+  // currDrink.strTags !== null ? currDrink.strTags.split(',') : [''];
   return (
     <Card
       style={{ width: '18rem' }}
@@ -32,13 +37,14 @@ function DrinkEntry({ currDrink }) {
           {currDrink.strGlass}
         </Card.Subtitle>
         <Card.Text>
-          {threeMainIngredients.map((ele) => ` ${ele} `)}
-          <br />
-          {splitStringTags.map((tag, id) => {
+          {/* {threeMainIngredients.map((ele) => ` ${ele} `)}
+          <br /> */}
+          {/* {splitStringTags.map((tag, id) => {
             if (tag !== '') {
-              return <DrinkTags tag={tag} key={id} />;
-            }
-          })}
+              if(tags === false) {
+                return <DrinkTags tag={tag} key={id} />;
+              }
+            } */}
         </Card.Text>
       </Card.Body>
     </Card>

@@ -2,20 +2,23 @@ import React from 'react';
 import { Component } from 'react';
 import axios from 'axios';
 import { Routes, Route, Link } from 'react-router-dom';
+import { Spinner } from 'react-bootstrap';
+
 
 
 class HomeRandom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            randomDrink: null
+            randomDrink: null,
+            glitchPH: true
         };
     }
 
     componentDidMount() {
         axios.get('https://www.thecocktaildb.com/api/json/v1/1/random.php')
             .then((rand) => {
-                this.setState({randomDrink: rand.data.drinks[0]})
+                this.setState({randomDrink: rand.data.drinks[0], glitchPH: false})
             })
             .catch((err) => {
                 console.error('Error getting drink pick', err);
@@ -23,6 +26,14 @@ class HomeRandom extends Component {
     }
 
     render() {
+        let { glitchPH } = this.state;
+        if(glitchPH) {
+            return (
+                <Spinner animation="border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>
+              );
+        }
         let { randomDrink } = this.state;
         return (
             <div>

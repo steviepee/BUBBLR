@@ -6,7 +6,8 @@ import NotFound from './NotFound.jsx'
 import Homepage from './Homepage.jsx';
 import EstDrinkPage from './homepageChildren/EstDrinkPage.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import FilteredPage from './homepageChildren/FilteredPage.jsx';
+import FilteredPageHandler from './homepageChildren/FilteredPageHandler.jsx';
 import Community from './Community.jsx';
 
 function App() {
@@ -27,8 +28,9 @@ function App() {
           <Route path="/estdrink/:id" element={<EstDrinkPage />} />
           <Route path="/dashboard" element={<h1>Dash</h1>} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="*" element={<NotFound />} />
           <Route path='/community' element={ <Community />} />
+          <Route path='/filtered/:filter/*' element={ <FilteredPageHandler />} /> 
+          <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

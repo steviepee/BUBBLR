@@ -6,6 +6,8 @@ import HomeResults from './homepageChildren/HomeResults.jsx'
 import EstDrinkPage from './homepageChildren/EstDrinkPage.jsx';
 import { Routes, Route, Link } from 'react-router-dom'
 import { Container, Row, Col } from 'react-bootstrap';
+import NavFilter from './homepageChildren/NavFilter.jsx';
+import FilteredPage from './homepageChildren/FilteredPage.jsx';
 
 
 
@@ -34,10 +36,12 @@ class Homepage extends React.Component {
             <div>
                <h2> Bubblr Homepage </h2>
                <Search onSearch={this.handleSearch} />
+               <NavFilter />
                <HomeRandom /> 
                {results.length > 0 && <HomeResults results={results} />}
                <Routes>
-               <Route path="/estdrink/:id" element={<EstDrinkPage />} />
+               {/* <Route path="/estdrink/:id" element={<EstDrinkPage />} /> */}
+               {/* <Route path="/filtered" element={<EstDrinkPage />} />  */}
                </Routes>
             </div>
         )

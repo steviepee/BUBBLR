@@ -37,12 +37,89 @@ const UserFriends = sequelize.define('UserFriends', {
       key: 'id',
     }
   }
-})
+});
 
 UserFriends.sync()
   .catch((err) => console.error('Failed syncing UserFriends: ', err));
 
+const EstDrinks = sequelize.define('Drink', {
+  drinkId: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  tags: {
+    type: DataTypes.STRING,
+  },
+  category: {
+    type: DataTypes.STRING,
+  },
+  glass: DataTypes.STRING,
+  instructions: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  ingredients: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  image: DataTypes.STRING,
+}
+);
+
+EstDrinks.sync()
+  .catch((err) => console.error('Failed syncing EstDrinks: ', err));
+
+const EstDrinks_Users_Favorites = sequelize.define('EstDrinks_Users', {
+  userId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: User,
+      key: 'id',
+    },
+    allowNull: false,
+  },
+  estDrinkId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: EstDrinks,
+      key: 'id',
+    },
+    allowNull: false,
+  },
+});
+
+EstDrinks_Users_Favorites.sync()
+  .catch((err) => console.error('Failed syncing EstDrinks_Users: ', err));
+
+const Reviews = sequelize.define('Reviews', {
+  bubbles: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+  },
+  message: {
+    allowNull: false,
+    type: DataTypes.TEXT,
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: User,
+      key: 'id',
+    },
+  },
+});
+
+Reviews.sync()
+  .catch((err) => console.error('Failed syncing Reviews: ', err));
+
 module.exports = {
   User,
-  UserFriends
+  UserFriends,
+  EstDrinks,
+  EstDrinks_Users_Favorites,
+  Reviews,
 };
