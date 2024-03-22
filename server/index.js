@@ -101,6 +101,7 @@ app.post('/profile/follow', (req, res) => {
   // currently is creating even if exists
   UserFriends.create({ friend1Id: id, friend2Id: idFollow })
     // .then((response) => console.log(response))
+    .then(() => res.sendStatus(200))
     .catch((err) => console.error('failed following: ', err));
 });
 

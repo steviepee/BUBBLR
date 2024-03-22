@@ -54,9 +54,7 @@ class Profile extends React.Component {
       const { id } = this.state;
       axios
         .post('/profile/follow', { id, idFollow })
-        .then(() => {
-          this.getUser();
-        })
+        .then(() => this.getUser())
         .catch((err) => console.error('failed following user: ', err));
     };
 

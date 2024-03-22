@@ -29,7 +29,7 @@ function UserSearch({ followUser }) {
     axios
       .get(`/profile/users/${search}`)
       .then(({ data }) => {
-        console.log(data);
+        // console.log(data);
         hasSearched(true);
         if (data) {
           updateUsers(data);
@@ -65,7 +65,7 @@ function UserSearch({ followUser }) {
         <ListGroup>
           {searchedUsers.length ? (
             searchedUsers.map((user) => (
-              <UserItem user={user} followUser={followUser} />
+              <UserItem user={user} followUser={followUser} key={`searched-${user.id}`} />
             ))
           ) : (
             <> </>
