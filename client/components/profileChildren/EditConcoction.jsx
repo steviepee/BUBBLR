@@ -8,17 +8,15 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 class EditConcoction extends React.Component {
-  constructor({
-    drink, handleClose, show, handleSubmit, setShow,
-  }) {
-    super({ show });
+  constructor(props) {
+    super(props);
 
-    this.drink = drink;
+    this.drink = props.drink;
 
     // this.props.show = show;
-    this.handleClose = handleClose;
-    this.handleSubmit = handleSubmit;
-    this.setShow = setShow;
+    this.handleClose = props.handleClose;
+    this.handleSubmit = props.handleSubmit;
+    this.setShow = props.setShow;
 
     this.state = {
       // these states are accessed in profile
