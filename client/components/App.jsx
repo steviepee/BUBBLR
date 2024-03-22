@@ -4,6 +4,9 @@ import Profile from  './Profile.jsx'
 import Login from './Login.jsx';
 import NotFound from './NotFound.jsx'
 import CreationStation from './CreationStation.jsx';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import Community from './Community.jsx';
 
 function App() {
   return (
@@ -23,6 +26,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/creationStation" element={<CreationStation />} />
           <Route path="*" element={<NotFound />} />
+          <Route path='/community' element={ <Community />} />
       </Routes>
   </>
   );

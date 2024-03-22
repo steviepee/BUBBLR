@@ -4,10 +4,9 @@ const session = require('express-session');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 
-const { User } = require('./db/index.js');
-
 // const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
+// const apiRouter = require('./routes/api');
 require('dotenv').config();
 
 // MIDDLEWARES
@@ -32,6 +31,9 @@ app.use(express.static(CLIENT_PATH));
 // ROUTER SENDING TO WHEREVER
 app.use('/auth', authRouter);
 
+// ROUTER SENDING TO WHEREVER
+// app.use('/api', apiRouter);
+
 // ROUTES FOR THIS FILE
 app.get('/dashboard', (req, res) => {
   // res.cookies()
@@ -46,21 +48,6 @@ app.post('/logout', (req, res, next) => {
   );
   // res.redirect('/login');
   console.log('-------> User Logged out');
-});
-
-// for getting user info from db
-app.get('/profile/:id', (req, res) => {
-  console.log(req.params);
-  const { id } = req.params;
-  User.findByPk(id)
-    .then((userObj) => {
-      console.log('find by pk result', userObj);
-      res.send(userObj);
-    })
-    .catch((err) => {
-      console.error('failed finding user by pk: ', err);
-      res.send(500);
-    })
 });
 
 app.get('*', (req, res) => {

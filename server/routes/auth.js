@@ -39,13 +39,14 @@ passport.deserializeUser((user, done) => {
 router.get('/google', passport.authenticate('google', {
   scope: ['email', 'profile'],
 }, (req) => {
-  console.log(req, 'hiiii');
+  // console.log(req, 'hiiii');
   req.login((err) => {
     if (err) {
       console.error(err);
     }
   });
 }));
+
 
 router.get('/google/callback', passport.authenticate('google', {
   successRedirect: '/dashboard',
