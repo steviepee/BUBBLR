@@ -150,6 +150,20 @@ app.get('/api/getIngredients', (req, res) => {
 })
 })
 
+app.post('/api/customDrinks', (req, res) => {
+  console.log(req.body)
+  data = req.body
+  customDrinks.create(data)
+  .then(() => {
+      res.sendStatus(200)
+  })
+  .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+  })
+  
+})
+
 app.get('*', (req, res) => {
   // console.log('trying to find full url', req.hostname);
   res.sendFile(path.join(CLIENT_PATH, 'index.html'));

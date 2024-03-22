@@ -68,9 +68,6 @@ UserFriends.sync()
     },
     drinkIngredients: {
       type: DataTypes.STRING,
-      set(val) {
-        this.setDataValue("drinkIngredients", JSON.stringify(val ?? ""));
-     },
     },
     drinkMeasurements: {
       type: DataTypes.STRING,
