@@ -8,8 +8,17 @@ import { useParams, Link } from 'react-router-dom';
 const FilteredPage = ({ filterType }) => {
   const [filteredDrinks, setFilteredDrinks] = useState([]);
   let { filter } = useParams()
+  let filterRedid;
   
-  let filterRedid = encodeURIComponent(filter.replace(/\//g, '%2F'));
+  filterRedid = encodeURIComponent(filter);
+  if(filter.startsWith('Other')) {
+    filterRedid = filterRedid + '/%20Unknown';
+  } else if (filter.startsWith('Punch')) {
+    filterRedid = filterRedid + '/%20Party%20Drink';
+  } else if (filter.startsWith('Coffee')){
+    filterRedid = filterRedid + '/%20Tea';
+  };
+  
 
   console.log(filter)
   useEffect(() => {
@@ -21,10 +30,10 @@ const FilteredPage = ({ filterType }) => {
         // let filterQuery = filter[0].toLowerCase();
         // response = await axios.get(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?${filterQuery}=${filter}`)
         if(filterType === 'alcoholic') {
-          console.log(filter, 'ALC LOGGED filter redid - ', filterRedid)
+          console.log(filter)
           response = await axios.get(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=${filterRedid}`);
         } else if(filterType === 'category') {
-          console.log(filter, 'Cat LOGGED filter redid - ', filterRedid)
+          console.log(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${filterRedid}`)
           response = await axios.get(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${filterRedid}`);
         };
         
