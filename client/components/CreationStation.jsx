@@ -29,7 +29,7 @@ function CreationStation() {
         // console.log('orange')
     }
 
-    // function newIngredientsClick() {
+    // // function newIngredientsClick() {
     //     axios.post('/api/customDrinks', {
     //         name: 'Kylan',
     //         last: 'Patton'
@@ -38,7 +38,7 @@ function CreationStation() {
     //         console.log('post was successful')
     //     })
         
-    // }
+    // // }
 
     function saveToCollectionClick() {
         axios.post('/api/customDrinks', {
@@ -51,6 +51,13 @@ function CreationStation() {
         .catch((err) => {
             console.error(err)
         })
+        // axios.post('/api/customDrinks', {
+        //     name: 'Kylan',
+        //     last: 'Patton'
+        // })
+        // .then(() => {
+        //     console.log('post was successful')
+        // })
     }
 
     useEffect(() => {

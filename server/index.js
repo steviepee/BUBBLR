@@ -3,6 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
+const customDrinks = require('../server/db/index')
 
 // const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
@@ -15,13 +16,15 @@ app.set('view engine', 'ejs');
 // app.set('view engine', 'jsx');
 app.use(express.json());
 app.use(cookieParser());
-app.use(passport.initialize());
+
 app.use(session({
   secret: 'bubblr',
   resave: false,
   saveUninitialized: true,
   cookie: { secure: true },
 }));
+
+app.use(passport.initialize());
 app.use(passport.session());
 
 // SERVING REACT STATIC PAGES
@@ -47,10 +50,53 @@ app.post('/logout', (req, res, next) => {
     },
   );
   // res.redirect('/login');
-  console.log('-------> User Logged out');
+  // console.log('-------> User Logged out');
 });
 
+// for getting user info from db
+app.get('/profile/:id', (req, res) => {
+  const { id } = req.params;
+  User.findByPk(id)
+    .then((userObj) => {
+      // console.log('find by pk result', userObj);
+      res.send(userObj);
+    })
+    .catch((err) => {
+      // console.error('failed finding user by pk: ', err);
+      res.send(500);
+    })
+});
+
+app.get('/api/customDrinks', (req, res) => {
+  // console.log(req.body)
+  customDrinks.findAll()
+  .then((results) => {
+      res.status(200).send(results)
+  })
+  .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+  })
+  // res.status(200).send('hello post request')
+}) 
+
+app.post('/api/customDrinks', (req, res) => {
+  console.log(req.body)
+  res.status(200).send(req.body)
+  data = req.body
+  customDrinks.create(data)
+  .then(() => {
+      res.sendStatus(200)
+  })
+  .catch((err) => {
+      console.error(err)
+      res.sendStatus(500)
+  })
+  
+})
+
 app.get('*', (req, res) => {
+  // console.log('trying to find full url', req.hostname);
   res.sendFile(path.join(CLIENT_PATH, 'index.html'));
 });
 
@@ -65,7 +111,15 @@ app.get('*', (req, res) => {
 
 const PORT = 8080;
 
+const devOrProd = () => {
+  if(process.env.npm_lifecycle_event === 'start'){
+    return 'localhost';
+  } else {
+    return '13.52.61.243';
+  }
+}
+
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
-  console.info(`Server listening on http://localhost:${PORT}`);
+  console.info(`Server listening on http://${devOrProd()}:${PORT}`);
 });
