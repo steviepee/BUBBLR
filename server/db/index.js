@@ -15,29 +15,28 @@ const User = sequelize.define('User', {
   },
   displayName: {
     type: DataTypes.STRING,
-  }
+  },
 });
 
 User.sync()
   .catch((err) => console.error(err));
 
-
 const UserFriends = sequelize.define('UserFriends', {
-  friend1Id : {
+  friend1Id: {
     type: DataTypes.INTEGER,
     references: {
       model: User,
       key: 'id',
-    }
+    },
   },
-  friend2Id : {
+  friend2Id: {
     type: DataTypes.INTEGER,
     references: {
       model: User,
       key: 'id',
-    }
-  }
-})
+    },
+  },
+});
 
 UserFriends.sync()
   .catch((err) => console.error('Failed syncing UserFriends: ', err));
