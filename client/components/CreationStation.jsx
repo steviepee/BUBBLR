@@ -28,21 +28,16 @@ function CreationStation() {
         })
     }
 
-    // // function newIngredientsClick() {
-    //     axios.post('/api/customDrinks', {
-    //         name: 'Kylan',
-    //         last: 'Patton'
-    //     })
-    //     .then(() => {
-    //         console.log('post was successful')
-    //     })
+    function newIngredientsClick() {
+        const modifiedIngredients = activeIngredients
+        updateActiveIngredients(modifiedIngredients)
         
-    // // }
+    }
 
     function saveToCollectionClick() {
         axios.post('/api/customDrinks', {
             drinkName: drinkName,
-            drinkIngredients: activeIngredients
+            drinkIngredients: JSON.stringify(activeIngredients)
         })
         .then(() => {
             console.log('custom drink post was successful')
@@ -62,8 +57,9 @@ function CreationStation() {
 
     useEffect(() => {
         // getAllIngredients()
-        // newIngredientsClick()
-    })
+        newIngredientsClick()
+    }, [])
+
         return (
         <div>
             <h1>Create A Drink</h1>
@@ -114,6 +110,7 @@ function CreationStation() {
             <br />
             <br />
             <button onClick={() => {
+                // console.log(activeIngredients)
                 saveToCollectionClick()
             }}>Save to My Collection!</button>
         </div>
