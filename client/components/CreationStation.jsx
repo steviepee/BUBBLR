@@ -15,18 +15,17 @@ function CreationStation() {
     // getAllIngredients()
 
     function getAllIngredients() {
-        axios.get('https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list')
+        axios.get('/api/getIngredients')
         .then((results) => {
             // console.log(results.data.drinks)
             let storage = []
-            results.data.drinks.forEach((drink) => {
+            results.data.forEach((drink) => {
                 storage.push(drink['strIngredient1'])
             })
             // console.log(storage)
             // updateIngredients(newIngredients => [...newIngredients, storage])
             updateIngredients(storage)
         })
-        // console.log('orange')
     }
 
     // // function newIngredientsClick() {
@@ -43,10 +42,11 @@ function CreationStation() {
     function saveToCollectionClick() {
         axios.post('/api/customDrinks', {
             drinkName: drinkName,
-            drinkIngredients: JSON.stringify(activeIngredients)
+            drinkIngredients: activeIngredients
         })
         .then(() => {
             console.log('custom drink post was successful')
+
         })
         .catch((err) => {
             console.error(err)
@@ -61,7 +61,7 @@ function CreationStation() {
     }
 
     useEffect(() => {
-        getAllIngredients()
+        // getAllIngredients()
         // newIngredientsClick()
     })
         return (
@@ -69,7 +69,9 @@ function CreationStation() {
             <h1>Create A Drink</h1>
             <br />
             <br />
-            <button>New Ingredients</button>
+            <button onClick={() => {
+                getAllIngredients()
+            }}>New Ingredients</button>
             {' '}
             <button >My Saved Recipes</button>
             <br />
