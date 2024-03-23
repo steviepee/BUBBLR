@@ -44,6 +44,11 @@ class Profile extends React.Component {
           // console.log(data);
           this.setState({ friends: data });
           // console.log(this.state.friends);
+          return axios.get('/profile/concoctions');
+        })
+        .then(({ data }) => {
+          console.log(data);
+          // this.setState({ concoctionData: data });
         })
         .catch((err) => console.error('Failed getting user data', err));
     };

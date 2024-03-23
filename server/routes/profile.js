@@ -3,21 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const { Op } = require('sequelize');
-const { UserFriends, User } = require('../db/index');
-
-// for getting user info from db
-router.get('/:id', (req, res) => {
-  const { id } = req.params;
-  User.findByPk(id)
-    .then((userObj) => {
-      // console.log('find by pk result', userObj);
-      res.send(userObj);
-    })
-    .catch((err) => {
-      console.error('failed finding user by pk: ', err);
-      res.send(500);
-    });
-});
+const { UserFriends, User, customDrinks } = require('../db/index');
 
 // this grabs a users friends when opening profile, not able to do in one query...
 router.get('/friends/:id', (req, res) => {
@@ -80,6 +66,32 @@ router.delete('/unfollow', (req, res) => {
   UserFriends.destroy({ where: { friend1Id, friend2Id } })
     .then(() => res.sendStatus(200))
     .catch((err) => console.error('failed to unfollow user: ', err));
+});
+
+router.get('/concoctions', (req, res) => {
+  // this will need to change to a specific users concoctions
+  customDrinks.findAll({})
+    .then((response) => {
+      console.log(response);
+      res.send(response);
+    })
+    .catch((err) => {
+      console.error('failed getting concoctions: ', err);
+    });
+});
+
+// for getting user info from db
+router.get('/:id', (req, res) => {
+  const { id } = req.params;
+  User.findByPk(id)
+    .then((userObj) => {
+      // console.log('find by pk result', userObj);
+      res.send(userObj);
+    })
+    .catch((err) => {
+      console.error('failed finding user by pk: ', err);
+      res.send(500);
+    });
 });
 
 module.exports = router;
