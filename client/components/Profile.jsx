@@ -189,6 +189,14 @@ class Profile extends React.Component {
             </Container>
           </Card.Body>
         </Card>
+        <Card>
+          <Card.Body>
+            <Card.Title>Your Reviews</Card.Title>
+            <ListGroup>
+              Hello
+            </ListGroup>
+          </Card.Body>
+        </Card>
       </>
     );
   }

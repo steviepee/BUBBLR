@@ -32,7 +32,17 @@ function FriendProfile() {
       </Card>
       <Card>
         <Card.Body>
-          <Card.Title>Creations</Card.Title>
+          <Card.Title>Concoctions</Card.Title>
+        </Card.Body>
+      </Card>
+      <Card>
+        <Card.Body>
+          <Card.Title>Favorites</Card.Title>
+        </Card.Body>
+      </Card>
+      <Card>
+        <Card.Body>
+          <Card.Title>Reviews</Card.Title>
         </Card.Body>
       </Card>
     </>
