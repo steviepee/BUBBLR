@@ -9,23 +9,26 @@ import EditConcoction from './EditConcoction';
 
 function Concoction({
   drink,
-  getIngredients,
-  getMeasures,
+  // getIngredients,
+  // getMeasures,
   removeDrink,
   handleClose,
   handleShow,
   handleSubmit,
 }) {
-  const { idDrink, strDrink, strCategory } = drink;
-  const ingredients = getIngredients(drink).toString();
-  const measures = getMeasures(drink).toString();
+  // const { idDrink, strDrink, strCategory } = drink;
+  // const ingredients = getIngredients(drink).toString();
+  // const measures = getMeasures(drink).toString();
+  const { drinkName, drinkIngredients, id } = drink;
+  // console.log(JSON.parse(drinkIngredients).join(', '));
 
   const [show, setShow] = useState(false);
 
   return (
     <Col>
       <Card>
-        <Button onClick={() => handleShow(setShow)} size='sm' value={drink.idDrink}>
+        {/* <Button onClick={() => handleShow(setShow)} size='sm' value={drink.idDrink}> */}
+        <Button onClick={() => handleShow(setShow)} size='sm' value={id}>
           Edit
         </Button>
         <EditConcoction
@@ -34,23 +37,27 @@ function Concoction({
           show={show}
           setShow={setShow}
           handleSubmit={handleSubmit}
-          ingredients={ingredients}
-          measures={measures}
+          // ingredients={ingredients}
+          // measures={measures}
         />
         <Button
           size='sm'
-          value={drink.idDrink}
+          // value={drink.idDrink}
+          value={id}
           variant='danger'
           className='concoction'
           onClick={removeDrink}
         >
           Remove
         </Button>
-        <Card.Title>{strDrink}</Card.Title>
-        <Card.Body key={`body-${idDrink}`}>
+        {/* <Card.Title>{strDrink}</Card.Title> */}
+        <Card.Title>{drinkName}</Card.Title>
+        {/* <Card.Body key={`body-${idDrink}`}> */}
+        <Card.Body key={`body-${id}`}>
           <Card>
-            <Card.Text>{strCategory}</Card.Text>
-            <Card.Text>{`Ingredients: ${ingredients}`}</Card.Text>
+            {/* <Card.Text>{strCategory}</Card.Text> */}
+            {/* <Card.Text>{`Ingredients: ${ingredients}`}</Card.Text> */}
+            <Card.Text>{`Ingredients: ${JSON.parse(drinkIngredients).join(', ')}`}</Card.Text>
           </Card>
         </Card.Body>
       </Card>
@@ -61,8 +68,8 @@ function Concoction({
 Concoction.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   drink: PropTypes.object.isRequired,
-  getIngredients: PropTypes.func.isRequired,
-  getMeasures: PropTypes.func.isRequired,
+  // getIngredients: PropTypes.func.isRequired,
+  // getMeasures: PropTypes.func.isRequired,
   removeDrink: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,

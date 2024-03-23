@@ -25,6 +25,7 @@ class Profile extends React.Component {
       createdAt: ' ',
       ogDrinkData: fakeData.drinks.slice(0, 5),
       concoctionData: drinks,
+      concoctions: [],
       id: 1,
       friends: [],
     };
@@ -48,7 +49,7 @@ class Profile extends React.Component {
         })
         .then(({ data }) => {
           console.log(data);
-          // this.setState({ concoctionData: data });
+          this.setState({ concoctions: data });
         })
         .catch((err) => console.error('Failed getting user data', err));
     };
@@ -74,10 +75,12 @@ class Profile extends React.Component {
     this.handleShow = (scope) => scope(true);
 
     this.handleSubmit = (scope) => {
-      const {
-        strDrink, strCategory, strGlass, ingredients, measures, strInstructions,
-      } = scope.state;
-      console.log(strDrink, strCategory, strGlass, ingredients, measures, strInstructions);
+      // const {
+      //   strDrink, strCategory, strGlass, ingredients, measures, strInstructions,
+      // } = scope.state;
+      // console.log(strDrink, strCategory, strGlass, ingredients, measures, strInstructions);
+      const { drinkName, drinkIngredients } = scope.state;
+      console.log(drinkName, drinkIngredients);
       // this function will need to make an axios request to update db
       // then make a call to db to get updated user concoctions
       // update concoction data
@@ -121,18 +124,18 @@ class Profile extends React.Component {
       return ingredients;
     };
 
-    this.getMeasures = (drink) => {
-      const measures = [];
-      for (let i = 1; i < 16; i++) {
-        const stringMeasure = `strMeasure${i}`;
-        if (drink[stringMeasure]) {
-          measures.push(` ${drink[stringMeasure]}`);
-        } else {
-          return measures;
-        }
-      }
-      return measures;
-    };
+    // this.getMeasures = (drink) => {
+    //   const measures = [];
+    //   for (let i = 1; i < 16; i++) {
+    //     const stringMeasure = `strMeasure${i}`;
+    //     if (drink[stringMeasure]) {
+    //       measures.push(` ${drink[stringMeasure]}`);
+    //     } else {
+    //       return measures;
+    //     }
+    //   }
+    //   return measures;
+    // };
   }
 
   componentDidMount() {
@@ -145,6 +148,7 @@ class Profile extends React.Component {
       createdAt,
       ogDrinkData,
       concoctionData,
+      concoctions,
       friends, // show,
     } = this.state;
     return (
@@ -175,7 +179,7 @@ class Profile extends React.Component {
           <Card.Body>
             <Card.Title>Your Concoctions</Card.Title>
             <Container>
-              <Row>
+              {/* <Row>
                 {concoctionData.map((drink, index) => (
                   <Concoction
                     handleClose={this.handleClose}
@@ -188,6 +192,19 @@ class Profile extends React.Component {
                     index={index}
                     getIngredients={this.getIngredients}
                     getMeasures={this.getMeasures}
+                  />
+                ))}
+              </Row> */}
+              <Row>
+                {concoctions.map((drink, index) => (
+                  <Concoction
+                    handleClose={this.handleClose}
+                    handleShow={this.handleShow}
+                    handleSubmit={this.handleSubmit}
+                    removeDrink={this.removeDrink}
+                    drink={drink}
+                    key={`conc-${drink.id}`}
+                    index={index}
                   />
                 ))}
               </Row>
