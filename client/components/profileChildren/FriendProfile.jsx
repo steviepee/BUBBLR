@@ -7,7 +7,6 @@ import Card from 'react-bootstrap/Card';
 
 function FriendProfile() {
   const { id } = useParams();
-  console.log(id);
 
   const [friend, setFriend] = useState({});
 

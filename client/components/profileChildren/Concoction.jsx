@@ -13,7 +13,6 @@ function Concoction({
   removeDrink,
   handleClose,
   handleShow,
-  // show,
   handleSubmit,
 }) {
   const { idDrink, strDrink, strCategory } = drink;
@@ -64,7 +63,6 @@ Concoction.propTypes = {
   handleClose: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  // show: PropTypes.bool.isRequired,
 };
 
 export default Concoction;

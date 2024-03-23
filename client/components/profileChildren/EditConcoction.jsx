@@ -69,9 +69,9 @@ class EditConcoction extends React.Component {
               <Form.Label>Category</Form.Label>
               <Form.Control type="drinkCategory" className="category" defaultValue={strCategory} onChange={this.handleChange} />
             </Form.Group>
-            <Form.Group className='mb-3' controlId='formDrinkIngredients'>
+            <Form.Group className="mb-3" controlId="formDrinkIngredients">
               <Form.Label>Ingredients</Form.Label>
-              <Form.Control type='drinkIngredients' className='ingredients' defaultValue={ingredients} onChange={this.handleChange} />
+              <Form.Control type="drinkIngredients" className="ingredients" defaultValue={ingredients} onChange={this.handleChange} />
             </Form.Group>
           </Form>
         </Modal.Body>

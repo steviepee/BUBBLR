@@ -12,12 +12,13 @@ function FriendItem({ friend, unfollowUser }) {
       <Link to={`friend/${friend.id}`}>
         <Button>See page</Button>
       </Link>
-      <Button variant='danger' onClick={() => unfollowUser(friend.id)}>Unfollow</Button>
+      <Button variant="danger" onClick={() => unfollowUser(friend.id)}>Unfollow</Button>
     </ListGroupItem>
   );
 }
 
 FriendItem.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
   friend: PropTypes.object.isRequired,
   unfollowUser: PropTypes.func.isRequired,
 };
