@@ -3,7 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
-const { User, customDrinks } = require('../server/db/index')
+const { User, customDrinks, estDrinks } = require('../server/db/index')
 const axios = require('axios')
 
 const { Op } = require('sequelize');
@@ -162,6 +162,32 @@ app.post('/api/customDrinks', (req, res) => {
       res.sendStatus(500)
   })
   
+})
+
+// add to db only when drink info is 'got'
+app.post('/api/estDrinks', async (req, res) => {
+  console.log(req.body);
+  let data = req.body
+  
+  estDrinks.findOne({ where: { drinkId: data.drinkId } })
+  .then((exists) => {
+    if(exists) {
+      res.sendStatus(200)
+    } else {
+      estDrinks.create(data)
+      .then(() => {
+        res.sendStatus(200);
+      })
+      .catch((err) => {
+        console.error(err)
+        res.sendStatus(500);
+      })
+    }
+  })
+  .catch((err) => {
+    console.error(err);
+    res.sendStatus(500)
+  })
 })
 
 app.get('*', (req, res) => {
