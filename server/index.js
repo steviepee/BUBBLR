@@ -93,8 +93,6 @@ app.get('/profile/friends/:id', (req, res) => {
 // for user search
 app.get('/profile/users/:displayName', (req, res) => {
   const { displayName } = req.params;
-  // currently only works on exact searches
-  // User.findAll({ where: { displayName } })
   User.findAll({ where: { displayName: { [Op.substring]: displayName } }, limit: 10 })
     .then((userArr) => {
       res.send(userArr);
@@ -106,7 +104,7 @@ app.get('/profile/users/:displayName', (req, res) => {
 app.post('/profile/follow', (req, res) => {
   // represents the user ids in db
   const { id, idFollow } = req.body;
-  // currently is creating even if exists
+  // currently is creating even if exists - doesn't seem to affect anything though
   UserFriends.create({ friend1Id: id, friend2Id: idFollow })
     // .then((response) => console.log(response))
     .then(() => res.sendStatus(200))

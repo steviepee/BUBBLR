@@ -25,8 +25,6 @@ class Profile extends React.Component {
       createdAt: ' ',
       ogDrinkData: fakeData.drinks.slice(0, 5),
       concoctionData: drinks,
-      // currently is controlling every modal
-      // show: false,
       id: 1,
       friends: [],
     };
@@ -38,7 +36,7 @@ class Profile extends React.Component {
         .then((userResponse) => {
           const { displayName, createdAt } = userResponse.data;
 
-          // need to update drinks/concoctions/friends this way as well
+          // need to update drinks/concoctions/reviews this way as well
           this.setState({ displayName, createdAt, id });
           return axios.get(`/profile/friends/${id}`);
         })
