@@ -34,10 +34,9 @@ class Homepage extends React.Component {
       <div>
         <h2> Bubblr Homepage </h2>
         <Search onSearch={this.handleSearch} />
-        <NavFilter />
+        {/* <NavFilter /> */}
         <HomeRandom />
         {results.length > 0 && <HomeResults results={results} />}
-        <Routes></Routes>
       </div>
     );
   }

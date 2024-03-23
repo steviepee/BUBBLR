@@ -2,7 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Spinner } from 'react-bootstrap';
+import { Spinner, Card } from 'react-bootstrap';
 
 class HomeRandom extends Component {
   constructor(props) {
@@ -34,17 +34,41 @@ class HomeRandom extends Component {
       );
     }
     let { randomDrink } = this.state;
-    return (
-      <div>
-        <h3>Bubblr Random Picks</h3>
 
-        <Link to={`/estdrink/${randomDrink && randomDrink.idDrink}`}>
-          <h4>{randomDrink && randomDrink.strDrink}</h4>
-          <img
-            src={randomDrink && randomDrink.strDrinkThumb}
-            style={{ width: '350px', height: '350px' }}
-          />
-        </Link>
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Card
+          style={{
+            width: '22rem',
+            backgroundColor: '#222222',
+            color: '#6b0042',
+          }}
+          className='text-center'
+        >
+          <Card.Body>
+            <Card.Title>Bubblr Random Picks</Card.Title>
+
+            <Link
+              to={`/estdrink/${randomDrink && randomDrink.idDrink}`}
+              style={{ color: '#ffba0f' }}
+            >
+              <Card.Title>{randomDrink && randomDrink.strDrink}</Card.Title>
+              <img
+                src={randomDrink && randomDrink.strDrinkThumb}
+                style={{
+                  width: 'auto',
+                  maxHeight: '15rem',
+                  maxWidth: '100%',
+                  margin: '0 auto',
+                }}
+                alt={randomDrink && randomDrink.strDrink}
+              />
+            </Link>
+            <Card.Text>
+              {(randomDrink && randomDrink.strIBA) || randomDrink.strCategory}
+            </Card.Text>
+          </Card.Body>
+        </Card>
       </div>
     );
   }

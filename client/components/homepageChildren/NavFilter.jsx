@@ -1,9 +1,12 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable jsx-quotes */
 import React, { useEffect, useState } from 'react';
 import { Navbar, Container, NavDropdown, Nav } from 'react-bootstrap';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 function NavFilter() {
+  const location = useLocation();
   const [filters, setFilters] = useState({
     categories: [],
     alcoholic: [],
@@ -21,10 +24,10 @@ function NavFilter() {
       ])
       .then(
         axios.spread((categoriesResponse, alcoholicResponse) => {
-          let categories = categoriesResponse.data.drinks.map(
+          const categories = categoriesResponse.data.drinks.map(
             (drink) => drink.strCategory,
           );
-          let alcoholic = alcoholicResponse.data.drinks.map(
+          const alcoholic = alcoholicResponse.data.drinks.map(
             (drink) => drink.strAlcoholic,
           );
           setFilters({ categories, alcoholic });
@@ -35,6 +38,8 @@ function NavFilter() {
       });
   }, []);
 
+  const onHomepage = location.pathname === '/home';
+
   return (
     <Navbar expand='lg' className='bg-body-tertiary'>
       <Container>
@@ -44,6 +49,33 @@ function NavFilter() {
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='me-auto'>
+            {onHomepage && (
+              <NavDropdown title='Filters' id='navbarScrollingDropdown'>
+                <NavDropdown title='Categories' id='navbarScrollingDropdown'>
+                  {filters.categories.map((category, index) => (
+                    <NavDropdown.Item
+                      key={`c-${index}`}
+                      as={Link}
+                      to={`/filtered/${category}`}
+                    >
+                      {category}
+                    </NavDropdown.Item>
+                  ))}
+                </NavDropdown>
+                <NavDropdown.Divider />
+                <NavDropdown title='Alcoholic' id='navbarScrollingDropdown'>
+                  {filters.alcoholic.map((type, index) => (
+                    <NavDropdown.Item
+                      key={`a-${index}`}
+                      as={Link}
+                      to={`/filtered/${type}`}
+                    >
+                      {type}
+                    </NavDropdown.Item>
+                  ))}
+                </NavDropdown>
+              </NavDropdown>
+            )}
             <Nav.Link as={Link} to='/home'>
               Home
             </Nav.Link>
@@ -53,31 +85,9 @@ function NavFilter() {
             <Nav.Link as={Link} to='/community'>
               Community
             </Nav.Link>
-            <NavDropdown title='Filters' id='navbarScrollingDropdown'>
-              <NavDropdown title='Categories' id='navbarScrollingDropdown'>
-                {filters.categories.map((category, index) => (
-                  <NavDropdown.Item
-                    key={`c-${index}`}
-                    as={Link}
-                    to={`/filtered/${category}`}
-                  >
-                    {category}
-                  </NavDropdown.Item>
-                ))}
-              </NavDropdown>
-              <NavDropdown.Divider />
-              <NavDropdown title='Alcoholic' id='navbarScrollingDropdown'>
-                {filters.alcoholic.map((type, index) => (
-                  <NavDropdown.Item
-                    key={`a-${index}`}
-                    as={Link}
-                    to={`/filtered/${type}`}
-                  >
-                    {type}
-                  </NavDropdown.Item>
-                ))}
-              </NavDropdown>
-            </NavDropdown>
+            <Nav.Link as={Link} to='/creationStation'>
+              Creation Station
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

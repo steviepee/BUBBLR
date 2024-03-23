@@ -4,7 +4,7 @@ import DrinkEntry from '../communityChildren/DrinkEntry';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
 
-const FilteredPage = ({ filterType }) => {
+function FilteredPage({ filterType }) {
   const [filteredDrinks, setFilteredDrinks] = useState([]);
   let { filter } = useParams();
   let filterRedid;
@@ -48,7 +48,10 @@ const FilteredPage = ({ filterType }) => {
       <Row xs={1} sm={2} md={3} lg={4} xl={4} className='g-4'>
         {filteredDrinks.map((drink) => (
           <Col key={drink.idDrink}>
-            <Link to={`/estdrink/${drink.idDrink}`}>
+            <Link
+              to={`/estdrink/${drink && drink.idDrink}`}
+              style={{ color: '#ffba0f' }}
+            >
               <DrinkEntry currDrink={drink} />
             </Link>
           </Col>
@@ -56,6 +59,6 @@ const FilteredPage = ({ filterType }) => {
       </Row>
     </Container>
   );
-};
+}
 
 export default FilteredPage;
