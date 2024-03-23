@@ -3,21 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const { Op } = require('sequelize');
-const { UserFriends, User } = require('../db/index');
-
-// for getting user info from db
-router.get('/:id', (req, res) => {
-  const { id } = req.params;
-  User.findByPk(id)
-    .then((userObj) => {
-      // console.log('find by pk result', userObj);
-      res.send(userObj);
-    })
-    .catch((err) => {
-      console.error('failed finding user by pk: ', err);
-      res.send(500);
-    });
-});
+const { UserFriends, User, customDrinks } = require('../db/index');
 
 // this grabs a users friends when opening profile, not able to do in one query...
 router.get('/friends/:id', (req, res) => {
@@ -67,7 +53,6 @@ router.post('/follow', (req, res) => {
   const { id, idFollow } = req.body;
   // currently is creating even if exists - doesn't seem to affect anything though
   UserFriends.create({ friend1Id: id, friend2Id: idFollow })
-    // .then((response) => console.log(response))
     .then(() => res.sendStatus(200))
     .catch((err) => {
       console.error('failed following: ', err);
@@ -80,6 +65,53 @@ router.delete('/unfollow', (req, res) => {
   UserFriends.destroy({ where: { friend1Id, friend2Id } })
     .then(() => res.sendStatus(200))
     .catch((err) => console.error('failed to unfollow user: ', err));
+});
+
+router.get('/concoctions', (req, res) => {
+  // this will need to change to a specific users concoctions
+  customDrinks.findAll({})
+    .then((response) => {
+      res.send(response);
+    })
+    .catch((err) => {
+      console.error('failed getting concoctions: ', err);
+      res.sendStatus(500);
+    });
+});
+
+router.patch('/updateConcoction', (req, res) => {
+  const { id, drinkName, drinkIngredients } = req.body;
+  customDrinks.update({ drinkName, drinkIngredients }, { where: { id } })
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error('failed updating concoction', err);
+      res.sendStatus(500);
+    });
+});
+
+router.delete('/removeConcoction/:id', (req, res) => {
+  const { id } = req.params;
+  customDrinks.destroy({ where: { id } })
+    .then(() => res.sendStatus(200))
+    .catch((err) => {
+      console.error('failed deleting concoction: ', err);
+      res.sendStatus(500);
+    });
+});
+
+// for getting user info from db
+router.get('/:id', (req, res) => {
+  const { id } = req.params;
+  User.findByPk(id)
+    .then((userObj) => {
+      res.send(userObj);
+    })
+    .catch((err) => {
+      console.error('failed finding user by pk: ', err);
+      res.send(500);
+    });
 });
 
 module.exports = router;
