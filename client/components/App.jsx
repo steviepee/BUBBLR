@@ -8,6 +8,7 @@ import CreationStation from './CreationStation.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Community from './Community.jsx';
+import FriendProfile from './profileChildren/FriendProfile.jsx';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/creationStation" element={<CreationStation />} />
           <Route path="*" element={<NotFound />} />
           <Route path='/community' element={ <Community />} />
+          <Route path='/friend' element={ <FriendProfile />} />
       </Routes>
     </>
   );
