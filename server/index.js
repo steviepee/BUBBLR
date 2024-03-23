@@ -5,12 +5,11 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const axios = require('axios');
 
-const { Op } = require('sequelize');
-// const { User, customDrinks } = require('../server/db/index');
-const { UserFriends, User, customDrinks } = require('./db/index');
+const { customDrinks } = require('./db/index');
 
 // const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
+const profileRouter = require('./routes/profile');
 // const apiRouter = require('./routes/api');
 require('dotenv').config();
 
@@ -39,6 +38,7 @@ app.use(express.static(CLIENT_PATH));
 
 // ROUTER SENDING TO WHEREVER
 app.use('/auth', authRouter);
+app.use('/profile', profileRouter);
 
 // ROUTER SENDING TO WHEREVER
 // app.use('/api', apiRouter);
@@ -59,83 +59,6 @@ app.post('/logout', (req, res, next) => {
   });
   // res.redirect('/login');
   // console.log('-------> User Logged out');
-});
-
-// for getting user info from db
-app.get('/profile/:id', (req, res) => {
-  const { id } = req.params;
-  User.findByPk(id)
-    .then((userObj) => {
-      // console.log('find by pk result', userObj);
-      res.send(userObj);
-    })
-    .catch((err) => {
-      console.error('failed finding user by pk: ', err);
-      res.send(500);
-    });
-});
-
-// this grabs a users friends when opening profile, not able to do in one query...
-app.get('/profile/friends/:id', (req, res) => {
-  const { id } = req.params;
-  UserFriends.findAll({
-    attributes: ['friend2Id'],
-    where: { friend1Id: id },
-    raw: true,
-  })
-    .then((arrFriend2IdObj) => {
-      if (arrFriend2IdObj) {
-        const userIdArr = [];
-        for (let i = 0; i < arrFriend2IdObj.length; i++) {
-          userIdArr.push({ id: arrFriend2IdObj[i].friend2Id });
-        }
-        return User.findAll({ where: { [Op.or]: userIdArr }, raw: true });
-      }
-    })
-    .then((userArr) => {
-      res.send(userArr);
-    })
-    .catch((err) => {
-      console.error('Failed finding friends: ', err);
-      res.sendStatus(500);
-    });
-});
-
-// for user search
-app.get('/profile/users/:displayName', (req, res) => {
-  const { displayName } = req.params;
-  User.findAll({
-    where: { displayName: { [Op.substring]: displayName } },
-    limit: 10,
-  })
-    .then((userArr) => {
-      res.send(userArr);
-    })
-    .catch((err) => {
-      console.error('failed search for user by name: ', err);
-      res.sendStatus(500);
-    });
-});
-
-// for user follow
-app.post('/profile/follow', (req, res) => {
-  // represents the user ids in db
-  const { id, idFollow } = req.body;
-  // currently is creating even if exists - doesn't seem to affect anything though
-  UserFriends.create({ friend1Id: id, friend2Id: idFollow })
-    // .then((response) => console.log(response))
-    .then(() => res.sendStatus(200))
-    .catch((err) => {
-      console.error('failed following: ', err);
-      res.sendStatus(500);
-    });
-});
-
-app.delete('/profile/unfollow', (req, res) => {
-  const { friend1Id, friend2Id } = req.body;
-  UserFriends.destroy({ where: { friend1Id, friend2Id } })
-    .then(() => res.sendStatus(200))
-    .catch((err) => console.error('failed to unfollow user: ', err));
 });
 
 app.get('/api/customDrinks', (req, res) => {
