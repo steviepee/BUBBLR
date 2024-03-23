@@ -14,7 +14,7 @@ import UserSearch from './profileChildren/UserSearch';
 import FriendItem from './profileChildren/FriendItem';
 
 import fakeData from '../FakeData.json';
-import { drinks } from '../moreFakeData.json';
+// import { drinks } from '../moreFakeData.json';
 
 class Profile extends React.Component {
   constructor() {
@@ -24,7 +24,7 @@ class Profile extends React.Component {
       displayName: 'User',
       createdAt: ' ',
       ogDrinkData: fakeData.drinks.slice(0, 5),
-      concoctionData: drinks,
+      // concoctionData: drinks,
       concoctions: [],
       id: 1,
       friends: [],
@@ -48,7 +48,7 @@ class Profile extends React.Component {
           return axios.get('/profile/concoctions');
         })
         .then(({ data }) => {
-          console.log(data);
+          // console.log(data);
           this.setState({ concoctions: data });
         })
         .catch((err) => console.error('Failed getting user data', err));
@@ -79,11 +79,15 @@ class Profile extends React.Component {
       //   strDrink, strCategory, strGlass, ingredients, measures, strInstructions,
       // } = scope.state;
       // console.log(strDrink, strCategory, strGlass, ingredients, measures, strInstructions);
-      const { drinkName, drinkIngredients } = scope.state;
-      console.log(drinkName, drinkIngredients);
+      const { drinkName, drinkIngredients, id } = scope.state;
+      // console.log(drinkName, drinkIngredients, id);
       // this function will need to make an axios request to update db
-      // then make a call to db to get updated user concoctions
-      // update concoction data
+      axios.patch('/profile/updateConcoction', { id, drinkName, drinkIngredients })
+        .then(() => axios.get('/profile/concoctions'))
+        .then(({ data }) => {
+          // update concoction data
+          this.setState({ concoctions: data });
+        });
 
       this.handleClose(scope.setShow);
     };
@@ -106,9 +110,9 @@ class Profile extends React.Component {
       }
       for (let i = 0; i < targetDrinkGroup.length; i++) {
         // if (targetDrinkGroup[i].idDrink === e.target.value) {
-        console.log(targetDrinkGroup[i][idName], e.target.value);
+        // console.log(targetDrinkGroup[i][idName], e.target.value);
         if (targetDrinkGroup[i][idName] == e.target.value) {
-          console.log('here');
+          // console.log('here');
           targetDrinkGroup.splice(i, 1);
           // eslint-disable-next-line no-unused-expressions
           isOgDrink
@@ -178,7 +182,7 @@ class Profile extends React.Component {
       displayName,
       createdAt,
       ogDrinkData,
-      concoctionData,
+      // concoctionData,
       concoctions,
       friends, // show,
     } = this.state;

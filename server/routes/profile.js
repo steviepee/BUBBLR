@@ -77,6 +77,19 @@ router.get('/concoctions', (req, res) => {
     })
     .catch((err) => {
       console.error('failed getting concoctions: ', err);
+      res.sendStatus(500);
+    });
+});
+
+router.patch('/updateConcoction', (req, res) => {
+  const { id, drinkName, drinkIngredients } = req.body;
+  customDrinks.update({ drinkName, drinkIngredients }, { where: { id } })
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error('failed updating concoction', err);
+      res.sendStatus(500);
     });
 });
 

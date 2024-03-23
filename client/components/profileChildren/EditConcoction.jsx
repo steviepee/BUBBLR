@@ -36,6 +36,7 @@ class EditConcoction extends React.Component {
     this.state = {
       drinkName: this.drink.drinkName,
       drinkIngredients: this.drink.drinkIngredients,
+      id: this.drink.id,
     };
 
     this.handleChange = (e) => {
