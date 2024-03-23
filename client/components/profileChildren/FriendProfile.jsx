@@ -4,20 +4,27 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import Card from 'react-bootstrap/Card';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+
+import FriendConcoction from './FriendConcoction';
 
 function FriendProfile() {
   const { id } = useParams();
 
   const [friend, setFriend] = useState({});
 
+  const [concoctions, setConcoctions] = useState([]);
+
   useEffect(() => {
-    axios.get(`/profile/${id}`)
+    axios
+      .get(`/profile/${id}`)
       .then(({ data }) => {
         // this is causing an infinite loop
         setFriend(data);
-
-        // console.log(data);
+        return axios.get('/profile/concoctions');
       })
+      .then(({ data }) => setConcoctions(data))
       .catch((err) => console.error('failed getting friend profile: ', err));
   }, []);
 
@@ -32,6 +39,13 @@ function FriendProfile() {
       <Card>
         <Card.Body>
           <Card.Title>Concoctions</Card.Title>
+          <Container>
+            <Row>
+              {concoctions.map((concoction) => (
+                <FriendConcoction concoction={concoction} key={concoction.id} />
+              ))}
+            </Row>
+          </Container>
         </Card.Body>
       </Card>
       <Card>

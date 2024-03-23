@@ -25,6 +25,7 @@ class Profile extends React.Component {
       concoctions: [],
       id: 1,
       friends: [],
+      reviews: [],
     };
 
     this.getUser = () => {
@@ -127,6 +128,7 @@ class Profile extends React.Component {
       ogDrinkData,
       concoctions,
       friends,
+      reviews,
     } = this.state;
     return (
       <>
@@ -193,7 +195,9 @@ class Profile extends React.Component {
           <Card.Body>
             <Card.Title>Your Reviews</Card.Title>
             <ListGroup>
-              Hello
+              {reviews.map(() => (
+                <li>hello</li>
+              ))}
             </ListGroup>
           </Card.Body>
         </Card>
