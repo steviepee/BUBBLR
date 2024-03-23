@@ -13,6 +13,7 @@ class EditConcoction extends React.Component {
 
     this.drink = props.drink;
     this.ingredients = props.ingredients;
+    this.measures = props.measures;
 
     // this.props.show = show;
     this.handleClose = props.handleClose;
@@ -25,7 +26,11 @@ class EditConcoction extends React.Component {
       strDrink: this.drink.strDrink,
       // eslint-disable-next-line react/no-unused-state
       strCategory: this.drink.strCategory,
+      strGlass: 'Pint Glass',
       ingredients: this.ingredients,
+      measures: this.measures,
+      // eslint-disable-next-line react/no-unused-state
+      strInstructions: this.drink.strInstructions,
     };
 
     this.handleChange = (e) => {
@@ -44,6 +49,16 @@ class EditConcoction extends React.Component {
         case 'ingredients':
           this.setState({ ingredients: e.target.value });
           break;
+        case 'measures':
+          this.setState({ measures: e.target.value });
+          break;
+        case 'instructions':
+          // eslint-disable-next-line react/no-unused-state
+          this.setState({ strInstructions: e.target.value });
+          break;
+        case 'glass':
+          this.setState({ strGlass: e.target.value });
+          break;
         default:
           break;
       }
@@ -52,8 +67,8 @@ class EditConcoction extends React.Component {
 
   render() {
     const { show } = this.props;
-    const { strDrink, strCategory } = this.drink;
-    const { ingredients } = this.state;
+    const { strDrink, strCategory, strInstructions } = this.drink;
+    const { ingredients, measures, strGlass } = this.state;
     return (
       <Modal show={show} onHide={() => this.handleClose(this.setShow)}>
         <Modal.Header closeButton>
@@ -69,9 +84,21 @@ class EditConcoction extends React.Component {
               <Form.Label>Category</Form.Label>
               <Form.Control type="drinkCategory" className="category" defaultValue={strCategory} onChange={this.handleChange} />
             </Form.Group>
+            <Form.Group className='mb-3' controlId="formDrinkGlass">
+              <Form.Label>Glass</Form.Label>
+              <Form.Control type='drinkGlass' className='glass' defaultValue={strGlass} onChange={this.handleChange} />
+            </Form.Group>
             <Form.Group className="mb-3" controlId="formDrinkIngredients">
               <Form.Label>Ingredients</Form.Label>
               <Form.Control type="drinkIngredients" className="ingredients" defaultValue={ingredients} onChange={this.handleChange} />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formDrinkMeasures">
+              <Form.Label>Measurements</Form.Label>
+              <Form.Control type="drinkMeasures" className="measures" defaultValue={measures} onChange={this.handleChange} />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formDrinkInstructions">
+              <Form.Label>Instructions</Form.Label>
+              <Form.Control type="drinkInstructions" className="instructions" defaultValue={strInstructions} onChange={this.handleChange} />
             </Form.Group>
           </Form>
         </Modal.Body>

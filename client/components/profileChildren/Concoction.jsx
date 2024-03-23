@@ -10,6 +10,7 @@ import EditConcoction from './EditConcoction';
 function Concoction({
   drink,
   getIngredients,
+  getMeasures,
   removeDrink,
   handleClose,
   handleShow,
@@ -17,6 +18,7 @@ function Concoction({
 }) {
   const { idDrink, strDrink, strCategory } = drink;
   const ingredients = getIngredients(drink).toString();
+  const measures = getMeasures(drink).toString();
 
   const [show, setShow] = useState(false);
 
@@ -33,6 +35,7 @@ function Concoction({
           setShow={setShow}
           handleSubmit={handleSubmit}
           ingredients={ingredients}
+          measures={measures}
         />
         <Button
           size='sm'
@@ -59,6 +62,7 @@ Concoction.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   drink: PropTypes.object.isRequired,
   getIngredients: PropTypes.func.isRequired,
+  getMeasures: PropTypes.func.isRequired,
   removeDrink: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,

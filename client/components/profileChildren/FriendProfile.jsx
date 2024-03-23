@@ -16,7 +16,7 @@ function FriendProfile() {
         // this is causing an infinite loop
         setFriend(data);
 
-        console.log(data);
+        // console.log(data);
       })
       .catch((err) => console.error('failed getting friend profile: ', err));
   }, []);

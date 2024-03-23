@@ -68,10 +68,15 @@ class Profile extends React.Component {
     this.handleClose = (scope) => scope(false);
     this.handleShow = (scope) => scope(true);
 
-    // this function will need to make an axios request to update db
     this.handleSubmit = (scope) => {
-      const { strDrink, strCategory, ingredients } = scope.state;
-      console.log(strDrink, strCategory, ingredients);
+      const {
+        strDrink, strCategory, strGlass, ingredients, measures, strInstructions,
+      } = scope.state;
+      console.log(strDrink, strCategory, strGlass, ingredients, measures, strInstructions);
+      // this function will need to make an axios request to update db
+      // then make a call to db to get updated user concoctions
+      // update concoction data
+
       this.handleClose(scope.setShow);
     };
 
@@ -109,6 +114,19 @@ class Profile extends React.Component {
       }
 
       return ingredients;
+    };
+
+    this.getMeasures = (drink) => {
+      const measures = [];
+      for (let i = 1; i < 16; i++) {
+        const stringMeasure = `strMeasure${i}`;
+        if (drink[stringMeasure]) {
+          measures.push(` ${drink[stringMeasure]}`);
+        } else {
+          return measures;
+        }
+      }
+      return measures;
     };
   }
 
@@ -164,6 +182,7 @@ class Profile extends React.Component {
                     key={`conc-${drink.idDrink}`}
                     index={index}
                     getIngredients={this.getIngredients}
+                    getMeasures={this.getMeasures}
                   />
                 ))}
               </Row>
