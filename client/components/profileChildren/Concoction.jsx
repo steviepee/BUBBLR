@@ -33,6 +33,7 @@ function Concoction({
           show={show}
           setShow={setShow}
           handleSubmit={handleSubmit}
+          ingredients={ingredients}
         />
         <Button
           size='sm'

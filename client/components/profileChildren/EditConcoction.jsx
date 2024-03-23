@@ -12,6 +12,7 @@ class EditConcoction extends React.Component {
     super(props);
 
     this.drink = props.drink;
+    this.ingredients = props.ingredients;
 
     // this.props.show = show;
     this.handleClose = props.handleClose;
@@ -24,6 +25,7 @@ class EditConcoction extends React.Component {
       strDrink: this.drink.strDrink,
       // eslint-disable-next-line react/no-unused-state
       strCategory: this.drink.strCategory,
+      ingredients: this.ingredients,
     };
 
     this.handleChange = (e) => {
@@ -39,6 +41,9 @@ class EditConcoction extends React.Component {
           // eslint-disable-next-line react/no-unused-state
           this.setState({ strCategory: e.target.value });
           break;
+        case 'ingredients':
+          this.setState({ ingredients: e.target.value });
+          break;
         default:
           break;
       }
@@ -48,6 +53,7 @@ class EditConcoction extends React.Component {
   render() {
     const { show } = this.props;
     const { strDrink, strCategory } = this.drink;
+    const { ingredients } = this.state;
     return (
       <Modal show={show} onHide={() => this.handleClose(this.setShow)}>
         <Modal.Header closeButton>
@@ -62,6 +68,10 @@ class EditConcoction extends React.Component {
             <Form.Group className="mb-3" controlId="formDrinkCategory">
               <Form.Label>Category</Form.Label>
               <Form.Control type="drinkCategory" className="category" defaultValue={strCategory} onChange={this.handleChange} />
+            </Form.Group>
+            <Form.Group className='mb-3' controlId='formDrinkIngredients'>
+              <Form.Label>Ingredients</Form.Label>
+              <Form.Control type='drinkIngredients' className='ingredients' defaultValue={ingredients} onChange={this.handleChange} />
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -85,6 +95,7 @@ EditConcoction.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   show: PropTypes.bool.isRequired,
   setShow: PropTypes.func.isRequired,
+  ingredients: PropTypes.string.isRequired,
 };
 
 export default EditConcoction;

@@ -70,8 +70,8 @@ class Profile extends React.Component {
 
     // this function will need to make an axios request to update db
     this.handleSubmit = (scope) => {
-      const { strDrink, strCategory } = scope.state;
-      console.log(strDrink, strCategory);
+      const { strDrink, strCategory, ingredients } = scope.state;
+      console.log(strDrink, strCategory, ingredients);
       this.handleClose(scope.setShow);
     };
 
