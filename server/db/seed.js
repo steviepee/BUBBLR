@@ -1,4 +1,4 @@
-const { User } = require('./index.js');
+const { User } = require('./index');
 
 User.bulkCreate([
   {
@@ -12,5 +12,5 @@ User.bulkCreate([
   {
     "googleId": "111034008390782399142",
     "displayName": "Patrick Henry"
-  }
+  },
 ]);

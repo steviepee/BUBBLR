@@ -25,8 +25,6 @@ class Profile extends React.Component {
       createdAt: ' ',
       ogDrinkData: fakeData.drinks.slice(0, 5),
       concoctionData: drinks,
-      // currently is controlling every modal
-      // show: false,
       id: 1,
       friends: [],
     };
@@ -38,7 +36,7 @@ class Profile extends React.Component {
         .then((userResponse) => {
           const { displayName, createdAt } = userResponse.data;
 
-          // need to update drinks/concoctions/friends this way as well
+          // need to update drinks/concoctions/reviews this way as well
           this.setState({ displayName, createdAt, id });
           return axios.get(`/profile/friends/${id}`);
         })
@@ -70,10 +68,15 @@ class Profile extends React.Component {
     this.handleClose = (scope) => scope(false);
     this.handleShow = (scope) => scope(true);
 
-    // this function will need to make an axios request to update db
     this.handleSubmit = (scope) => {
-      const { strDrink, strCategory } = scope.state;
-      console.log(strDrink, strCategory);
+      const {
+        strDrink, strCategory, strGlass, ingredients, measures, strInstructions,
+      } = scope.state;
+      console.log(strDrink, strCategory, strGlass, ingredients, measures, strInstructions);
+      // this function will need to make an axios request to update db
+      // then make a call to db to get updated user concoctions
+      // update concoction data
+
       this.handleClose(scope.setShow);
     };
 
@@ -111,6 +114,19 @@ class Profile extends React.Component {
       }
 
       return ingredients;
+    };
+
+    this.getMeasures = (drink) => {
+      const measures = [];
+      for (let i = 1; i < 16; i++) {
+        const stringMeasure = `strMeasure${i}`;
+        if (drink[stringMeasure]) {
+          measures.push(` ${drink[stringMeasure]}`);
+        } else {
+          return measures;
+        }
+      }
+      return measures;
     };
   }
 
@@ -166,6 +182,7 @@ class Profile extends React.Component {
                     key={`conc-${drink.idDrink}`}
                     index={index}
                     getIngredients={this.getIngredients}
+                    getMeasures={this.getMeasures}
                   />
                 ))}
               </Row>
@@ -187,6 +204,14 @@ class Profile extends React.Component {
                 ))}
               </Row>
             </Container>
+          </Card.Body>
+        </Card>
+        <Card>
+          <Card.Body>
+            <Card.Title>Your Reviews</Card.Title>
+            <ListGroup>
+              Hello
+            </ListGroup>
           </Card.Body>
         </Card>
       </>

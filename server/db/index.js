@@ -76,7 +76,7 @@ UserFriends.sync()
      },
     },
   })
-  
+
   customDrinks.sync()
     .catch((err) => console.error('Failed syncing customDrinks: ', err));
 
