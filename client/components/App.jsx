@@ -31,8 +31,8 @@ function App() {
         <Route path='*' element={<NotFound />} />
         <Route path='/community' element={<Community />} />
         <Route path='/filtered/:filter/*' element={<FilteredPageHandler />} />
+        <Route path='/profile/friend/:id' element={<FriendProfile />} />
         <Route path='*' element={<NotFound />} />
-        <Route path='/friend/:id' element={<FriendProfile />} />
       </Routes>
     </>
   );
