@@ -32,9 +32,8 @@ class Homepage extends React.Component {
     let { results } = this.state;
     return (
       <div>
-        <h2> Bubblr Homepage </h2>
+        <h2> Bubblr </h2>
         <Search onSearch={this.handleSearch} />
-        {/* <NavFilter /> */}
         <HomeRandom />
         {results.length > 0 && <HomeResults results={results} />}
       </div>

@@ -40,8 +40,8 @@ class HomeRandom extends Component {
         <Card
           style={{
             width: '22rem',
-            backgroundColor: '#222222',
-            color: '#6b0042',
+            backgroundColor: '#6b0042',
+            color: '#ffba0f',
           }}
           className='text-center'
         >

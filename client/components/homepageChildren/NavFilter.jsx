@@ -76,9 +76,6 @@ function NavFilter() {
                 </NavDropdown>
               </NavDropdown>
             )}
-            <Nav.Link as={Link} to='/home'>
-              Home
-            </Nav.Link>
             <Nav.Link as={Link} to='/profile'>
               Account
             </Nav.Link>
