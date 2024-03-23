@@ -76,12 +76,12 @@ UserFriends.sync()
      },
     },
   })
-  
+
   customDrinks.sync()
     .catch((err) => console.error('Failed syncing customDrinks: ', err));
-   
+
 module.exports = {
   User,
-  UserFriends, 
+  UserFriends,
   customDrinks
 };

@@ -9,10 +9,10 @@ import Homepage from './Homepage.jsx';
 import EstDrinkPage from './homepageChildren/EstDrinkPage';
 import CreationStation from './CreationStation.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import FilteredPage from './homepageChildren/FilteredPage.jsx';
 import FilteredPageHandler from './homepageChildren/FilteredPageHandler.jsx';
 import Community from './Community.jsx';
 import NavFilter from './homepageChildren/NavFilter.jsx';
+import FriendProfile from './profileChildren/FriendProfile.jsx';
 
 function App() {
   return (
@@ -31,6 +31,7 @@ function App() {
         <Route path='*' element={<NotFound />} />
         <Route path='/community' element={<Community />} />
         <Route path='/filtered/:filter/*' element={<FilteredPageHandler />} />
+        <Route path='/profile/friend/:id' element={<FriendProfile />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </>

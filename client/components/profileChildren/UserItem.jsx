@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import Button from 'react-bootstrap/Button';
@@ -9,7 +10,9 @@ function UserItem({ user, followUser }) {
     <ListGroupItem>
       {user.displayName}
       <Button onClick={() => { followUser(user.id); }}>Follow</Button>
-      <Button>See page</Button>
+      <Link to={`friend/${user.id}`}>
+        <Button>See page</Button>
+      </Link>
     </ListGroupItem>
   );
 }
