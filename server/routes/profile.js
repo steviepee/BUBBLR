@@ -93,6 +93,16 @@ router.patch('/updateConcoction', (req, res) => {
     });
 });
 
+router.delete('/removeConcoction/:id', (req, res) => {
+  const { id } = req.params;
+  customDrinks.destroy({ where: { id } })
+    .then(() => res.sendStatus(200))
+    .catch((err) => {
+      console.error('failed deleting concoction: ', err);
+      res.sendStatus(500);
+    });
+});
+
 // for getting user info from db
 router.get('/:id', (req, res) => {
   const { id } = req.params;
