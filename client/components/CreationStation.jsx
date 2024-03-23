@@ -57,8 +57,9 @@ function CreationStation() {
 
     useEffect(() => {
         // getAllIngredients()
-        newIngredientsClick()
-    }, [])
+        // newIngredientsClick()
+        // updateActiveIngredients([])
+    }, [activeIngredients])
 
         return (
         <div>
