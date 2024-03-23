@@ -3,7 +3,6 @@ import React from 'react';
 import axios from 'axios';
 
 import Card from 'react-bootstrap/Card';
-// import Accordion from 'react-bootstrap/Accordion';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -14,7 +13,6 @@ import UserSearch from './profileChildren/UserSearch';
 import FriendItem from './profileChildren/FriendItem';
 
 import fakeData from '../FakeData.json';
-// import { drinks } from '../moreFakeData.json';
 
 class Profile extends React.Component {
   constructor() {
@@ -24,7 +22,6 @@ class Profile extends React.Component {
       displayName: 'User',
       createdAt: ' ',
       ogDrinkData: fakeData.drinks.slice(0, 5),
-      // concoctionData: drinks,
       concoctions: [],
       id: 1,
       friends: [],
@@ -37,18 +34,15 @@ class Profile extends React.Component {
         .then((userResponse) => {
           const { displayName, createdAt } = userResponse.data;
 
-          // need to update drinks/concoctions/reviews this way as well
+          // need to update drinks/reviews this way as well
           this.setState({ displayName, createdAt, id });
           return axios.get(`/profile/friends/${id}`);
         })
         .then(({ data }) => {
-          // console.log(data);
           this.setState({ friends: data });
-          // console.log(this.state.friends);
           return axios.get('/profile/concoctions');
         })
         .then(({ data }) => {
-          // console.log(data);
           this.setState({ concoctions: data });
         })
         .catch((err) => console.error('Failed getting user data', err));
@@ -75,13 +69,7 @@ class Profile extends React.Component {
     this.handleShow = (scope) => scope(true);
 
     this.handleSubmit = (scope) => {
-      // const {
-      //   strDrink, strCategory, strGlass, ingredients, measures, strInstructions,
-      // } = scope.state;
-      // console.log(strDrink, strCategory, strGlass, ingredients, measures, strInstructions);
       const { drinkName, drinkIngredients, id } = scope.state;
-      // console.log(drinkName, drinkIngredients, id);
-      // this function will need to make an axios request to update db
       axios.patch('/profile/updateConcoction', { id, drinkName, drinkIngredients })
         .then(() => axios.get('/profile/concoctions'))
         .then(({ data }) => {
@@ -94,20 +82,15 @@ class Profile extends React.Component {
 
     // this function will need to make an axios request to update db
     this.removeDrink = (e) => {
-      // const { ogDrinkData, concoctionData } = this.state;
-      const { ogDrinkData, concoctions } = this.state;
+      const { ogDrinkData } = this.state;
       let targetDrinkGroup;
       let idName;
       if (e.target.className.includes('ogDrink')) {
         targetDrinkGroup = ogDrinkData;
         idName = 'idDrink';
         for (let i = 0; i < targetDrinkGroup.length; i++) {
-          // if (targetDrinkGroup[i].idDrink === e.target.value) {
-          // console.log(targetDrinkGroup[i][idName], e.target.value);
           if (targetDrinkGroup[i][idName] === e.target.value) {
-            // console.log('here');
             targetDrinkGroup.splice(i, 1);
-            // eslint-disable-next-line no-unused-expressions
             this.setState({ ogDrinkData });
           }
         }
@@ -117,37 +100,6 @@ class Profile extends React.Component {
           .then(({ data }) => this.setState({ concoctions: data }));
       }
     };
-
-    // // this function will need to make an axios request to update db
-    // this.removeDrink = (e) => {
-    //   // const { ogDrinkData, concoctionData } = this.state;
-    //   const { ogDrinkData, concoctions } = this.state;
-    //   let targetDrinkGroup;
-    //   let idName;
-    //   let isOgDrink = false;
-    //   if (e.target.className.includes('ogDrink')) {
-    //     targetDrinkGroup = ogDrinkData;
-    //     idName = 'idDrink';
-    //     isOgDrink = true;
-    //   } else if (e.target.className.includes('concoction')) {
-    //     // targetDrinkGroup = concoctionData;
-    //     targetDrinkGroup = concoctions;
-    //     idName = 'id';
-    //   }
-    //   for (let i = 0; i < targetDrinkGroup.length; i++) {
-    //     // if (targetDrinkGroup[i].idDrink === e.target.value) {
-    //     // console.log(targetDrinkGroup[i][idName], e.target.value);
-    //     if (targetDrinkGroup[i][idName] == e.target.value) {
-    //       // console.log('here');
-    //       targetDrinkGroup.splice(i, 1);
-    //       // eslint-disable-next-line no-unused-expressions
-    //       isOgDrink
-    //         ? this.setState({ ogDrinkData })
-    //         // : this.setState({ concoctionData });
-    //         : this.setState({ concoctions });
-    //     }
-    //   }
-    // };
 
     this.getIngredients = (drink) => {
       const ingredients = [];
@@ -162,19 +114,6 @@ class Profile extends React.Component {
 
       return ingredients;
     };
-
-    // this.getMeasures = (drink) => {
-    //   const measures = [];
-    //   for (let i = 1; i < 16; i++) {
-    //     const stringMeasure = `strMeasure${i}`;
-    //     if (drink[stringMeasure]) {
-    //       measures.push(` ${drink[stringMeasure]}`);
-    //     } else {
-    //       return measures;
-    //     }
-    //   }
-    //   return measures;
-    // };
   }
 
   componentDidMount() {
@@ -186,9 +125,8 @@ class Profile extends React.Component {
       displayName,
       createdAt,
       ogDrinkData,
-      // concoctionData,
       concoctions,
-      friends, // show,
+      friends,
     } = this.state;
     return (
       <>
@@ -218,22 +156,6 @@ class Profile extends React.Component {
           <Card.Body>
             <Card.Title>Your Concoctions</Card.Title>
             <Container>
-              {/* <Row>
-                {concoctionData.map((drink, index) => (
-                  <Concoction
-                    handleClose={this.handleClose}
-                    handleShow={this.handleShow}
-                    // show={show}
-                    handleSubmit={this.handleSubmit}
-                    removeDrink={this.removeDrink}
-                    drink={drink}
-                    key={`conc-${drink.idDrink}`}
-                    index={index}
-                    getIngredients={this.getIngredients}
-                    getMeasures={this.getMeasures}
-                  />
-                ))}
-              </Row> */}
               <Row>
                 {concoctions.map((drink, index) => (
                   <Concoction

@@ -53,7 +53,6 @@ router.post('/follow', (req, res) => {
   const { id, idFollow } = req.body;
   // currently is creating even if exists - doesn't seem to affect anything though
   UserFriends.create({ friend1Id: id, friend2Id: idFollow })
-    // .then((response) => console.log(response))
     .then(() => res.sendStatus(200))
     .catch((err) => {
       console.error('failed following: ', err);
@@ -72,7 +71,6 @@ router.get('/concoctions', (req, res) => {
   // this will need to change to a specific users concoctions
   customDrinks.findAll({})
     .then((response) => {
-      // console.log(response);
       res.send(response);
     })
     .catch((err) => {
@@ -108,7 +106,6 @@ router.get('/:id', (req, res) => {
   const { id } = req.params;
   User.findByPk(id)
     .then((userObj) => {
-      // console.log('find by pk result', userObj);
       res.send(userObj);
     })
     .catch((err) => {

@@ -12,83 +12,56 @@ class EditConcoction extends React.Component {
     super(props);
 
     this.drink = props.drink;
-    // this.ingredients = props.ingredients;
-    // this.measures = props.measures;
-
-    // this.props.show = show;
     this.handleClose = props.handleClose;
     this.handleSubmit = props.handleSubmit;
     this.setShow = props.setShow;
 
-    // this.state = {
-    //   // these states are accessed in profile
-    //   // eslint-disable-next-line react/no-unused-state
-    //   strDrink: this.drink.strDrink,
-    //   // eslint-disable-next-line react/no-unused-state
-    //   strCategory: this.drink.strCategory,
-    //   strGlass: 'Pint Glass',
-    //   ingredients: this.ingredients,
-    //   measures: this.measures,
-    //   // eslint-disable-next-line react/no-unused-state
-    //   strInstructions: this.drink.strInstructions,
-    // };
-
     this.state = {
+      // these states are all accessed from profile on submit
+      // eslint-disable-next-line react/no-unused-state
       drinkName: this.drink.drinkName,
+      // eslint-disable-next-line react/no-unused-state
       drinkIngredients: this.drink.drinkIngredients,
+      // eslint-disable-next-line react/no-unused-state
       id: this.drink.id,
     };
 
     this.handleChange = (e) => {
       switch (e.target.className.split(' ')[0]) {
         case 'name':
+          // these are being accessed by onSubmit in profile
+          // eslint-disable-next-line react/no-unused-state
           this.setState({ drinkName: e.target.value });
           break;
         case 'ingredients':
+          // eslint-disable-next-line react/no-unused-state
           this.setState({ drinkIngredients: JSON.stringify(e.target.value.split(', ')) });
           break;
+        // will be refactored to match db soon
+        // case 'category':
+        //   // this state is being accessed from profile
+        //   // eslint-disable-next-line react/no-unused-state
+        //   this.setState({ strCategory: e.target.value });
+        //   break;
+        // case 'measures':
+        //   this.setState({ measures: e.target.value });
+        //   break;
+        // case 'instructions':
+        //   // eslint-disable-next-line react/no-unused-state
+        //   this.setState({ strInstructions: e.target.value });
+        //   break;
+        // case 'glass':
+        //   this.setState({ strGlass: e.target.value });
+        //   break;
         default:
           break;
       }
     };
-
-    // this.handleChange = (e) => {
-    //   // console.log(e.target.value, e.target.className);
-    //   switch (e.target.className.split(' ')[0]) {
-    //     case 'name':
-    //       // this state is being accessed from profile
-    //       // eslint-disable-next-line react/no-unused-state
-    //       this.setState({ strDrink: e.target.value });
-    //       break;
-    //     case 'category':
-    //       // this state is being accessed from profile
-    //       // eslint-disable-next-line react/no-unused-state
-    //       this.setState({ strCategory: e.target.value });
-    //       break;
-    //     case 'ingredients':
-    //       this.setState({ ingredients: e.target.value });
-    //       break;
-    //     case 'measures':
-    //       this.setState({ measures: e.target.value });
-    //       break;
-    //     case 'instructions':
-    //       // eslint-disable-next-line react/no-unused-state
-    //       this.setState({ strInstructions: e.target.value });
-    //       break;
-    //     case 'glass':
-    //       this.setState({ strGlass: e.target.value });
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    // };
   }
 
   render() {
     const { show } = this.props;
-    // const { strDrink, strCategory, strInstructions } = this.drink;
     const { drinkName, drinkIngredients } = this.drink;
-    // const { ingredients, measures, strGlass } = this.state;
     return (
       <Modal show={show} onHide={() => this.handleClose(this.setShow)}>
         <Modal.Header closeButton>
@@ -98,11 +71,7 @@ class EditConcoction extends React.Component {
           <Form>
             <Form.Group className="mb-3" controlId="formDrinkName">
               <Form.Label>Drink Name</Form.Label>
-              <Form.Control type='drinkName' className='name' defaultValue={drinkName} onChange={this.handleChange} />
-              {/* <Form.Control
-                type="drinkName" className="name"
-                defaultValue={strDrink} onChange={this.handleChange}
-              /> */}
+              <Form.Control type="drinkName" className="name" defaultValue={drinkName} onChange={this.handleChange} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formDrinkCategory">
               <Form.Label>Category</Form.Label>
@@ -111,7 +80,7 @@ class EditConcoction extends React.Component {
                 defaultValue={strCategory} onChange={this.handleChange}
               /> */}
             </Form.Group>
-            <Form.Group className='mb-3' controlId="formDrinkGlass">
+            <Form.Group className="mb-3" controlId="formDrinkGlass">
               <Form.Label>Glass</Form.Label>
               {/* <Form.Control type='drinkGlass' className='glass'
                 defaultValue={strGlass} onChange={this.handleChange}
@@ -119,10 +88,7 @@ class EditConcoction extends React.Component {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formDrinkIngredients">
               <Form.Label>Ingredients</Form.Label>
-              <Form.Control type='drinkIngredients' className='ingredients' defaultValue={JSON.parse(drinkIngredients).join(', ')} onChange={this.handleChange} />
-              {/* <Form.Control type="drinkIngredients" className="ingredients"
-                defaultValue={ingredients} onChange={this.handleChange}
-              /> */}
+              <Form.Control type="drinkIngredients" className="ingredients" defaultValue={JSON.parse(drinkIngredients).join(', ')} onChange={this.handleChange} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formDrinkMeasures">
               <Form.Label>Measurements</Form.Label>
@@ -140,14 +106,14 @@ class EditConcoction extends React.Component {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            variant='secondary'
+            variant="secondary"
             onClick={() => this.handleClose(this.setShow)}
           >
             Close
           </Button>
           <Button
-            variant='primary'
-            type='submit'
+            variant="primary"
+            type="submit"
             onClick={() => this.handleSubmit(this)}
           >
             Save Changes
@@ -165,7 +131,6 @@ EditConcoction.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   show: PropTypes.bool.isRequired,
   setShow: PropTypes.func.isRequired,
-  // ingredients: PropTypes.string.isRequired,
 };
 
 export default EditConcoction;
