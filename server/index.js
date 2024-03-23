@@ -93,7 +93,9 @@ app.get('/profile/friends/:id', (req, res) => {
 // for user search
 app.get('/profile/users/:displayName', (req, res) => {
   const { displayName } = req.params;
-  User.findAll({ where: { displayName } })
+  // currently only works on exact searches
+  // User.findAll({ where: { displayName } })
+  User.findAll({ where: { displayName: { [Op.substring]: displayName } }, limit: 10 })
     .then((userArr) => {
       res.send(userArr);
     })
