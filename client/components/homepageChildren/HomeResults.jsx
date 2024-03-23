@@ -1,6 +1,5 @@
 import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-import { Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import DrinkEntry from '../communityChildren/DrinkEntry';
 import { Container, Row, Col } from 'react-bootstrap';
 
@@ -20,21 +19,6 @@ class HomeResults extends React.Component {
           ))}
         </Row>
       </Container>
-
-      // <div>
-      //   <h4>Searched Results</h4>
-      //   {results.map((drink, index) => (
-      //     <div key={index}>
-      //       <Link to={`/estdrink/${drink.idDrink}`}>
-      //         <h5>{drink.strDrink}</h5>
-      //         <img
-      //           src={drink.strDrinkThumb}
-      //           style={{ width: '220px', height: '220px' }}
-      //         />
-      //       </Link>
-      //     </div>
-      //   ))}
-      // </div>
     );
   }
 }

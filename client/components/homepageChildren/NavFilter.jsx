@@ -12,21 +12,23 @@ function NavFilter() {
   useEffect(() => {
     axios
       .all([
-        axios.get('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list'),
-        axios.get('https://www.thecocktaildb.com/api/json/v1/1/list.php?a=list'),
+        axios.get(
+          'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list',
+        ),
+        axios.get(
+          'https://www.thecocktaildb.com/api/json/v1/1/list.php?a=list',
+        ),
       ])
       .then(
-        axios.spread(
-          (categoriesResponse, alcoholicResponse) => {
-            let categories = categoriesResponse.data.drinks.map(
-              (drink) => drink.strCategory
-            );
-            let alcoholic = alcoholicResponse.data.drinks.map(
-              (drink) => drink.strAlcoholic
-            );
-            setFilters({ categories, alcoholic});
-          }
-        )
+        axios.spread((categoriesResponse, alcoholicResponse) => {
+          let categories = categoriesResponse.data.drinks.map(
+            (drink) => drink.strCategory,
+          );
+          let alcoholic = alcoholicResponse.data.drinks.map(
+            (drink) => drink.strAlcoholic,
+          );
+          setFilters({ categories, alcoholic });
+        }),
       )
       .catch((error) => {
         console.error('Error fetching filters:', error);
@@ -36,13 +38,21 @@ function NavFilter() {
   return (
     <Navbar expand='lg' className='bg-body-tertiary'>
       <Container>
-        <Navbar.Brand as={Link} to='/home'>Bubblr</Navbar.Brand>
+        <Navbar.Brand as={Link} to='/home'>
+          Bubblr
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='me-auto'>
-            <Nav.Link as={Link} to='/home'>Home</Nav.Link>
-            <Nav.Link as={Link} to='/profile'>Account</Nav.Link>
-            <Nav.Link as={Link} to='/community'>Community</Nav.Link>
+            <Nav.Link as={Link} to='/home'>
+              Home
+            </Nav.Link>
+            <Nav.Link as={Link} to='/profile'>
+              Account
+            </Nav.Link>
+            <Nav.Link as={Link} to='/community'>
+              Community
+            </Nav.Link>
             <NavDropdown title='Filters' id='navbarScrollingDropdown'>
               <NavDropdown title='Categories' id='navbarScrollingDropdown'>
                 {filters.categories.map((category, index) => (

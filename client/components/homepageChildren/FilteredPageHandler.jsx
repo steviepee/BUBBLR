@@ -4,9 +4,10 @@ import FilteredPage from './FilteredPage';
 
 const FilteredPageHandler = () => {
   const { filter } = useParams();
-  
-  let filterType = filter.toLowerCase().includes('alcohol') ? 'alcoholic' : 'category';
- console.log('filter here',filter)
+
+  let filterType = filter.toLowerCase().includes('alcohol')
+    ? 'alcoholic'
+    : 'category';
   return <FilteredPage filterType={filterType} />;
 };
 
