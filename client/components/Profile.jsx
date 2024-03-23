@@ -90,25 +90,56 @@ class Profile extends React.Component {
 
     // this function will need to make an axios request to update db
     this.removeDrink = (e) => {
-      const { ogDrinkData, concoctionData } = this.state;
+      // const { ogDrinkData, concoctionData } = this.state;
+      const { ogDrinkData, concoctions } = this.state;
       let targetDrinkGroup;
+      let idName;
       let isOgDrink = false;
       if (e.target.className.includes('ogDrink')) {
         targetDrinkGroup = ogDrinkData;
+        idName = 'idDrink';
         isOgDrink = true;
       } else if (e.target.className.includes('concoction')) {
-        targetDrinkGroup = concoctionData;
+        // targetDrinkGroup = concoctionData;
+        targetDrinkGroup = concoctions;
+        idName = 'id';
       }
       for (let i = 0; i < targetDrinkGroup.length; i++) {
-        if (targetDrinkGroup[i].idDrink === e.target.value) {
+        // if (targetDrinkGroup[i].idDrink === e.target.value) {
+        console.log(targetDrinkGroup[i][idName], e.target.value);
+        if (targetDrinkGroup[i][idName] == e.target.value) {
+          console.log('here');
           targetDrinkGroup.splice(i, 1);
           // eslint-disable-next-line no-unused-expressions
           isOgDrink
             ? this.setState({ ogDrinkData })
-            : this.setState({ concoctionData });
+            // : this.setState({ concoctionData });
+            : this.setState({ concoctions });
         }
       }
     };
+
+    // // this function will need to make an axios request to update db
+    // this.removeDrink = (e) => {
+    //   const { ogDrinkData, concoctionData } = this.state;
+    //   let targetDrinkGroup;
+    //   let isOgDrink = false;
+    //   if (e.target.className.includes('ogDrink')) {
+    //     targetDrinkGroup = ogDrinkData;
+    //     isOgDrink = true;
+    //   } else if (e.target.className.includes('concoction')) {
+    //     targetDrinkGroup = concoctionData;
+    //   }
+    //   for (let i = 0; i < targetDrinkGroup.length; i++) {
+    //     if (targetDrinkGroup[i].idDrink === e.target.value) {
+    //       targetDrinkGroup.splice(i, 1);
+    //       // eslint-disable-next-line no-unused-expressions
+    //       isOgDrink
+    //         ? this.setState({ ogDrinkData })
+    //         : this.setState({ concoctionData });
+    //     }
+    //   }
+    // };
 
     this.getIngredients = (drink) => {
       const ingredients = [];

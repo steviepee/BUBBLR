@@ -72,7 +72,7 @@ router.get('/concoctions', (req, res) => {
   // this will need to change to a specific users concoctions
   customDrinks.findAll({})
     .then((response) => {
-      console.log(response);
+      // console.log(response);
       res.send(response);
     })
     .catch((err) => {
