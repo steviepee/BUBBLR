@@ -15,9 +15,11 @@ router.get('/friends/:id', (req, res) => {
     where: { friend1Id: id },
     raw: true,
   })
+    // eslint-disable-next-line consistent-return
     .then((arrFriend2IdObj) => {
       if (arrFriend2IdObj) {
         const userIdArr = [];
+        // eslint-disable-next-line no-plusplus
         for (let i = 0; i < arrFriend2IdObj.length; i++) {
           userIdArr.push({ id: arrFriend2IdObj[i].friend2Id });
         }
@@ -108,6 +110,18 @@ router.get('/estDrinks', (req, res) => {
     .then((response) => res.send(response))
     .catch((err) => {
       console.error('failed finding estDrinks', err);
+      res.sendStatus(500);
+    });
+});
+
+router.delete('/removeFavorite/:id', (req, res) => {
+  const { id } = req.params;
+  estDrinks.destroy({ where: { drinkId: id } })
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error('failed deleting favorite: ', err);
       res.sendStatus(500);
     });
 });

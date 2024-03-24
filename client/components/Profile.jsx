@@ -87,18 +87,11 @@ class Profile extends React.Component {
 
     // this function will need to make an axios request to update db
     this.removeDrink = (e) => {
-      const { ogDrinkData } = this.state;
-      let targetDrinkGroup;
-      let idName;
       if (e.target.className.includes('ogDrink')) {
-        targetDrinkGroup = ogDrinkData;
-        idName = 'idDrink';
-        for (let i = 0; i < targetDrinkGroup.length; i++) {
-          if (targetDrinkGroup[i][idName] === e.target.value) {
-            targetDrinkGroup.splice(i, 1);
-            this.setState({ ogDrinkData });
-          }
-        }
+        axios.delete(`/profile/removeFavorite/${e.target.value}`)
+          .then(() => axios.get('/profile/estDrinks'))
+          .then(({ data }) => this.setState({ ogDrinks: data }))
+          .catch((err) => console.error('Failed deleting favorite: ', err));
       }
       if (e.target.className.includes('concoction')) {
         axios
