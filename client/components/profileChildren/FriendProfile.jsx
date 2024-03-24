@@ -29,6 +29,8 @@ function FriendProfile() {
         return axios.get('/profile/concoctions');
       })
       .then(({ data }) => setConcoctions(data))
+      .then(() => axios.get('/profile/estDrinks'))
+      .then(({ data }) => setFavorites(data))
       .catch((err) => console.error('failed getting friend profile: ', err));
   }, []);
 
@@ -55,13 +57,17 @@ function FriendProfile() {
       <Card>
         <Card.Body>
           <Card.Title>Favorites</Card.Title>
-          {favorites.map(() => <div>fav</div>)}
+          {favorites.map(() => (
+            <div>fav</div>
+          ))}
         </Card.Body>
       </Card>
       <Card>
         <Card.Body>
           <Card.Title>Reviews</Card.Title>
-          {reviews.map(() => <div>hello</div>)}
+          {reviews.map(() => (
+            <div>hello</div>
+          ))}
         </Card.Body>
       </Card>
     </>
