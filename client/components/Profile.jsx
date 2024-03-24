@@ -22,6 +22,7 @@ class Profile extends React.Component {
       displayName: 'User',
       createdAt: ' ',
       ogDrinkData: fakeData.drinks.slice(0, 5),
+      ogDrinks: [],
       concoctions: [],
       id: 1,
       friends: [],
@@ -46,6 +47,8 @@ class Profile extends React.Component {
         .then(({ data }) => {
           this.setState({ concoctions: data });
         })
+        .then(() => axios.get('/profile/estDrinks'))
+        .then(({ data }) => this.setState({ ogDrinks: data }))
         .catch((err) => console.error('Failed getting user data', err));
     };
 
@@ -63,7 +66,7 @@ class Profile extends React.Component {
         .then(() => {
           this.getUser();
         })
-        .catch((err) => console.error('failed unfollowing user: ', err));
+        .catch((err) => console.error('failed removing user: ', err));
     };
 
     this.handleClose = (scope) => scope(false);
