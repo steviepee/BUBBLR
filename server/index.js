@@ -26,6 +26,8 @@ app.use(
     secret: 'bubblr',
     resave: false,
     saveUninitialized: true,
+    // trying an atricle adonis sent: https://medium.com/@mohan.velegacherla/how-to-setup-passport-authentication-in-node-js-with-example-using-express-js-bf44a51e8ca0
+    // saveUninitialized: false,
     cookie: { secure: true },
   }),
 );

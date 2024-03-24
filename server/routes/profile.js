@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const { Op } = require('sequelize');
-const { UserFriends, User, customDrinks } = require('../db/index');
+const { UserFriends, User, customDrinks, estDrinks } = require('../db/index');
 
 // this grabs a users friends when opening profile, not able to do in one query...
 router.get('/friends/:id', (req, res) => {
@@ -97,6 +97,15 @@ router.delete('/removeConcoction/:id', (req, res) => {
     .then(() => res.sendStatus(200))
     .catch((err) => {
       console.error('failed deleting concoction: ', err);
+      res.sendStatus(500);
+    });
+});
+
+router.get('/estDrinks', (req, res) => {
+  estDrinks.findAll({})
+    .then((response) => res.send(response))
+    .catch((err) => {
+      console.error('failed finding estDrinks', err);
       res.sendStatus(500);
     });
 });
