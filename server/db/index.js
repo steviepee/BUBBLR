@@ -80,8 +80,41 @@ UserFriends.sync()
   customDrinks.sync()
     .catch((err) => console.error('Failed syncing customDrinks: ', err));
 
+    const estDrinks = sequelize.define('estDrinks', {
+      drinkId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      drinkName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      drinkCategory: {
+        type: DataTypes.STRING,
+      },
+      alcoholicDrink: {
+        type: DataTypes.STRING,
+      },
+      drinkGlass: {
+        type: DataTypes.STRING,
+      },
+      drinkInstructions: {
+        type: DataTypes.TEXT,
+      },
+      drinkIngredients: {
+        type: DataTypes.JSON,
+      },
+      drinkImage: {
+        type: DataTypes.STRING
+      }
+    })
+    
+    estDrinks.sync()
+      .catch((err) => console.error('Failed syncing estDrinks: ', err));
+   
 module.exports = {
   User,
-  UserFriends,
-  customDrinks
+  UserFriends, 
+  customDrinks,
+  estDrinks,
 };
