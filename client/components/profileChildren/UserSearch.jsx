@@ -1,4 +1,3 @@
-/* eslint-disable jsx-quotes */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -43,15 +42,15 @@ function UserSearch({ followUser }) {
     <Card>
       <Card.Body>
         <Card.Title>Find Users</Card.Title>
-        <InputGroup onChange={onChange} className='mb-3'>
+        <InputGroup onChange={onChange} className="mb-3">
           <Form.Control
-            placeholder='Search by name'
-            aria-label='Search by name'
-            aria-describedby='basic-addon2'
+            placeholder="Search by name"
+            aria-label="Search by name"
+            aria-describedby="basic-addon2"
           />
           <Button
-            variant='outline-secondary'
-            id='button-addon2'
+            variant="outline-secondary"
+            id="button-addon2"
             onClick={onSearch}
           >
             Search

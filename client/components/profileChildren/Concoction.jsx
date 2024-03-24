@@ -53,8 +53,11 @@ function Concoction({
 }
 
 Concoction.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  drink: PropTypes.object.isRequired,
+  drink: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    drinkName: PropTypes.string.isRequired,
+    drinkIngredients: PropTypes.string.isRequired,
+  }).isRequired,
   removeDrink: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,

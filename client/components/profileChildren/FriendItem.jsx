@@ -6,20 +6,23 @@ import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import Button from 'react-bootstrap/Button';
 
 function FriendItem({ friend, unfollowUser }) {
+  const { displayName, id } = friend;
   return (
     <ListGroupItem>
-      { friend.displayName }
-      <Link to={`friend/${friend.id}`}>
+      { displayName }
+      <Link to={`friend/${id}`}>
         <Button>See page</Button>
       </Link>
-      <Button variant="danger" onClick={() => unfollowUser(friend.id)}>Unfollow</Button>
+      <Button variant="danger" onClick={() => unfollowUser(id)}>Unfollow</Button>
     </ListGroupItem>
   );
 }
 
 FriendItem.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  friend: PropTypes.object.isRequired,
+  friend: PropTypes.shape({
+    displayName: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+  }).isRequired,
   unfollowUser: PropTypes.func.isRequired,
 };
 

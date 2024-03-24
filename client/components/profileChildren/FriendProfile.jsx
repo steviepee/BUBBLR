@@ -17,7 +17,7 @@ function FriendProfile() {
 
   const [concoctions, setConcoctions] = useState([]);
 
-  const [reviews, setReviews] = useState([]);
+  // const [reviews, setReviews] = useState([]);
 
   const [favorites, setFavorites] = useState([]);
 
@@ -70,9 +70,9 @@ function FriendProfile() {
       <Card>
         <Card.Body>
           <Card.Title>Reviews</Card.Title>
-          {reviews.map(() => (
+          {/* {reviews.map(() => (
             <div>hello</div>
-          ))}
+          ))} */}
         </Card.Body>
       </Card>
     </>

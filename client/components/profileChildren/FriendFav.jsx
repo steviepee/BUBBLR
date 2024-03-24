@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
 
@@ -14,7 +15,7 @@ function FriendFav({ favorite }) {
         <Link to={`/estDrink/${drinkId}`}>
           <Button>Go to</Button>
         </Link>
-        <Card.Img variant='top' src={drinkImage} />
+        <Card.Img variant="top" src={drinkImage} />
         <Card.Body>
           <Card.Title>{drinkName}</Card.Title>
         </Card.Body>
@@ -22,5 +23,13 @@ function FriendFav({ favorite }) {
     </Col>
   );
 }
+
+FriendFav.propTypes = {
+  favorite: PropTypes.shape({
+    drinkId: PropTypes.number.isRequired,
+    drinkName: PropTypes.string.isRequired,
+    drinkImage: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default FriendFav;

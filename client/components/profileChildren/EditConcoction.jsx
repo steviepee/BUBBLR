@@ -125,8 +125,10 @@ class EditConcoction extends React.Component {
 }
 
 EditConcoction.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  drink: PropTypes.object.isRequired,
+  drink: PropTypes.shape({
+    drinkName: PropTypes.string.isRequired,
+    drinkIngredients: PropTypes.string.isRequired,
+  }).isRequired,
   handleClose: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   show: PropTypes.bool.isRequired,
