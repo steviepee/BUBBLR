@@ -12,8 +12,6 @@ import Concoction from './profileChildren/Concoction';
 import UserSearch from './profileChildren/UserSearch';
 import FriendItem from './profileChildren/FriendItem';
 
-import fakeData from '../FakeData.json';
-
 class Profile extends React.Component {
   constructor() {
     super();
@@ -21,7 +19,6 @@ class Profile extends React.Component {
     this.state = {
       displayName: 'User',
       createdAt: ' ',
-      ogDrinkData: fakeData.drinks.slice(0, 5),
       ogDrinks: [],
       concoctions: [],
       id: 1,
@@ -110,20 +107,6 @@ class Profile extends React.Component {
           .then(({ data }) => this.setState({ concoctions: data }));
       }
     };
-
-    this.getIngredients = (drink) => {
-      const ingredients = [];
-      for (let i = 1; i < 16; i++) {
-        const stringIngredient = `strIngredient${i}`;
-        if (drink[stringIngredient]) {
-          ingredients.push(` ${drink[stringIngredient]}`);
-        } else {
-          return ingredients;
-        }
-      }
-
-      return ingredients;
-    };
   }
 
   componentDidMount() {
@@ -134,7 +117,6 @@ class Profile extends React.Component {
     const {
       displayName,
       createdAt,
-      ogDrinkData,
       ogDrinks,
       concoctions,
       friends,
@@ -189,14 +171,6 @@ class Profile extends React.Component {
             <Card.Title>Your Favorite Originals</Card.Title>
             <Container>
               <Row>
-                {/* {ogDrinkData.map((drink) => (
-                  <OgDrink
-                    removeDrink={this.removeDrink}
-                    key={drink.idDrink}
-                    drink={drink}
-                    getIngredients={this.getIngredients}
-                  />
-                ))} */}
                 {ogDrinks.map((drink) => (
                   <OgDrink
                     removeDrink={this.removeDrink}
