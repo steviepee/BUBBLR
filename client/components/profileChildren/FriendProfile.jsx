@@ -8,6 +8,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
 import FriendConcoction from './FriendConcoction';
+import FriendFav from './FriendFav';
 
 function FriendProfile() {
   const { id } = useParams();
@@ -57,9 +58,13 @@ function FriendProfile() {
       <Card>
         <Card.Body>
           <Card.Title>Favorites</Card.Title>
-          {favorites.map(() => (
-            <div>fav</div>
-          ))}
+          <Container>
+            <Row>
+              {favorites.map((favorite) => (
+                <FriendFav key={`fav-${favorite.id}`} favorite={favorite} />
+              ))}
+            </Row>
+          </Container>
         </Card.Body>
       </Card>
       <Card>
