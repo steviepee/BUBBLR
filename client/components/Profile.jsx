@@ -62,7 +62,10 @@ class Profile extends React.Component {
 
     this.unfollowUser = (idUnfollow) => {
       const { id } = this.state;
-      axios.delete('/profile/unfollow', { data: { friend1Id: id, friend2Id: idUnfollow } })
+      axios
+        .delete('/profile/unfollow', {
+          data: { friend1Id: id, friend2Id: idUnfollow },
+        })
         .then(() => {
           this.getUser();
         })
@@ -74,7 +77,8 @@ class Profile extends React.Component {
 
     this.handleSubmit = (scope) => {
       const { drinkName, drinkIngredients, id } = scope.state;
-      axios.patch('/profile/updateConcoction', { id, drinkName, drinkIngredients })
+      axios
+        .patch('/profile/updateConcoction', { id, drinkName, drinkIngredients })
         .then(() => axios.get('/profile/concoctions'))
         .then(({ data }) => {
           // update concoction data
@@ -98,8 +102,10 @@ class Profile extends React.Component {
             this.setState({ ogDrinkData });
           }
         }
-      } if (e.target.className.includes('concoction')) {
-        axios.delete(`/profile/removeConcoction/${e.target.value}`)
+      }
+      if (e.target.className.includes('concoction')) {
+        axios
+          .delete(`/profile/removeConcoction/${e.target.value}`)
           .then(() => axios.get('/profile/concoctions'))
           .then(({ data }) => this.setState({ concoctions: data }));
       }
@@ -129,6 +135,7 @@ class Profile extends React.Component {
       displayName,
       createdAt,
       ogDrinkData,
+      ogDrinks,
       concoctions,
       friends,
       reviews,
@@ -182,12 +189,19 @@ class Profile extends React.Component {
             <Card.Title>Your Favorite Originals</Card.Title>
             <Container>
               <Row>
-                {ogDrinkData.map((drink) => (
+                {/* {ogDrinkData.map((drink) => (
                   <OgDrink
                     removeDrink={this.removeDrink}
                     key={drink.idDrink}
                     drink={drink}
                     getIngredients={this.getIngredients}
+                  />
+                ))} */}
+                {ogDrinks.map((drink) => (
+                  <OgDrink
+                    removeDrink={this.removeDrink}
+                    key={drink.drinkId}
+                    drink={drink}
                   />
                 ))}
               </Row>
