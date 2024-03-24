@@ -3,9 +3,6 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 function EstDrinkPage() {
-  // this.state = {
-  //     drink: null,
-  // }
   const [drink, setDrink] = useState(null);
   const { id } = useParams(); //yt vid from ky
 
