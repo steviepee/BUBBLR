@@ -16,6 +16,10 @@ function FriendProfile() {
 
   const [concoctions, setConcoctions] = useState([]);
 
+  const [reviews, setReviews] = useState([]);
+
+  const [favorites, setFavorites] = useState([]);
+
   useEffect(() => {
     axios
       .get(`/profile/${id}`)
@@ -51,11 +55,13 @@ function FriendProfile() {
       <Card>
         <Card.Body>
           <Card.Title>Favorites</Card.Title>
+          {favorites.map(() => <div>fav</div>)}
         </Card.Body>
       </Card>
       <Card>
         <Card.Body>
           <Card.Title>Reviews</Card.Title>
+          {reviews.map(() => <div>hello</div>)}
         </Card.Body>
       </Card>
     </>
