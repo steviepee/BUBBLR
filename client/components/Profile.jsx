@@ -85,6 +85,7 @@ class Profile extends React.Component {
         .then(({ data }) => {
           // update concoction data
           this.setState({ concoctions: data });
+          scope.setState({ drinkAddition: '' });
         });
 
       this.handleClose(scope.setShow);
