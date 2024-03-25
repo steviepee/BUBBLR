@@ -76,7 +76,9 @@ class Profile extends React.Component {
       const {
         drinkName, drinkIngredients, id, drinkAddition,
       } = scope.state;
-      drinkIngredients.push(drinkAddition);
+      if (drinkAddition) {
+        drinkIngredients.push(drinkAddition);
+      }
       axios
         .patch('/profile/updateConcoction', { id, drinkName, drinkIngredients: JSON.stringify(drinkIngredients) })
         .then(() => axios.get('/profile/concoctions'))
