@@ -118,6 +118,7 @@ app.delete('/profile/unfollow', (req, res) => {
     .catch((err) => console.error('failed to unfollow user: ', err));
 });
 
+//get all custom saved custom drinks
 app.get('/api/customDrinks', (req, res) => {
   // console.log(req.body)
   customDrinks.findAll()
@@ -131,6 +132,7 @@ app.get('/api/customDrinks', (req, res) => {
   // res.status(200).send('hello post request')
 }) 
 
+//get list of all possible drink ingredients
 app.get('/api/getIngredients', (req, res) => {
 
   axios.get('https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list')
@@ -150,6 +152,7 @@ app.get('/api/getIngredients', (req, res) => {
 })
 })
 
+//post a custom drink to the database
 app.post('/api/customDrinks', (req, res) => {
   console.log(req.body)
   data = req.body
