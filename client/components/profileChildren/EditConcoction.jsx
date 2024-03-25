@@ -24,8 +24,6 @@ class EditConcoction extends React.Component {
       drinkIngredients: JSON.parse(this.drink.drinkIngredients),
       // eslint-disable-next-line react/no-unused-state
       drinkAddition: '',
-      // drinkIngredients: this.drink.drinkIngredients,
-      // eslint-disable-next-line react/no-unused-state
       id: this.drink.id,
     };
 
@@ -37,8 +35,6 @@ class EditConcoction extends React.Component {
     };
 
     this.handleChange = (e) => {
-      // const { drinkIngredients } = this.state;
-      // const moreIngredients = drinkIngredients.slice();
       switch (e.target.className.split(' ')[0]) {
         case 'name':
           // these are being accessed by onSubmit in profile
@@ -46,8 +42,6 @@ class EditConcoction extends React.Component {
           this.setState({ drinkName: e.target.value });
           break;
         case 'ingredients':
-          // this.setState({ drinkIngredients: JSON.stringify(e.target.value.split(', ')) });
-          // moreIngredients.push(e.target.value);
           // eslint-disable-next-line react/no-unused-state
           this.setState({ drinkAddition: e.target.value });
           break;
@@ -110,11 +104,6 @@ class EditConcoction extends React.Component {
                 </InputGroup>
               ))}
               <Form.Control type="drinkIngredients" className="ingredients" placeholder="Add ingredient" onChange={this.handleChange} />
-              {/* <Form.Control
-                type="drinkIngredients" className="ingredients"
-                defaultValue={JSON.parse(drinkIngredients).join(', ')}
-                onChange={this.handleChange}
-              /> */}
             </Form.Group>
             {/* <Form.Group className="mb-3" controlId="formDrinkMeasures">
               <Form.Label>Measurements</Form.Label>
