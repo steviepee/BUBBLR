@@ -73,9 +73,13 @@ class Profile extends React.Component {
     this.handleShow = (scope) => scope(true);
 
     this.handleSubmit = (scope) => {
-      const { drinkName, drinkIngredients, id } = scope.state;
+      const {
+        drinkName, drinkIngredients, id, drinkAddition,
+      } = scope.state;
+      drinkIngredients.push(drinkAddition);
       axios
-        .patch('/profile/updateConcoction', { id, drinkName, drinkIngredients })
+        // .patch('/profile/updateConcoction', { id, drinkName, drinkIngredients })
+        .patch('/profile/updateConcoction', { id, drinkName, drinkIngredients: JSON.stringify(drinkIngredients) })
         .then(() => axios.get('/profile/concoctions'))
         .then(({ data }) => {
           // update concoction data
