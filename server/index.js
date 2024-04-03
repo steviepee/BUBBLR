@@ -6,12 +6,9 @@ const cookieParser = require('cookie-parser');
 const { User, customDrinks, estDrinks } = require('../server/db/index');
 const axios = require('axios');
 
-// const { customDrinks } = require('./db/index');
 
-// const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const profileRouter = require('./routes/profile');
-// const apiRouter = require('./routes/api');
 require('dotenv').config();
 
 // MIDDLEWARES

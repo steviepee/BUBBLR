@@ -1,8 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import ListGroup from 'react-bootstrap/ListGroup';
-import { ListGroupItem, Button, Card, Col, Row, Form, InputGroup } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 function CreationStation() { 
     //array of all ingredients in drinks pulled from API
