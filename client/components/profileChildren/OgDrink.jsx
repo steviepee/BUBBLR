@@ -2,6 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { Link } from 'react-router-dom';
+
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
@@ -13,6 +15,13 @@ function OgDrink({ drink, removeDrink, getIngredients }) {
     <Col>
       <Card>
         <Card.Body>
+          <Link to={`/estDrink/${drink.idDrink}`}>
+            <Button
+              size='sm'
+            >
+              Go To
+            </Button>
+          </Link>
           <Button
             size='sm'
             value={drink.idDrink}

@@ -5,7 +5,6 @@ const customDrinks = require('../db/index')
 
 
 router.get('/api/customDrinks', (req, res) => {
-    // console.log(req.body)
     customDrinks.findAll()
     .then((results) => {
         res.status(200).send(results)
@@ -14,7 +13,6 @@ router.get('/api/customDrinks', (req, res) => {
         console.error(err)
         res.sendStatus(500)
     })
-    // res.status(200).send('hello post request')
 }) 
 
 
