@@ -3,7 +3,9 @@ const express = require('express');
 const router = express.Router();
 
 const { Op } = require('sequelize');
-const { UserFriends, User, customDrinks } = require('../db/index');
+const {
+  UserFriends, User, customDrinks, estDrinks,
+} = require('../db/index');
 
 // this grabs a users friends when opening profile, not able to do in one query...
 router.get('/friends/:id', (req, res) => {
@@ -13,9 +15,11 @@ router.get('/friends/:id', (req, res) => {
     where: { friend1Id: id },
     raw: true,
   })
+    // eslint-disable-next-line consistent-return
     .then((arrFriend2IdObj) => {
       if (arrFriend2IdObj) {
         const userIdArr = [];
+        // eslint-disable-next-line no-plusplus
         for (let i = 0; i < arrFriend2IdObj.length; i++) {
           userIdArr.push({ id: arrFriend2IdObj[i].friend2Id });
         }
@@ -97,6 +101,27 @@ router.delete('/removeConcoction/:id', (req, res) => {
     .then(() => res.sendStatus(200))
     .catch((err) => {
       console.error('failed deleting concoction: ', err);
+      res.sendStatus(500);
+    });
+});
+
+router.get('/estDrinks', (req, res) => {
+  estDrinks.findAll({})
+    .then((response) => res.send(response))
+    .catch((err) => {
+      console.error('failed finding estDrinks', err);
+      res.sendStatus(500);
+    });
+});
+
+router.delete('/removeFavorite/:id', (req, res) => {
+  const { id } = req.params;
+  estDrinks.destroy({ where: { drinkId: id } })
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error('failed deleting favorite: ', err);
       res.sendStatus(500);
     });
 });

@@ -42,13 +42,20 @@ passport.use(new GoogleStrategy(
 passport.serializeUser((user, done) => {
   // console.log(`--------> Serialize User`);
   // console.log(user);
+  // console.log(Object.getOwnPropertyNames(user[0]));
+  // even though dataValues is in the above log, the below log shows undefined
+  // console.log(user[0].dataVaules);
 
   done(null, user);
+  // done(null, user[0].dataVaules.googleId);
 });
 
 passport.deserializeUser((user, done) => {
+// passport.deserializeUser((id, done) => {
   // console.log("---------> Deserialize User")
   // console.log(user);
+  // console.log(id);
+  // const user = User.find((u) => u.googleId === id);
   done(null, user);
 });
 
@@ -62,7 +69,6 @@ router.get('/google', passport.authenticate('google', {
     }
   });
 }));
-
 
 router.get('/google/callback', passport.authenticate('google', {
   successRedirect: '/dashboard',
