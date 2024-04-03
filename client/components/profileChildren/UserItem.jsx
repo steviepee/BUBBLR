@@ -6,11 +6,12 @@ import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import Button from 'react-bootstrap/Button';
 
 function UserItem({ user, followUser }) {
+  const { id, displayName } = user;
   return (
     <ListGroupItem>
-      {user.displayName}
-      <Button onClick={() => { followUser(user.id); }}>Follow</Button>
-      <Link to={`friend/${user.id}`}>
+      {displayName}
+      <Button onClick={() => { followUser(id); }}>Follow</Button>
+      <Link to={`friend/${id}`}>
         <Button>See page</Button>
       </Link>
     </ListGroupItem>
@@ -18,8 +19,10 @@ function UserItem({ user, followUser }) {
 }
 
 UserItem.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  user: PropTypes.object.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    displayName: PropTypes.string.isRequired,
+  }).isRequired,
   followUser: PropTypes.func.isRequired,
 };
 

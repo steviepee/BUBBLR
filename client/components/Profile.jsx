@@ -12,8 +12,6 @@ import Concoction from './profileChildren/Concoction';
 import UserSearch from './profileChildren/UserSearch';
 import FriendItem from './profileChildren/FriendItem';
 
-import fakeData from '../FakeData.json';
-
 class Profile extends React.Component {
   constructor() {
     super();
@@ -21,10 +19,11 @@ class Profile extends React.Component {
     this.state = {
       displayName: 'User',
       createdAt: ' ',
-      ogDrinkData: fakeData.drinks.slice(0, 5),
+      ogDrinks: [],
       concoctions: [],
       id: 1,
       friends: [],
+      reviews: [],
     };
 
     this.getUser = () => {
@@ -45,6 +44,8 @@ class Profile extends React.Component {
         .then(({ data }) => {
           this.setState({ concoctions: data });
         })
+        .then(() => axios.get('/profile/estDrinks'))
+        .then(({ data }) => this.setState({ ogDrinks: data }))
         .catch((err) => console.error('Failed getting user data', err));
     };
 
@@ -58,23 +59,33 @@ class Profile extends React.Component {
 
     this.unfollowUser = (idUnfollow) => {
       const { id } = this.state;
-      axios.delete('/profile/unfollow', { data: { friend1Id: id, friend2Id: idUnfollow } })
+      axios
+        .delete('/profile/unfollow', {
+          data: { friend1Id: id, friend2Id: idUnfollow },
+        })
         .then(() => {
           this.getUser();
         })
-        .catch((err) => console.error('failed unfollowing user: ', err));
+        .catch((err) => console.error('failed removing user: ', err));
     };
 
     this.handleClose = (scope) => scope(false);
     this.handleShow = (scope) => scope(true);
 
     this.handleSubmit = (scope) => {
-      const { drinkName, drinkIngredients, id } = scope.state;
-      axios.patch('/profile/updateConcoction', { id, drinkName, drinkIngredients })
+      const {
+        drinkName, drinkIngredients, id, drinkAddition,
+      } = scope.state;
+      if (drinkAddition) {
+        drinkIngredients.push(drinkAddition);
+      }
+      axios
+        .patch('/profile/updateConcoction', { id, drinkName, drinkIngredients: JSON.stringify(drinkIngredients) })
         .then(() => axios.get('/profile/concoctions'))
         .then(({ data }) => {
           // update concoction data
           this.setState({ concoctions: data });
+          scope.setState({ drinkAddition: '' });
         });
 
       this.handleClose(scope.setShow);
@@ -82,37 +93,18 @@ class Profile extends React.Component {
 
     // this function will need to make an axios request to update db
     this.removeDrink = (e) => {
-      const { ogDrinkData } = this.state;
-      let targetDrinkGroup;
-      let idName;
       if (e.target.className.includes('ogDrink')) {
-        targetDrinkGroup = ogDrinkData;
-        idName = 'idDrink';
-        for (let i = 0; i < targetDrinkGroup.length; i++) {
-          if (targetDrinkGroup[i][idName] === e.target.value) {
-            targetDrinkGroup.splice(i, 1);
-            this.setState({ ogDrinkData });
-          }
-        }
-      } if (e.target.className.includes('concoction')) {
-        axios.delete(`/profile/removeConcoction/${e.target.value}`)
+        axios.delete(`/profile/removeFavorite/${e.target.value}`)
+          .then(() => axios.get('/profile/estDrinks'))
+          .then(({ data }) => this.setState({ ogDrinks: data }))
+          .catch((err) => console.error('Failed deleting favorite: ', err));
+      }
+      if (e.target.className.includes('concoction')) {
+        axios
+          .delete(`/profile/removeConcoction/${e.target.value}`)
           .then(() => axios.get('/profile/concoctions'))
           .then(({ data }) => this.setState({ concoctions: data }));
       }
-    };
-
-    this.getIngredients = (drink) => {
-      const ingredients = [];
-      for (let i = 1; i < 16; i++) {
-        const stringIngredient = `strIngredient${i}`;
-        if (drink[stringIngredient]) {
-          ingredients.push(` ${drink[stringIngredient]}`);
-        } else {
-          return ingredients;
-        }
-      }
-
-      return ingredients;
     };
   }
 
@@ -124,9 +116,10 @@ class Profile extends React.Component {
     const {
       displayName,
       createdAt,
-      ogDrinkData,
+      ogDrinks,
       concoctions,
       friends,
+      reviews,
     } = this.state;
     return (
       <>
@@ -177,12 +170,11 @@ class Profile extends React.Component {
             <Card.Title>Your Favorite Originals</Card.Title>
             <Container>
               <Row>
-                {ogDrinkData.map((drink) => (
+                {ogDrinks.map((drink) => (
                   <OgDrink
                     removeDrink={this.removeDrink}
-                    key={drink.idDrink}
+                    key={drink.drinkId}
                     drink={drink}
-                    getIngredients={this.getIngredients}
                   />
                 ))}
               </Row>
@@ -193,7 +185,9 @@ class Profile extends React.Component {
           <Card.Body>
             <Card.Title>Your Reviews</Card.Title>
             <ListGroup>
-              Hello
+              {reviews.map(() => (
+                <li>hello</li>
+              ))}
             </ListGroup>
           </Card.Body>
         </Card>
