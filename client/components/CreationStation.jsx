@@ -1,7 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-// import getAllIngredients from 'server/api/api.js'
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 function CreationStation() { 
     //array of all ingredients in drinks pulled from API
@@ -12,26 +17,30 @@ function CreationStation() {
     const [activeIngredients, updateActiveIngredients] = useState([])
     //your custom drink name
     const [drinkName, setDrinkName] = useState('')
+    //if savedDrinks is clicked, update variable
+    const [saved, updateSaved] = useState('false')
     // getAllIngredients()
 
     function getAllIngredients() {
         axios.get('/api/getIngredients')
         .then((results) => {
-            // console.log(results.data.drinks)
             let storage = []
             results.data.forEach((drink) => {
                 storage.push(drink['strIngredient1'])
             })
-            // console.log(storage)
-            // updateIngredients(newIngredients => [...newIngredients, storage])
             updateIngredients(storage)
         })
     }
 
-    function newIngredientsClick() {
-        const modifiedIngredients = activeIngredients
-        updateActiveIngredients(modifiedIngredients)
-        
+
+    function getAllSavedDrinks() {
+        axios.get('/api/customDrinks')
+        .then((results) => {
+            updateSavedDrinks(results.data)
+        })
+        .catch((err) => {
+            console.error(err)
+        })
     }
 
     function saveToCollectionClick() {
@@ -40,50 +49,98 @@ function CreationStation() {
             drinkIngredients: JSON.stringify(activeIngredients)
         })
         .then(() => {
-            console.log('custom drink post was successful')
-
         })
         .catch((err) => {
             console.error(err)
         })
-        // axios.post('/api/customDrinks', {
-        //     name: 'Kylan',
-        //     last: 'Patton'
-        // })
-        // .then(() => {
-        //     console.log('post was successful')
-        // })
+    }
+
+
+    function showSavedDrinks() {
+        if(saved === 'true'){
+                return ( 
+                <div>
+                 <h2>Saved Drinks:</h2>
+                 <Row xs={1} md={3} className="g-3">
+                    {savedDrinks.length && savedDrinks.map((drink, idx) => (
+                        <Col >
+                        <Card style={{marginBottom: "10px", backgroundColor: "orange", marginBottom: "10px"}}>
+                            <Card.Body>
+                            <Card.Title>{drink.drinkName}</Card.Title>
+                            <Button variant="primary" onClick={() => {
+                                updateActiveIngredients(JSON.parse(drink.drinkIngredients))
+                            }}>➕</Button>
+                            </Card.Body>
+                        </Card>
+                        </Col>
+                    ))}
+                    </Row>
+                    <h2>Additional ingredients to choose from:</h2>
+                    <Row xs={1} md={3} className="g-3">
+                    {newIngredients.length && newIngredients.map((ingredient, idx) => (
+                        <Col >
+                        <Card style={{marginBottom: "10px", backgroundColor: "#6b0042", marginBottom: "10px", color: "whitesmoke"}}>
+                            <Card.Body>
+                            <Card.Title>{ingredient}</Card.Title>
+                            <Button variant="primary" onClick={() => {
+                                activeIngredients.push(ingredient)
+                                const newActiveIngredients = [...activeIngredients]
+                                updateActiveIngredients(newActiveIngredients)
+                            }}>➕</Button>
+                            </Card.Body>
+                        </Card>
+                        </Col>
+                    ))}
+                    </Row>
+                 </div>
+                )
+        } else {
+                return ( 
+                <div>
+                    <Row xs={1} md={3} className="g-3">
+                    {newIngredients.length && newIngredients.map((ingredient, idx) => (
+                        <Col >
+                        <Card style={{marginBottom: "10px", backgroundColor: "#6b0042", marginBottom: "10px", color: "whitesmoke"}}>
+                            <Card.Body>
+                            <Card.Title>{ingredient}</Card.Title>
+                            <Button type="submit" variant="primary" onClick={() => {
+                                activeIngredients.push(ingredient)
+                                const newActiveIngredients = [...activeIngredients]
+                                updateActiveIngredients(newActiveIngredients)
+                            }}>➕</Button>
+                            </Card.Body>
+                        </Card>
+                        </Col>
+                    ))}
+                    </Row>
+                 </div>
+                )
+        }
     }
 
     useEffect(() => {
-        // getAllIngredients()
-        // newIngredientsClick()
-        // updateActiveIngredients([])
-    }, [activeIngredients])
+        getAllIngredients()
+        getAllSavedDrinks()
+        showSavedDrinks()
+    }, [])
+
 
         return (
-        <div>
-            <h1>Create A Drink</h1>
+        <div style={{margin: "20px"}}>
+            <h1> Welcome to the Creation Station</h1>
             <br />
-            <br />
-            <button onClick={() => {
+            <Button onClick={() => {
                 getAllIngredients()
-            }}>New Ingredients</button>
+                updateSaved('false')
+            }}>Build From Scratch</Button>
             {' '}
-            <button >My Saved Recipes</button>
+            <Button onClick={() => {
+                updateSaved('true')
+            }}>My Saved Recipes</Button>
             <br />
             <br />
-            <div style={{backgroundColor: "blue", height: "500px", overflowY: "scroll"}}>
-                {newIngredients.map((ingredient, i) => {
-                   return ( <div style={{backgroundColor: "lightblue", marginBottom: "10px"}} key={i}>
-                        {ingredient} <span onClick={() => {
-                            activeIngredients.push(ingredient)
-                            // console.log(newArr)
-                            updateActiveIngredients(activeIngredients)
-                        }}>➕</span> 
-                    </div>
-                   )
-                })}
+            <div style={{ marginLeft: "40px", marginRight: "40px", height: "500px", overflowY: "scroll"}}>
+                {showSavedDrinks()}
             </div>
             <br />
             <br />
@@ -93,7 +150,14 @@ function CreationStation() {
                 {
                     activeIngredients.map((ingredient, i) => {
                         return (
-                        <li key={i}>{ingredient} <span>❌</span></li>
+                        <li key={i}>{ingredient} <span onClick={() => {
+                            let idx = activeIngredients.indexOf(ingredient)
+                            if (idx > -1) {
+                                activeIngredients.splice(idx, 1)
+                                let newActiveIngredients = [...activeIngredients]
+                                updateActiveIngredients(newActiveIngredients); 
+                              }
+                        }}>❌</span></li>
                         )
                     })
                 
@@ -103,17 +167,26 @@ function CreationStation() {
             <br />
             <br />
             <h2>Give Your Drink A Name</h2>
-            <input type="text" placeholder='Type it here!' onChange={(e) => {
-                // console.log(e.target.value)
-                setDrinkName(e.target.value)
-            }}/>
+            <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default" style={{backgroundColor: "grey", color: "whitesmoke"}} >
+                Type it here!
+                </InputGroup.Text>
+                <Form.Control
+                aria-label="Default"
+                aria-describedby="inputGroup-sizing-default"
+                onChange={(e) => {
+                    console.log(e.target.value)
+                    setDrinkName(e.target.value)
+                }}
+                />
+            </InputGroup>
             <br />
             <br />
             <br />
-            <button onClick={() => {
-                // console.log(activeIngredients)
+            <Button variant="secondary" style={{backgroundColor: "grey", color: "whitesmoke"}} onClick={() => {
                 saveToCollectionClick()
-            }}>Save to My Collection!</button>
+                window.location.reload(false)
+            }}>Save to My Collection!</Button>
         </div>
         )
 
