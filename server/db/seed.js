@@ -2,15 +2,15 @@ const { User } = require('./index');
 
 User.bulkCreate([
   {
-    "googleId": "101479092095278466317",
-    "displayName": "Peyton Owen"
+    "googleId": "real googleId",
+    "displayName": "real google displayName"
   },
   {
-    "googleId": "108936761342435594432",
+    "googleId": "real googleId",
     "displayName": "Ky P."
   },
   {
-    "googleId": "111034008390782399142",
+    "googleId": "real googleId",
     "displayName": "Patrick Henry"
   },
 ]);
