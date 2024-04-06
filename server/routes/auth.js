@@ -23,14 +23,16 @@ passport.use(new GoogleStrategy(
   {
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: `http://${devOrProd()}:8080/auth/google/callback`
+    callbackURL: `http://${devOrProd()}:8080/auth/google/callback`,
   },
   ((accessToken, refreshToken, profile, cb) => {
     // console.log(profile);
     // console.log('access token: ', accessToken);
     // console.log('refresh token: ', refreshToken); // undefined
+
+    // get partners to send there id and displayName to fill out your seed file
     const { id, displayName } = profile;
-    User.findOrCreate({ where: { googleId: profile.id, displayName } })
+    User.findOrCreate({ where: { googleId: id, displayName } })
       .then((user) => {
         cb(null, user);
       })
