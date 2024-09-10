@@ -1,5 +1,4 @@
-import React from 'react';
-import { Component } from 'react';
+import React, { Component } from 'react';
 
 class Search extends Component {
   constructor(props) {
@@ -9,14 +8,14 @@ class Search extends Component {
     };
   }
 
-  handleChange = (e) => {
+  handleChange(e) {
     this.setState({ searchedDrink: e.target.value });
-  };
+  }
 
-  handleSearch = (e) => {
+  handleSearch(e) {
     e.preventDefault();
     this.props.onSearch(this.state.searchedDrink);
-  };
+  }
 
   render() {
     return (

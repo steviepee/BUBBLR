@@ -1,18 +1,18 @@
 /* eslint-disable jsx-quotes */
 import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import { Routes, Route } from 'react-router-dom';
 import Profile from './Profile.jsx';
 import Login from './Login.jsx';
 import NotFound from './NotFound.jsx';
 import Homepage from './Homepage.jsx';
-import EstDrinkPage from './homepageChildren/EstDrinkPage';
+import EstDrinkPage from './homepageChildren/EstDrinkPage.jsx';
 import CreationStation from './CreationStation.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FilteredPageHandler from './homepageChildren/FilteredPageHandler.jsx';
 import Community from './Community.jsx';
 import NavFilter from './homepageChildren/NavFilter.jsx';
 import FriendProfile from './profileChildren/FriendProfile.jsx';
+import BarHop from './BarHop.jsx';
 
 function App() {
   return (
@@ -27,6 +27,7 @@ function App() {
         <Route path='/estdrink/:id' element={<EstDrinkPage />} />
         <Route path='/dashboard' element={<h1>Dash</h1>} />
         <Route path='/profile' element={<Profile />} />
+        <Route path='/bar-hop' element={<BarHop />} />
         <Route path='/creationStation' element={<CreationStation />} />
         <Route path='*' element={<NotFound />} />
         <Route path='/community' element={<Community />} />
