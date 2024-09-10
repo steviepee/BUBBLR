@@ -25,15 +25,12 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/home/*' element={<Homepage />} />
         <Route path='/estdrink/:id' element={<EstDrinkPage />} />
-        <Route path='/dashboard' element={<h1>Dash</h1>} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/bar-hop' element={<BarHop />} />
         <Route path='/creationStation' element={<CreationStation />} />
-        <Route path='*' element={<NotFound />} />
         <Route path='/community' element={<Community />} />
         <Route path='/filtered/:filter/*' element={<FilteredPageHandler />} />
         <Route path='/profile/friend/:id' element={<FriendProfile />} />
-        <Route path='*' element={<NotFound />} />
       </Routes>
     </>
   );

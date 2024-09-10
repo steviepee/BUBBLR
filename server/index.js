@@ -3,9 +3,8 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
-const { User, customDrinks, estDrinks } = require('../server/db/index');
 const axios = require('axios');
-
+const { User, customDrinks, estDrinks } = require('./db/index');
 
 const authRouter = require('./routes/auth');
 const profileRouter = require('./routes/profile');
@@ -14,20 +13,14 @@ require('dotenv').config();
 // MIDDLEWARES
 const app = express();
 app.set('view engine', 'ejs');
-// app.set('view engine', 'jsx');
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(
-  session({
-    secret: 'bubblr',
-    resave: false,
-    saveUninitialized: true,
-    // trying an atricle adonis sent: https://medium.com/@mohan.velegacherla/how-to-setup-passport-authentication-in-node-js-with-example-using-express-js-bf44a51e8ca0
-    // saveUninitialized: false,
-    cookie: { secure: false },
-  }),
-);
+app.use(session({
+  secret: 'bubblr',
+  resave: false,
+  saveUninitialized: false,
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -122,7 +115,7 @@ app.delete('/profile/unfollow', (req, res) => {
     .catch((err) => console.error('failed to unfollow user: ', err));
 });
 
-//get all custom saved custom drinks
+// get all custom saved custom drinks
 app.get('/api/customDrinks', (req, res) => {
   customDrinks
     .findAll()
@@ -134,7 +127,7 @@ app.get('/api/customDrinks', (req, res) => {
       res.sendStatus(500);
     });});
 
-//get list of all possible drink ingredients
+// get list of all possible drink ingredients
 app.get('/api/getIngredients', (req, res) => {
   axios
     .get('https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list')
@@ -147,7 +140,7 @@ app.get('/api/getIngredients', (req, res) => {
     });
 });
 
-//post a custom drink to the database
+// post a custom drink to the database
 app.post('/api/customDrinks', (req, res) => {
   data = req.body;
   customDrinks
@@ -193,15 +186,6 @@ app.get('*', (req, res) => {
   // console.log('trying to find full url', req.hostname);
   res.sendFile(path.join(CLIENT_PATH, 'index.html'));
 });
-
-// app.post('/logout', (req, res) => {
-//   req.logOut((err) => {
-//     if (err) { return next(err); }
-//     res.redirect('/');
-//   });
-//   res.redirect('/login');
-//   console.log('-------> User Logged out');
-// });
 
 const PORT = 8080;
 
