@@ -1,41 +1,89 @@
-/* eslint-disable jsx-quotes */
-import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState, useEffect } from 'react';
+import {
+  Navigate,
+  Routes,
+  Route,
+  useNavigate,
+} from 'react-router-dom';
+import axios from 'axios';
 import Profile from './Profile.jsx';
 import Login from './Login.jsx';
-import NotFound from './NotFound.jsx';
 import Homepage from './Homepage.jsx';
-import EstDrinkPage from './homepageChildren/EstDrinkPage';
+import EstDrinkPage from './homepageChildren/EstDrinkPage.jsx';
 import CreationStation from './CreationStation.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FilteredPageHandler from './homepageChildren/FilteredPageHandler.jsx';
 import Community from './Community.jsx';
 import NavFilter from './homepageChildren/NavFilter.jsx';
 import FriendProfile from './profileChildren/FriendProfile.jsx';
+import BarHop from './BarHop.jsx';
 
-function App() {
+const App = () => {
+  const [isAuth, setIsAuth] = useState(false);
+  const [userProfile, setUserProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get('/auth/check-auth');
+        setIsAuth(response.data.isAuthenticated);
+
+        if (response.data.isAuthenticated) {
+          const profileResponse = await axios.get('/auth/me');
+          setUserProfile(profileResponse.data);
+        } else {
+          setUserProfile(null);
+        }
+      } catch (error) {
+        setIsAuth(false);
+        throw new Error('Error checking auth', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkAuth();
+  }, []);
+
+  const ProtectedRoute = ({ children }) => {
+    if (!isAuth) {
+      return <Navigate to='/' replace />;
+    }
+    return children;
+  };
+
+  if (loading) {
+    return <div>Loading... Please wait</div>;
+  }
+
+  const handleLogout = async () => {
+    try {
+      await axios.post('/logout');
+      setIsAuth(false);
+      setUserProfile(null);
+      navigate('/');
+    } catch (error) {
+      throw new Error('Error during logout:', error);
+    }
+  };
+
   return (
     <>
-      <nav>
-        <NavFilter />
-      </nav>
+      {isAuth && <NavFilter onLogout={handleLogout}/>}
       <Routes>
-        <Route path='/' element={<Login />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/home/*' element={<Homepage />} />
-        <Route path='/estdrink/:id' element={<EstDrinkPage />} />
-        <Route path='/dashboard' element={<h1>Dash</h1>} />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/creationStation' element={<CreationStation />} />
-        <Route path='*' element={<NotFound />} />
-        <Route path='/community' element={<Community />} />
-        <Route path='/filtered/:filter/*' element={<FilteredPageHandler />} />
-        <Route path='/profile/friend/:id' element={<FriendProfile />} />
-        <Route path='*' element={<NotFound />} />
+        <Route path='/' element={!isAuth ? <Login /> : <Navigate to='/home' replace />} />
+        <Route path='/home' element={<ProtectedRoute><Homepage /></ProtectedRoute>} />
+        <Route path='/estdrink/:id' element={<ProtectedRoute><EstDrinkPage /></ProtectedRoute>} />
+        <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path='/bar-hop' element={<ProtectedRoute><BarHop /></ProtectedRoute>} />
+        <Route path='/creationStation' element={<ProtectedRoute><CreationStation /></ProtectedRoute>} />
+        <Route path='/community' element={<ProtectedRoute><Community /></ProtectedRoute>} />
+        <Route path='/filtered/:filter/*' element={<ProtectedRoute><FilteredPageHandler /></ProtectedRoute>} />
+        <Route path='/profile/friend/:id' element={<ProtectedRoute><FriendProfile /></ProtectedRoute>} />
       </Routes>
     </>
   );
-}
+};
 
 export default App;

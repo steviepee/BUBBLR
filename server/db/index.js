@@ -7,16 +7,25 @@ const sequelize = new Sequelize('bubblr', 'root', '', {
   logging: false,
 });
 
+// User model
 const User = sequelize.define('User', {
-  // Model attributes are defined here
-  googleId: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  displayName: {
-    type: DataTypes.STRING,
-  },
+  googleId: { type: DataTypes.STRING, allowNull: false, unique: true },
+  nameFirst: DataTypes.STRING,
+  nameLast: DataTypes.STRING,
+  email: DataTypes.STRING,
 });
+
+// Event model
+const Event = sequelize.define('Event', {
+  name: { type: DataTypes.STRING, allowNull: false },
+});
+
+User.hasMany(Event, { foreignKey: 'userId', as: 'events' });
+Event.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+
+sequelize.sync({ alter: true })
+  .then(() => console.log('synced'))
+  .catch((err) => console.error('Error syncing', err));
 
 User.sync()
   .catch((err) => console.error(err));
@@ -40,8 +49,6 @@ const UserFriends = sequelize.define('UserFriends', {
 
 UserFriends.sync()
   .catch((err) => console.error('Failed syncing UserFriends: ', err));
-
-
 
   const customDrinks = sequelize.define('customDrinks', {
     userId: {
@@ -108,13 +115,14 @@ UserFriends.sync()
         type: DataTypes.STRING
       }
     })
-    
+
     estDrinks.sync()
       .catch((err) => console.error('Failed syncing estDrinks: ', err));
-   
+
 module.exports = {
   User,
-  UserFriends, 
+  Event,
+  UserFriends,
   customDrinks,
   estDrinks,
 };

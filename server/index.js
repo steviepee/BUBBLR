@@ -1,11 +1,10 @@
+/* eslint-disable no-console */
 const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
-const cookieParser = require('cookie-parser');
-const { User, customDrinks, estDrinks } = require('../server/db/index');
 const axios = require('axios');
-
+const { User, customDrinks, estDrinks } = require('./db/index');
 
 const authRouter = require('./routes/auth');
 const profileRouter = require('./routes/profile');
@@ -14,20 +13,13 @@ require('dotenv').config();
 // MIDDLEWARES
 const app = express();
 app.set('view engine', 'ejs');
-// app.set('view engine', 'jsx');
 app.use(express.json());
-app.use(cookieParser());
 
-app.use(
-  session({
-    secret: 'bubblr',
-    resave: false,
-    saveUninitialized: true,
-    // trying an atricle adonis sent: https://medium.com/@mohan.velegacherla/how-to-setup-passport-authentication-in-node-js-with-example-using-express-js-bf44a51e8ca0
-    // saveUninitialized: false,
-    cookie: { secure: false },
-  }),
-);
+app.use(session({
+  secret: 'bubblr',
+  resave: false,
+  saveUninitialized: false,
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -44,21 +36,18 @@ app.use('/profile', profileRouter);
 // app.use('/api', apiRouter);
 
 // ROUTES FOR THIS FILE
-app.get('/dashboard', (req, res) => {
-  // res.cookies()
-  res.render(path.join(__dirname, '../client/views/dashboard.ejs'), {
-    url: '/dashboard',
-  });
-});
-app.post('/logout', (req, res, next) => {
-  req.logOut((err) => {
+app.post('/logout', (req, res) => {
+  req.logout((err) => {
     if (err) {
-      return next(err);
+      return res.status(500).json({ message: 'Error logging out' });
     }
-    res.redirect('/login');
+    req.session.destroy((error) => {
+      if (error) {
+        return res.status(500).json({ message: 'Error destroying session' });
+      }
+      res.status(200).json({ message: 'Logged out successfully' });
+    });
   });
-  // res.redirect('/login');
-  // console.log('-------> User Logged out');
 });
 
 // for getting user info from db
@@ -122,19 +111,19 @@ app.delete('/profile/unfollow', (req, res) => {
     .catch((err) => console.error('failed to unfollow user: ', err));
 });
 
-//get all custom saved custom drinks
+// get all custom saved custom drinks
 app.get('/api/customDrinks', (req, res) => {
-  customDrinks
-    .findAll()
+  customDrinks.findAll()
     .then((results) => {
       res.status(200).send(results);
     })
     .catch((err) => {
       console.error(err);
       res.sendStatus(500);
-    });});
+    });
+});
 
-//get list of all possible drink ingredients
+// get list of all possible drink ingredients
 app.get('/api/getIngredients', (req, res) => {
   axios
     .get('https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list')
@@ -147,9 +136,9 @@ app.get('/api/getIngredients', (req, res) => {
     });
 });
 
-//post a custom drink to the database
+// post a custom drink to the database
 app.post('/api/customDrinks', (req, res) => {
-  data = req.body;
+  const data = req.body;
   customDrinks
     .create(data)
     .then(() => {
@@ -163,8 +152,7 @@ app.post('/api/customDrinks', (req, res) => {
 
 // add to db only when drink info is 'got'
 app.post('/api/estDrinks', async (req, res) => {
-  console.log(req.body);
-  let data = req.body;
+  const data = req.body;
 
   estDrinks
     .findOne({ where: { drinkId: data.drinkId } })
@@ -190,18 +178,8 @@ app.post('/api/estDrinks', async (req, res) => {
 });
 
 app.get('*', (req, res) => {
-  // console.log('trying to find full url', req.hostname);
   res.sendFile(path.join(CLIENT_PATH, 'index.html'));
 });
-
-// app.post('/logout', (req, res) => {
-//   req.logOut((err) => {
-//     if (err) { return next(err); }
-//     res.redirect('/');
-//   });
-//   res.redirect('/login');
-//   console.log('-------> User Logged out');
-// });
 
 const PORT = 8080;
 
@@ -213,6 +191,5 @@ const devOrProd = () => {
 };
 
 app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
   console.info(`Server listening on http://${devOrProd()}:${PORT}`);
 });

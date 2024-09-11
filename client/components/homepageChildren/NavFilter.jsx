@@ -1,11 +1,14 @@
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable jsx-quotes */
 import React, { useEffect, useState } from 'react';
-import { Navbar, Container, NavDropdown, Nav } from 'react-bootstrap';
+import {
+  Navbar,
+  Container,
+  Nav,
+  NavDropdown,
+} from 'react-bootstrap';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
 
-function NavFilter() {
+function NavFilter({ onLogout }) {
   const location = useLocation();
   const [filters, setFilters] = useState({
     categories: [],
@@ -34,11 +37,13 @@ function NavFilter() {
         }),
       )
       .catch((error) => {
+        // eslint-disable-next-line no-console
         console.error('Error fetching filters:', error);
       });
   }, []);
 
   const onHomepage = location.pathname === '/home';
+  const onProfile = location.pathname === '/profile';
 
   return (
     <Navbar expand='lg' className='bg-body-tertiary'>
@@ -82,9 +87,17 @@ function NavFilter() {
             <Nav.Link as={Link} to='/community'>
               Community
             </Nav.Link>
+            <Nav.Link as={Link} to='/bar-hop'>
+              Bar Hop
+            </Nav.Link>
             <Nav.Link as={Link} to='/creationStation'>
               Creation Station
             </Nav.Link>
+            {onProfile && (
+              <Nav.Link onClick={onLogout}>
+                Logout
+              </Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
