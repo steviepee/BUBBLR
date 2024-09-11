@@ -21,8 +21,6 @@ passport.use(new GoogleStrategy({
   clientSecret: `${GOOGLE_CLIENT_SECRET}`,
   callbackURL: `http://${devOrProd()}:8080/auth/google/callback`,
 }, (accessToken, refreshToken, profile, cb) => {
-  console.log(profile)
-
   User.findOrCreate({
     where: { googleId: profile.id },
     defaults: {
@@ -55,11 +53,36 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
+const isAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.status(401).json({ message: 'Not authenticated' });
+};
+
+router.get('/me', isAuthenticated, async (req, res) => {
+  try {
+    const user = await User.findAll({ googleId: req.user.googleId });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 router.get('/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 
 router.get('/google/callback', passport.authenticate('google', {
   successRedirect: '/home',
-  failureRedirect: '/login',
+  failureRedirect: '/',
 }));
+
+router.get('/check-auth', (req, res) => {
+  res.json({ isAuthenticated: req.isAuthenticated(), user: req.user });
+});
 
 module.exports = router;

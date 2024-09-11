@@ -8,7 +8,7 @@ import {
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
 
-function NavFilter() {
+function NavFilter({ onLogout }) {
   const location = useLocation();
   const [filters, setFilters] = useState({
     categories: [],
@@ -43,6 +43,7 @@ function NavFilter() {
   }, []);
 
   const onHomepage = location.pathname === '/home';
+  const onProfile = location.pathname === '/profile';
 
   return (
     <Navbar expand='lg' className='bg-body-tertiary'>
@@ -92,6 +93,11 @@ function NavFilter() {
             <Nav.Link as={Link} to='/creationStation'>
               Creation Station
             </Nav.Link>
+            {onProfile && (
+              <Nav.Link onClick={onLogout}>
+                Logout
+              </Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
