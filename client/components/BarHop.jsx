@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
   Accordion,
   Button,
@@ -10,34 +11,39 @@ import {
   ListGroup,
   Row,
 } from 'react-bootstrap';
+import '../styling/BarHop.css';
 
 const BarHop = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [eventName, setEventName] = useState('');
   const [selectedBars, setSelectedBars] = useState([]);
   const [userEvents, setUserEvents] = useState([]);
-  // eslint-disable-next-line no-unused-vars
-  const [availableBars, setAvailableBars] = useState([
-    {
-      id: 1,
-      name: 'Bar One',
-      description: 'A great place to start your night.',
-      imageUrl: 'bar-one-image-url',
-    },
-    {
-      id: 2,
-      name: 'Bar Two',
-      description: 'Known for amazing cocktails.',
-      imageUrl: 'bar-two-image-url',
-    },
-  ]);
+  const [availableBars, setAvailableBars] = useState([]);
 
+  const fetchBars = async (query) => {
+    if (!query);
+    try {
+      const response = await axios.get('/api/bars', {
+        params: { query },
+      });
+
+      console.log('data', response.data);
+      setAvailableBars(response.data.data);
+    } catch (error) {
+      console.error('Error fetching bars:', error);
+    }
+  };
+  console.log('bars', availableBars);
   const handleEventNameChange = (e) => setEventName(e.target.value);
-  const handleSearchChange = (e) => setSearchQuery(e.target.value);
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    fetchBars(e.target.value);
+  };
 
   const handleAddBar = (bar) => {
     if (!selectedBars.includes(bar)) {
       setSelectedBars([...selectedBars, bar]);
+      setSearchQuery('');
     }
   };
 
@@ -58,10 +64,6 @@ const BarHop = () => {
     setUserEvents(userEvents.filter((event) => event.id !== eventId));
   };
 
-  const filteredBars = availableBars.filter(
-    (bar) => bar.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
-
   return (
     <Container className="mt-4">
       {/* Search Bar */}
@@ -79,14 +81,14 @@ const BarHop = () => {
       {searchQuery && (
         <Row className="mb-4">
           <h5>Available Bars</h5>
-          {filteredBars.length > 0 ? (
-            filteredBars.map((bar) => (
+          {availableBars.length > 0 ? (
+            availableBars.map((bar) => (
               <Col md={4} className="mb-4" key={bar.id}>
-                <Card>
-                  <Card.Img variant="top" src={bar.imageUrl} alt={`${bar.name} image`} />
+                <Card className='bar-card'>
+                  <Card.Img variant="top" src={bar.photos_sample[0].photo_url} alt={`${bar.name} image`} />
                   <Card.Body>
                     <Card.Title>{bar.name}</Card.Title>
-                    <Card.Text>{bar.description}</Card.Text>
+                    <Card.Text>{bar.about.summary}</Card.Text>
                     <Button variant="primary" onClick={() => handleAddBar(bar)}>Add to Event</Button>
                   </Card.Body>
                 </Card>

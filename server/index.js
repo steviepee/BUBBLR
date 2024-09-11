@@ -8,11 +8,11 @@ const { User, customDrinks, estDrinks } = require('./db/index');
 
 const authRouter = require('./routes/auth');
 const profileRouter = require('./routes/profile');
+const barsRouter = require('./routes/bars');
 require('dotenv').config();
 
 // MIDDLEWARES
 const app = express();
-app.set('view engine', 'ejs');
 app.use(express.json());
 
 app.use(session({
@@ -31,11 +31,11 @@ app.use(express.static(CLIENT_PATH));
 // ROUTER SENDING TO WHEREVER
 app.use('/auth', authRouter);
 app.use('/profile', profileRouter);
-
-// ROUTER SENDING TO WHEREVER
-// app.use('/api', apiRouter);
+app.use('/api/bars', barsRouter);
 
 // ROUTES FOR THIS FILE
+
+// Logout Route for users
 app.post('/logout', (req, res) => {
   req.logout((err) => {
     if (err) {
