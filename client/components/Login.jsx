@@ -7,10 +7,10 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('/api/check-auth')
+    axios.get('/auth/check-auth')
       .then(({ isAuthenticated }) => {
         if (isAuthenticated) {
-          navigate('/');
+          navigate('/home');
         }
       })
       .catch((err) => console.error('Error checking auth', err));
