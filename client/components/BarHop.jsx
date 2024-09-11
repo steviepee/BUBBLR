@@ -83,11 +83,17 @@ const BarHop = () => {
           <h5>Available Bars</h5>
           {availableBars.length > 0 ? (
             availableBars.map((bar) => (
-              <Col md={4} className="mb-4" key={bar.id}>
+              <Col md={4} className="mb-4" key={bar.google_id}>
                 <Card className='bar-card'>
                   <Card.Img variant="top" src={bar.photos_sample[0].photo_url} alt={`${bar.name} image`} />
                   <Card.Body>
                     <Card.Title>{bar.name}</Card.Title>
+                    <Card.Subtitle>
+                      <>
+                        {bar.street_address}<br />
+                        {bar.city}, {bar.state} {bar.zipcode}
+                      </>
+                    </Card.Subtitle>
                     <Card.Text>{bar.about.summary}</Card.Text>
                     <Button variant="primary" onClick={() => handleAddBar(bar)}>Add to Event</Button>
                   </Card.Body>
@@ -117,19 +123,20 @@ const BarHop = () => {
             </Button>
           </Form>
         </Col>
-        <Col md={6}>
-          <h5>Selected Bars for Event</h5>
-          <ul className="list-group">
-            {selectedBars.map((bar) => (
-              <li key={bar.id} className="list-group-item d-flex justify-content-between align-items-center">
-                {bar.name}
-                <Button variant="danger" size="sm" onClick={() => handleRemoveBar(bar.id)}>Remove</Button>
-              </li>
-            ))}
-          </ul>
-        </Col>
+        {selectedBars.length > 0 && (
+          <Col md={6}>
+            <h5>Selected Bars for Event</h5>
+            <ul className="list-group">
+              {selectedBars.map((bar) => (
+                <li key={bar.id} className="list-group-item d-flex justify-content-between align-items-center">
+                  {bar.name}
+                  <Button variant="danger" size="sm" onClick={() => handleRemoveBar(bar.id)}>Remove</Button>
+                </li>
+              ))}
+            </ul>
+          </Col>
+        )}
       </Row>
-
       {/* User Events */}
       <Row>
         <h4>Your Events</h4>
