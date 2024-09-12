@@ -1,0 +1,33 @@
+.bar-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.bar-card img {
+  max-height: 200px;
+  object-fit: cover;
+}
+
+.bar-card .card-body {
+  flex: 1;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .bar-card img {
+    max-height: 150px;
+  }
+}
