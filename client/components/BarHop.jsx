@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable no-alert */
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Accordion,
@@ -20,6 +21,19 @@ const BarHop = () => {
   const [userEvents, setUserEvents] = useState([]);
   const [availableBars, setAvailableBars] = useState([]);
 
+  useEffect(() => {
+    const fetchUserEvents = async () => {
+      try {
+        const response = await axios.get('/events');
+
+        setUserEvents(response.data);
+      } catch (error) {
+        throw new Error('Error fetching events', error);
+      }
+    };
+    fetchUserEvents();
+  }, []);
+
   const fetchBars = async (query) => {
     if (!query);
     try {
@@ -27,13 +41,24 @@ const BarHop = () => {
         params: { query },
       });
 
-      console.log('data', response.data);
       setAvailableBars(response.data.data);
     } catch (error) {
-      console.error('Error fetching bars:', error);
+      throw new Error('Error fetching bars:', error);
     }
   };
-  console.log('bars', availableBars);
+
+  const handleDeleteEvent = async (eventId) => {
+    try {
+      await axios.delete(`/events/${eventId}`);
+
+      setUserEvents(userEvents.filter((event) => event.id !== eventId));
+      alert('Event Removed');
+    } catch (error) {
+      alert('Failed to remove event');
+      throw new Error('Error removing event', error);
+    }
+  };
+
   const handleEventNameChange = (e) => setEventName(e.target.value);
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -51,17 +76,26 @@ const BarHop = () => {
     setSelectedBars(selectedBars.filter((bar) => bar.id !== barId));
   };
 
-  const handleSubmitEvent = () => {
-    // eslint-disable-next-line no-alert
-    alert('Event Created');
-    const newEvent = { id: Date.now(), name: eventName, bars: selectedBars };
-    setUserEvents([...userEvents, newEvent]);
-    setEventName('');
-    setSelectedBars([]);
-  };
+  const handleSubmitEvent = async () => {
+    const barDetails = selectedBars.map((bar) => ({
+      name: bar.name,
+      city: bar.city,
+      state: bar.state,
+      zipcode: bar.zipcode,
+    }));
+    const newEvent = { name: eventName, bars: barDetails };
 
-  const handleDeleteEvent = (eventId) => {
-    setUserEvents(userEvents.filter((event) => event.id !== eventId));
+    try {
+      const response = await axios.post('/events', newEvent);
+
+      setUserEvents([...userEvents, response.data]);
+      setEventName('');
+      setSelectedBars([]);
+      alert('Event Created');
+    } catch (error) {
+      alert('Failed to save event');
+      throw new Error('Error saving event', error);
+    }
   };
 
   return (
@@ -148,7 +182,7 @@ const BarHop = () => {
                 <Accordion.Body>
                   <h6>Bars for Event:</h6>
                   <ListGroup>
-                    {event.bars.map((bar) => (
+                    {event.Bars.map((bar) => (
                       <ListGroup.Item key={bar.id}>{bar.name}</ListGroup.Item>
                     ))}
                   </ListGroup>

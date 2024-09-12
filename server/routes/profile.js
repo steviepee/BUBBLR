@@ -1,10 +1,14 @@
+/* eslint-disable no-console */
 const express = require('express');
 
 const router = express.Router();
 
 const { Op } = require('sequelize');
 const {
-  UserFriends, User, customDrinks, estDrinks,
+  UserFriends,
+  User,
+  customDrinks,
+  estDrinks,
 } = require('../db/index');
 
 // this grabs a users friends when opening profile, not able to do in one query...
@@ -15,7 +19,6 @@ router.get('/friends/:id', (req, res) => {
     where: { friend1Id: id },
     raw: true,
   })
-    // eslint-disable-next-line consistent-return
     .then((arrFriend2IdObj) => {
       if (arrFriend2IdObj) {
         const userIdArr = [];
