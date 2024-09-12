@@ -1,6 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
 
-// Option 3: Passing parameters separately (other dialects)
 const sequelize = new Sequelize('bubblr', 'root', '', {
   host: 'localhost',
   dialect: 'mysql',
@@ -20,8 +19,19 @@ const Event = sequelize.define('Event', {
   name: { type: DataTypes.STRING, allowNull: false },
 });
 
+// Bar model
+const Bar = sequelize.define('Bar', {
+  name: { type: DataTypes.STRING, allowNull: false, unique: true },
+  city: DataTypes.STRING,
+  state: DataTypes.STRING,
+  zipcode: DataTypes.STRING,
+});
+
 User.hasMany(Event, { foreignKey: 'userId', as: 'events' });
 Event.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+
+Event.belongsToMany(Bar, { through: 'EventBars' });
+Bar.belongsToMany(Event, { through: 'EventBars' });
 
 sequelize.sync({ alter: true })
   .then(() => console.log('synced'))
@@ -122,6 +132,7 @@ UserFriends.sync()
 module.exports = {
   User,
   Event,
+  Bar,
   UserFriends,
   customDrinks,
   estDrinks,

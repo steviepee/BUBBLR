@@ -9,6 +9,7 @@ const { User, customDrinks, estDrinks } = require('./db/index');
 const authRouter = require('./routes/auth');
 const profileRouter = require('./routes/profile');
 const barsRouter = require('./routes/bars');
+const eventsRouter = require('./routes/events');
 require('dotenv').config();
 
 // MIDDLEWARES
@@ -32,6 +33,7 @@ app.use(express.static(CLIENT_PATH));
 app.use('/auth', authRouter);
 app.use('/profile', profileRouter);
 app.use('/api/bars', barsRouter);
+app.use('/events', eventsRouter);
 
 // ROUTES FOR THIS FILE
 
