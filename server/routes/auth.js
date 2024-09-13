@@ -31,9 +31,7 @@ passport.use(new GoogleStrategy({
       email: profile.emails[0].value,
     },
   })
-    .then(([user, created]) => {
-      console.log('User found or created:', user);
-      console.log('Was a new user created?', created);
+    .then(([user]) => {
       cb(null, user);
     })
     .catch((err) => {
