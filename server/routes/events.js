@@ -15,7 +15,6 @@ events.get('/', async (req, res) => {
         through: { attributes: [] },
       },
     });
-    console.log('Events found:', storedEvents);
 
     res.status(200).json(storedEvents);
   } catch (error) {
@@ -30,7 +29,6 @@ events.post('/', async (req, res) => {
   const userId = req.user.id;
 
   try {
-    console.log('Request body:', req.body);
     const newEvent = await Event.create({ name, userId });
     const barPromises = bars.map(async (bar) => {
       let storedBar = await Bar.findOne({ where: { name: bar.name } });
