@@ -10,6 +10,7 @@ const authRouter = require('./routes/auth');
 const profileRouter = require('./routes/profile');
 const barsRouter = require('./routes/bars');
 const eventsRouter = require('./routes/events');
+const drinksRouter = require('./routes/drinks');
 require('dotenv').config();
 
 // MIDDLEWARES
@@ -34,7 +35,7 @@ app.use('/auth', authRouter);
 app.use('/profile', profileRouter);
 app.use('/api/bars', barsRouter);
 app.use('/events', eventsRouter);
-
+app.use('/api/drinks', drinksRouter);
 // ROUTES FOR THIS FILE
 
 // Logout Route for users

@@ -1,14 +1,11 @@
 import React from 'react';
-import DrinkTags from './DrinkTags.jsx';
 import { Card, ListGroup } from 'react-bootstrap';
 import Rating from 'react-rating';
 
-function DrinkEntry({ currDrink, tags }) {
-  const { strIngredient1, strIngredient2, strIngredient3, comments, ratings } = currDrink;
+function DrinkEntry({ drink }) {
+  const { strIngredient1, strIngredient2, strIngredient3, strDrinkThumb, strDrink, strCategory, strGlass, ratings, comments } = drink;
   const threeMainIngredients = [strIngredient1, strIngredient2];
-  console.log('My data:', {comments, ratings})
-  console.log('current Drink:', currDrink)
-  if (strIngredient3 !== null) {
+  if (strIngredient3) {
     threeMainIngredients.push(strIngredient3);
   }
 
@@ -23,19 +20,17 @@ function DrinkEntry({ currDrink, tags }) {
       <Card.Body>
         <Card.Img
           variant='top'
-          src={currDrink.strDrinkThumb}
+          src={strDrinkThumb}
           style={{ width: '160px', height: '160px' }}
         />
-        <Card.Title>{currDrink.strDrink}</Card.Title>
+        <Card.Title>{strDrink}</Card.Title>
         <Card.Subtitle className='mb-2 text-secondary'>
-          {currDrink.strCategory}
+          {strCategory}
         </Card.Subtitle>
         <Card.Subtitle className='mb-2 text-secondary'>
-          {currDrink.strGlass}
+          {strGlass}
         </Card.Subtitle>
-        <Card.Text>
-          {threeMainIngredients.join(', ')}
-        </Card.Text>
+        <Card.Text>{threeMainIngredients.join(', ')}</Card.Text>
 
         {/* Display Ratings */}
         {ratings != null && (
