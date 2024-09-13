@@ -58,7 +58,6 @@ app.get('/profile/:id', (req, res) => {
   const { id } = req.params;
   User.findByPk(id)
     .then((userObj) => {
-      // console.log('find by pk result', userObj);
       res.send(userObj);
     })
     .catch((err) => {
@@ -102,7 +101,6 @@ app.post('/profile/follow', (req, res) => {
   const { id, idFollow } = req.body;
   // currently is creating even if exists
   UserFriends.create({ friend1Id: id, friend2Id: idFollow })
-    // .then((response) => console.log(response))
     .then(() => res.sendStatus(200))
     .catch((err) => console.error('failed following: ', err));
 });

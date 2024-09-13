@@ -32,8 +32,6 @@ passport.use(new GoogleStrategy({
     },
   })
     .then(([user, created]) => {
-      console.log('User found or created:', user);
-      console.log('Was a new user created?', created);
       cb(null, user);
     })
     .catch((err) => {
@@ -64,7 +62,7 @@ const isAuthenticated = (req, res, next) => {
 
 router.get('/me', isAuthenticated, async (req, res) => {
   try {
-    const user = await User.findAll({ googleId: req.user.googleId });
+    const user = await User.findAll({ where: { googleId: req.user.googleId } });
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
