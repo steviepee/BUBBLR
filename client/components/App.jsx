@@ -11,12 +11,12 @@ import Login from './Login.jsx';
 import Homepage from './Homepage.jsx';
 import EstDrinkPage from './homepageChildren/EstDrinkPage.jsx';
 import CreationStation from './CreationStation.jsx';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import FilteredPageHandler from './homepageChildren/FilteredPageHandler.jsx';
 import Community from './Community.jsx';
 import NavFilter from './homepageChildren/NavFilter.jsx';
 import FriendProfile from './profileChildren/FriendProfile.jsx';
 import BarHop from './BarHop.jsx';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
@@ -68,8 +68,14 @@ const App = () => {
     }
   };
 
+  const appStyle = {
+    minHeight: '100vh',
+    background: 'linear-gradient(135deg, #000000, #434343)',
+    color: '#ffffff',
+  };
+
   return (
-    <>
+    <div style={appStyle}>
       {isAuth && <NavFilter onLogout={handleLogout}/>}
       <Routes>
         <Route path='/' element={!isAuth ? <Login /> : <Navigate to='/home' replace />} />
@@ -82,7 +88,7 @@ const App = () => {
         <Route path='/filtered/:filter/*' element={<ProtectedRoute><FilteredPageHandler /></ProtectedRoute>} />
         <Route path='/profile/friend/:id' element={<ProtectedRoute><FriendProfile /></ProtectedRoute>} />
       </Routes>
-    </>
+    </div>
   );
 };
 

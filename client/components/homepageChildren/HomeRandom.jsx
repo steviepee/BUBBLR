@@ -1,8 +1,7 @@
-import React from 'react';
-import { Component } from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Spinner, Card } from 'react-bootstrap';
+import { Card, Spinner } from 'react-bootstrap';
 
 class HomeRandom extends Component {
   constructor(props) {
@@ -20,12 +19,12 @@ class HomeRandom extends Component {
         this.setState({ randomDrink: rand.data.drinks[0], glitchPH: false });
       })
       .catch((err) => {
-        console.error('Error getting drink pick', err);
+        throw new Error('Error getting drink pick', err);
       });
   }
 
   render() {
-    let { glitchPH } = this.state;
+    const { glitchPH } = this.state;
     if (glitchPH) {
       return (
         <Spinner animation='border' role='status'>
@@ -33,14 +32,14 @@ class HomeRandom extends Component {
         </Spinner>
       );
     }
-    let { randomDrink } = this.state;
+    const { randomDrink } = this.state;
 
     return (
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Card
           style={{
             width: '22rem',
-            backgroundColor: '#6b0042',
+            background: 'linear-gradient(135deg, #6b0042, #8e2b73)',
             color: '#ffba0f',
           }}
           className='text-center'
@@ -60,6 +59,7 @@ class HomeRandom extends Component {
                   maxHeight: '15rem',
                   maxWidth: '100%',
                   margin: '0 auto',
+                  borderRadius: '15px',
                 }}
                 alt={randomDrink && randomDrink.strDrink}
               />
@@ -73,11 +73,5 @@ class HomeRandom extends Component {
     );
   }
 }
-
-// function HomeRandom() {
-//     return (
-//         <h4>Bubblr Picks</h4>
-//     )
-// }
 
 export default HomeRandom;

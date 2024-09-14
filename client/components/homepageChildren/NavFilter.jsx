@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import axios from 'axios';
 import {
   Navbar,
   Container,
   Nav,
   NavDropdown,
 } from 'react-bootstrap';
-import axios from 'axios';
-import { Link, useLocation } from 'react-router-dom';
+import '../../styling/NavFilter.css';
 
 function NavFilter({ onLogout }) {
   const location = useLocation();
@@ -46,7 +47,7 @@ function NavFilter({ onLogout }) {
   const onProfile = location.pathname === '/profile';
 
   return (
-    <Navbar expand='lg' className='bg-body-tertiary'>
+    <Navbar expand='lg' className='custom-navbar'>
       <Container>
         <Navbar.Brand as={Link} to='/home'>
           Bubblr
