@@ -36,7 +36,7 @@ class Community extends React.Component {
   };
 
   renderAlphabetButtons = () => {
-    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTVWYZ'.split('');
     return alphabet.map((letter) => (
       <Button
         key={letter}

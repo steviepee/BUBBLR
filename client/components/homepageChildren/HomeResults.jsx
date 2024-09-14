@@ -13,7 +13,7 @@ class HomeResults extends React.Component {
           {results.map((drink) => (
             <Col key={drink.idDrink}>
               <Link to={`/estdrink/${drink.idDrink}`}>
-                <DrinkEntry currDrink={drink} />
+                <DrinkEntry drink={drink} />
               </Link>
             </Col>
           ))}
