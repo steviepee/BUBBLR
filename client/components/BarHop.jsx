@@ -81,7 +81,10 @@ const BarHop = () => {
   };
 
   return (
-    <Container className="mt-4">
+    <Container className="mt-4" style={{
+      background: 'linear-gradient(135deg, #6b0042, #ffba0f)',
+      borderRadius: '15px',
+    }}>
       <SearchBars
         searchQuery={searchQuery}
         onSearchQueryChange={setSearchQuery}

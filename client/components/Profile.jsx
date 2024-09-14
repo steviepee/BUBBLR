@@ -7,10 +7,11 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-import OgDrink from './profileChildren/OgDrink';
-import Concoction from './profileChildren/Concoction';
-import UserSearch from './profileChildren/UserSearch';
-import FriendItem from './profileChildren/FriendItem';
+import OgDrink from './profileChildren/OgDrink.jsx';
+import Concoction from './profileChildren/Concoction.jsx';
+import UserSearch from './profileChildren/UserSearch.jsx';
+import FriendItem from './profileChildren/FriendItem.jsx';
+import '../styling/Profile.css';
 
 class Profile extends React.Component {
   constructor() {
@@ -124,8 +125,8 @@ class Profile extends React.Component {
     return (
       <>
         <UserSearch followUser={this.followUser} />
-        <Card>
-          <Card.Body>
+        <Card className='custom-card mt-4 mb-4'>
+          <Card.Body className='custom-card-body' style={{ color: '#ffffff' }}>
             <Card.Title>Profile</Card.Title>
             <Card.Text>{displayName}</Card.Text>
             <Card.Text>{`You joined on: ${createdAt}`}</Card.Text>
@@ -145,8 +146,8 @@ class Profile extends React.Component {
             </Card>
           </Card.Body>
         </Card>
-        <Card>
-          <Card.Body>
+        <Card className='custom-card mb-4'>
+          <Card.Body className='custom-card-body' style={{ color: '#ffffff' }}>
             <Card.Title>Your Concoctions</Card.Title>
             <Container>
               <Row>
@@ -165,8 +166,8 @@ class Profile extends React.Component {
             </Container>
           </Card.Body>
         </Card>
-        <Card>
-          <Card.Body>
+        <Card className='custom-card mb-4'>
+          <Card.Body className='custom-card-body' style={{ color: '#ffffff' }}>
             <Card.Title>Your Favorite Originals</Card.Title>
             <Container>
               <Row>
@@ -181,8 +182,8 @@ class Profile extends React.Component {
             </Container>
           </Card.Body>
         </Card>
-        <Card>
-          <Card.Body>
+        <Card className='custom-card mb-4'>
+          <Card.Body className='custom-card-body' style={{ color: '#ffffff' }}>
             <Card.Title>Your Reviews</Card.Title>
             <ListGroup>
               {reviews.map(() => (

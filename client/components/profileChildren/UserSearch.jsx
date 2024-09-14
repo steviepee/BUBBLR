@@ -9,7 +9,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-import UserItem from './UserItem';
+import UserItem from './UserItem.jsx';
 
 function UserSearch({ followUser }) {
   const [search, updateSearch] = useState('');
@@ -25,10 +25,8 @@ function UserSearch({ followUser }) {
   };
 
   const onSearch = () => {
-    axios
-      .get(`/profile/users/${search}`)
+    axios.get(`/profile/users/${search}`)
       .then(({ data }) => {
-        // console.log(data);
         hasSearched(true);
         if (data) {
           updateUsers(data);
@@ -39,8 +37,8 @@ function UserSearch({ followUser }) {
   };
 
   return (
-    <Card>
-      <Card.Body>
+    <Card className='mt-4'>
+      <Card.Body className='custom-card-body' style={{ color: '#ffffff' }}>
         <Card.Title>Find Users</Card.Title>
         <InputGroup onChange={onChange} className="mb-3">
           <Form.Control
