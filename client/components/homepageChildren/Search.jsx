@@ -6,6 +6,9 @@ class Search extends Component {
     this.state = {
       searchedDrink: '',
     };
+
+    this.handleSearch = this.handleSearch.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(e) {
