@@ -1,21 +1,27 @@
 import React from 'react';
-import { Card, ListGroup } from 'react-bootstrap';
-import Rating from 'react-rating';
+import { Card } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 function DrinkEntry({ drink }) {
+  const navigate = useNavigate();
   const { strIngredient1, strIngredient2, strIngredient3, strDrinkThumb, strDrink, strCategory, strGlass, ratings, comments } = drink;
   const threeMainIngredients = [strIngredient1, strIngredient2];
   if (strIngredient3) {
     threeMainIngredients.push(strIngredient3);
   }
 
+  const handleClick = () => {
+    navigate(`/drink/${drink.idDrink}`);
+  };
+
   return (
     <Card
-      style={{ width: '18rem' }}
+      style={{ width: '18rem', cursor: 'pointer' }}
       className='text-center'
       bg='dark'
       text='light'
       border='light'
+      onClick={handleClick}
     >
       <Card.Body>
         <Card.Img
@@ -44,18 +50,6 @@ function DrinkEntry({ drink }) {
               fullSymbol="fa fa-star fa-2x"
               style={{ color: '#ffd700' }}
             />
-          </div>
-        )}
-
-        {/* Display Comments */}
-        {comments && comments.length > 0 && (
-          <div className='mt-2'>
-            <h6>Comments:</h6>
-            <ListGroup variant="flush">
-              {comments.map((comment, index) => (
-                <ListGroup.Item key={index}>{comment}</ListGroup.Item>
-              ))}
-            </ListGroup>
           </div>
         )}
       </Card.Body>
