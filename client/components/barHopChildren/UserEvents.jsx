@@ -10,7 +10,7 @@ const UserEvents = ({ userEvents, onDeleteEvent }) => (
   <Row>
     <h4>Your Events</h4>
     {userEvents.length > 0 ? (
-      <Accordion defaultActiveKey='0'>
+      <Accordion defaultActiveKey='0' className='mb-4'>
         {userEvents.map((event, index) => (
           <Accordion.Item eventKey={index.toString()} key={event.id}>
             <Accordion.Header>{event.name}</Accordion.Header>
@@ -19,7 +19,9 @@ const UserEvents = ({ userEvents, onDeleteEvent }) => (
               {event.Bars && event.Bars.length > 0 ? (
                 <ListGroup>
                   {event.Bars.map((bar) => (
-                    <ListGroup.Item key={bar.id}>{bar.name}</ListGroup.Item>
+                    <ListGroup.Item key={bar.id}>
+                      {bar.name}
+                    </ListGroup.Item>
                   ))}
                 </ListGroup>
               ) : (

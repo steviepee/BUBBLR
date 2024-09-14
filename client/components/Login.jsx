@@ -2,6 +2,15 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  Row,
+} from 'react-bootstrap';
+import '../styling/Login.css';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,10 +30,22 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2> BUBBLR Login </h2>
-      <button onClick={handleGoogleLogin}> Login with Google </button>
-    </div>
+    <Container className='login-container d-flex justify-content-center align-items-center min-vh-100'>
+      <Row className='justify-content-center w-100'>
+        <Col md={8} lg={6} xl={4}>
+          <Card className='shadow-lg rounded'>
+            <Card.Body>
+              <Card.Title className='login-title text-center mb-4'>BUBBLR Login</Card.Title>
+              <Form>
+                <Button variant='primary' onClick={handleGoogleLogin} className='w-100'>
+                  Login with Google
+                </Button>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

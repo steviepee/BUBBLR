@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   Col,
+  Form,
   FormControl,
   Row,
 } from 'react-bootstrap';
@@ -32,14 +33,17 @@ const SearchBars = ({ searchQuery, onSearchQueryChange, onAddBar }) => {
   return (
     <>
       {/* Search Bar */}
-      <Row className='mb-4'>
+      <Row className='mt-4 mb-4'>
         <Col>
-          <FormControl
-            type='text'
-            placeholder='Search for a bar...'
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
+          <Form>
+            <Form.Label>Bar Search</Form.Label>
+            <FormControl
+              type='text'
+              placeholder='Search for a bar...'
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+          </Form>
         </Col>
       </Row>
       {/* Available Bars */}

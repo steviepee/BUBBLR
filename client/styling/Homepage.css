@@ -1,0 +1,15 @@
+.homepage {
+  padding: 20px;
+}
+
+h2 {
+  font-family: 'Arial', sans-serif;
+}
+
+.card {
+  border-radius: 10px;
+}
+
+.card-body {
+  padding: 20px;
+}

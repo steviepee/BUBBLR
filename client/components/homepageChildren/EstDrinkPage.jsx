@@ -47,17 +47,6 @@ function EstDrinkPage() {
       });
   }, [id]);
 
-  // let formatMeasure = (drinkData) => {
-  //   let measurements = [];
-  //   for(let i = 1; i <= 15; i++){
-  //     let ingredient = drinkData[`strMeasure${i}`];
-  //     if(measurement){
-  //       ingredients.push(ingredient)
-  //     }
-  //   }
-  //   return measurements;
-  // }
-
   return (
     <div>
       {drink && (

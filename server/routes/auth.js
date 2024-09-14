@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 /* eslint-disable no-console */
 const express = require('express');
 const passport = require('passport');
@@ -7,21 +6,12 @@ const { User } = require('../db/index');
 require('dotenv').config();
 
 const router = express.Router();
-
-const { GOOGLE_CLIENT_SECRET, GOOGLE_CLIENT_ID, npm_lifecycle_event } = process.env;
-
-const devOrProd = () => {
-  // eslint-disable-next-line camelcase
-  if (npm_lifecycle_event === 'start') {
-    return 'localhost';
-  }
-  return '13.52.61.243';
-};
+const { GOOGLE_CLIENT_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CALLBACK_URL } = process.env;
 
 passport.use(new GoogleStrategy({
   clientID: `${GOOGLE_CLIENT_ID}`,
   clientSecret: `${GOOGLE_CLIENT_SECRET}`,
-  callbackURL: `http://${devOrProd()}:8080/auth/google/callback`,
+  callbackURL: `${GOOGLE_CALLBACK_URL}` || 'http://localhost:8080/auth/google/callback',
 }, (accessToken, refreshToken, profile, cb) => {
   User.findOrCreate({
     where: { googleId: profile.id },
