@@ -184,13 +184,6 @@ app.get('*', (req, res) => {
 
 const PORT = 8080;
 
-const devOrProd = () => {
-  if (process.env.npm_lifecycle_event === 'start') {
-    return 'localhost';
-  }
-  return '13.52.61.243';
-};
-
-app.listen(PORT, () => {
-  console.info(`Server listening on http://${devOrProd()}:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.info(`Server listening on http://127.0.0.1:${PORT}`);
 });
