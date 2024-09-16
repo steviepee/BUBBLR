@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 function DrinkEntry({ drink }) {
   const navigate = useNavigate();
-  const { strIngredient1, strIngredient2, strIngredient3, strDrinkThumb, strDrink, strCategory, strGlass, ratings, comments } = drink;
+  const { strIngredient1, strIngredient2, strIngredient3, strDrinkThumb, strDrink, strCategory, strGlass } = drink;
   const threeMainIngredients = [strIngredient1, strIngredient2];
   if (strIngredient3) {
     threeMainIngredients.push(strIngredient3);
@@ -37,21 +37,6 @@ function DrinkEntry({ drink }) {
           {strGlass}
         </Card.Subtitle>
         <Card.Text>{threeMainIngredients.join(', ')}</Card.Text>
-
-        {/* Display Ratings */}
-        {ratings != null && (
-          <div className='mb-2'>
-            <h6>Rating:</h6>
-            <Rating
-              initialRating={ratings}
-              readonly
-              fractions={2}
-              emptySymbol="fa fa-star-o fa-2x"
-              fullSymbol="fa fa-star fa-2x"
-              style={{ color: '#ffd700' }}
-            />
-          </div>
-        )}
       </Card.Body>
     </Card>
   );

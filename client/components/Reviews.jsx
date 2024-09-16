@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Card, ListGroup } from 'react-bootstrap';
-import Rating from 'react-rating';
+import StarRating from './StarRating';
+import '../styling/Reviews.css';
 
 const Reviews = () => {
   const { drinkId } = useParams();
@@ -35,19 +36,13 @@ const Reviews = () => {
   }
 
   return (
-    <Card
-      style={{ width: '18rem' }}
-      className='text-center'
-      bg='dark'
-      text='light'
-      border='light'
-    >
+    <Card className='reviews-card'>
+      <Card.Img
+        variant='top'
+        src={drink.strDrinkThumb}
+        className='card-img-top'
+      />
       <Card.Body>
-        <Card.Img
-          variant='top'
-          src={drink.strDrinkThumb}
-          style={{ width: '160px', height: '160px' }}
-        />
         <Card.Title>{drink.strDrink}</Card.Title>
         <Card.Subtitle className='mb-2 text-secondary'>
           {drink.strCategory}
@@ -60,14 +55,9 @@ const Reviews = () => {
         </Card.Text>
 
         {/* Display Ratings */}
-        <h6>Rating:</h6>
-        <Rating
+        <StarRating
           initialRating={drink.ratings || 0}
-          readonly
-          fractions={2}
-          emptySymbol="fa fa-star-o fa-2x"
-          fullSymbol="fa fa-star fa-2x"
-          style={{ color: '#ffd700' }}
+          onRatingChange={(newRating) => console.log('New Rating:', newRating)}
         />
 
         {/* Display Comments */}
