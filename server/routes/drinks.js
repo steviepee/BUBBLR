@@ -12,4 +12,18 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const apiResponse = await axios.get(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
+    if (apiResponse.data.drinks) {
+      res.json(apiResponse.data.drinks[0]);
+    } else {
+      res.status(404).json({ error: 'Drink not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch drink data' });
+  }
+});
+
 module.exports = router;

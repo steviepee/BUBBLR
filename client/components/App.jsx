@@ -16,6 +16,7 @@ import Community from './Community.jsx';
 import NavFilter from './homepageChildren/NavFilter.jsx';
 import FriendProfile from './profileChildren/FriendProfile.jsx';
 import BarHop from './BarHop.jsx';
+import Reviews from './Reviews.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
@@ -84,6 +85,7 @@ const App = () => {
         <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path='/bar-hop' element={<ProtectedRoute><BarHop /></ProtectedRoute>} />
         <Route path='/creationStation' element={<ProtectedRoute><CreationStation /></ProtectedRoute>} />
+        <Route path="/drink/:drinkId" element={<ProtectedRoute><Reviews /></ProtectedRoute>} />
         <Route path='/community' element={<ProtectedRoute><Community /></ProtectedRoute>} />
         <Route path='/filtered/:filter/*' element={<ProtectedRoute><FilteredPageHandler /></ProtectedRoute>} />
         <Route path='/profile/friend/:id' element={<ProtectedRoute><FriendProfile /></ProtectedRoute>} />
