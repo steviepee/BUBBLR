@@ -129,6 +129,41 @@ UserFriends.sync()
     estDrinks.sync()
       .catch((err) => console.error('Failed syncing estDrinks: ', err));
 
+const Comment = sequelize.define('Comment', {
+  drinkId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: estDrinks,
+      key: 'id',
+    },
+  },
+  comment: {
+    type: DataTypes.TEXT,
+  },
+});
+
+// Rating Model
+const Rating = sequelize.define('Rating', {
+  drinkId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: estDrinks,
+      key: 'id',
+    },
+  },
+  rating: {
+    type: DataTypes.FLOAT,
+    validate: {
+      min: 0,
+      max: 5,
+    },
+  },
+});
+
+// Sync models
+Comment.sync().catch((err) => console.error('Failed syncing Comment:', err));
+Rating.sync().catch((err) => console.error('Failed syncing Rating:', err));
+    
 module.exports = {
   User,
   Event,
@@ -136,4 +171,6 @@ module.exports = {
   UserFriends,
   customDrinks,
   estDrinks,
+  Comment,
+  Rating,
 };
