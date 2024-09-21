@@ -44,17 +44,40 @@ const Reviews = () => {
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`/api/drinks/${drinkId}/comment`, { comment: newComment });
+      const response = await axios.post(`/api/drinks/${drinkId}/comment`, { comment: newComment });
+      setComments((prevComments) => [...prevComments, response.data]);
       setNewComment('');
     } catch (error) {
       setError('Failed to add comment');
     }
   };
 
-  const handleRatingSubmit = async (newRating) => {
+  const handleCommentDelete = async (commentId) => {
     try {
-      await axios.post(`/api/drinks/${drinkId}/rating`, { rating: newRating });
-      setAverageRating(newRating);  // Update the average rating
+      await axios.delete(`/api/drinks/${drinkId}/comment/${commentId}`);
+      setComments((prevComments) => prevComments.filter(comment => comment.id !== commentId));
+    } catch (error) {
+      setError('Failed to delete comment');
+    }
+  };
+
+  const handleCommentEdit = async (commentId, updatedComment) => {
+    try {
+      const response = await axios.patch(`/api/drinks/${drinkId}/comment/${commentId}`, { comment: updatedComment });
+      setComments((prevComments) =>
+        prevComments.map(comment => (comment.id === commentId ? response.data : comment))
+      );
+    } catch (error) {
+      setError('Failed to update comment');
+    }
+  };
+
+  const handleRatingSubmit = async () => {
+    if (rating === 0) return;
+    try {
+      await axios.post(`/api/drinks/${drinkId}/rating`, { rating });
+      setAverageRating((prev) => (prev + rating) / 2);
+      setRating(0);
     } catch (error) {
       setError('Failed to add rating');
     }
@@ -95,14 +118,18 @@ const Reviews = () => {
 
         {/* Display Rating */}
         <h6>Average Rating: {averageRating.toFixed(1)}</h6>
-        <StarRating initialRating={averageRating} onRatingChange={handleRatingSubmit} />
+        <StarRating initialRating={averageRating} onRatingChange={handleRatingChange} />
 
         {/* Display Comments */}
         <h6>Comments:</h6>
         <ListGroup variant="flush">
           {comments.length > 0 ? (
-            comments.map((comment, index) => (
-              <ListGroup.Item key={index}>{comment.comment}</ListGroup.Item>
+            comments.map((comment) => (
+              <ListGroup.Item key={comment.id}>
+                {comment.comment}
+                <Button variant="link" onClick={() => handleCommentEdit(comment.id, comment.comment)}>Edit</Button>
+                <Button variant="link" onClick={() => handleCommentDelete(comment.id)}>Delete</Button>
+              </ListGroup.Item>
             ))
           ) : (
             <ListGroup.Item>No comments yet.</ListGroup.Item>

@@ -22,9 +22,7 @@ router.get('/:id', async (req, res) => {
     }
     const drinkDetails = apiResponse.data.drinks[0];
     
-    // Check if the drink already exists in the database
     const existingDrink = await estDrinks.findOne({ where: { drinkId: drinkDetails.idDrink } });
-    // If the drink does not exist, save it to the database
     if (!existingDrink) {
       await estDrinks.create({
         drinkId: drinkDetails.idDrink,
@@ -41,10 +39,7 @@ router.get('/:id', async (req, res) => {
 
     // Fetch comments and ratings
     const comments = await Comment.findAll({ where: { drinkId: id } });
-    console.log('GET comments:', comments);
-    
     const ratings = await Rating.findAll({ where: { drinkId: id } });
-    console.log('GET ratings:', ratings);
     
     const averageRating = ratings.length > 0
       ? ratings.reduce((acc, curr) => acc + curr.rating, 0) / ratings.length
@@ -61,7 +56,6 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Add a comment for a specific drink
 router.post('/:id/comment', async (req, res) => {
   const { id } = req.params;
   const { comment } = req.body;
@@ -75,18 +69,45 @@ router.post('/:id/comment', async (req, res) => {
   }
 });
 
-// Add a rating for a specific drink
+router.patch('/:id/comment/:commentId', async (req, res) => {
+  const { id, commentId } = req.params;
+  const { comment } = req.body;
+
+  try {
+    const updatedComment = await Comment.update({ comment }, { where: { id: commentId } });
+    if (updatedComment[0] === 0) {
+      return res.status(404).json({ error: 'Comment not found' });
+    }
+    res.status(200).json({ message: 'Comment updated successfully' });
+  } catch (error) {
+    console.error('Failed to update comment', error);
+    res.status(500).json({ error: 'Failed to update comment' });
+  }
+});
+
+router.delete('/:id/comment/:commentId', async (req, res) => {
+  const { id, commentId } = req.params;
+
+  try {
+    const deleted = await Comment.destroy({ where: { id: commentId } });
+    if (deleted === 0) {
+      return res.status(404).json({ error: 'Comment not found' });
+    }
+    res.status(204).send();
+  } catch (error) {
+    console.error('Failed to delete comment', error);
+    res.status(500).json({ error: 'Failed to delete comment' });
+  }
+});
+
 router.post('/:id/rating', async (req, res) => {
   const { id } = req.params;
   const { rating } = req.body;
 
   try {
-    console.log('POST Drink id:', id, 'Rating:', rating);
     const newRating = await Rating.create({ drinkId: id, rating });
-    console.log('newRating:', newRating);
     res.status(201).json(newRating);
   } catch (error) {
-    console.log('error caught:', error)
     res.status(500).json({ error: 'Failed to add rating' });
   }
 });
