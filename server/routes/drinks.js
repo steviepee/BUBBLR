@@ -24,7 +24,6 @@ router.get('/:id', async (req, res) => {
     
     // Check if the drink already exists in the database
     const existingDrink = await estDrinks.findOne({ where: { drinkId: drinkDetails.idDrink } });
-    console.log('existingDrink:', existingDrink);
     // If the drink does not exist, save it to the database
     if (!existingDrink) {
       await estDrinks.create({
@@ -68,9 +67,7 @@ router.post('/:id/comment', async (req, res) => {
   const { comment } = req.body;
 
   try {
-    console.log('POST Drink id:', id, 'Comment:', comment);
     const newComment = await Comment.create({ drinkId: id, comment });
-    console.log('newComment:', newComment);
     res.status(201).json(newComment);
   } catch (error) {
     console.error('Failed to add comment', error);
