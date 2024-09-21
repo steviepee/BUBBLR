@@ -102,7 +102,7 @@ const Reviews = () => {
         <ListGroup variant="flush">
           {comments.length > 0 ? (
             comments.map((comment, index) => (
-              <ListGroup.Item key={index}>{comment}</ListGroup.Item>
+              <ListGroup.Item key={index}>{comment.comment}</ListGroup.Item>
             ))
           ) : (
             <ListGroup.Item>No comments yet.</ListGroup.Item>
