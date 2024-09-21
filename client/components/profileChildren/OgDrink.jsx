@@ -10,6 +10,8 @@ import Accordion from 'react-bootstrap/Accordion';
 import Button from 'react-bootstrap/Button';
 
 function OgDrink({ drink, removeDrink }) {
+  console.log('drink ingredients array', drink.drinkIngredients); // <-- Logs an array of objects,
+  // this component needs to be updated to render these properly now that the database actually utilizes estDrinks.
   const {
     drinkId, drinkImage, drinkName, drinkCategory, drinkIngredients,
   } = drink;
@@ -43,6 +45,7 @@ function OgDrink({ drink, removeDrink }) {
                 <Card.Body>
                   <Card.Title>{drinkCategory}</Card.Title>
                   <Card.Text>Ingredients: </Card.Text>
+                  {/* UPDATE HERE */}
                   {drinkIngredients.map((item) => (
                     <Card.Text key={`${drinkId}-${item.ingredient}`}>{`${item.ingredient}: ${item.measurement}`}</Card.Text>
                   ))}

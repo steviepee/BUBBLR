@@ -101,6 +101,8 @@ UserFriends.sync()
       drinkId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        unique: true,
+        primaryKey: true,
       },
       drinkName: {
         type: DataTypes.STRING,
@@ -134,7 +136,7 @@ const Comment = sequelize.define('Comment', {
     type: DataTypes.INTEGER,
     references: {
       model: estDrinks,
-      key: 'id',
+      key: 'drinkId',
     },
   },
   comment: {
@@ -148,7 +150,7 @@ const Rating = sequelize.define('Rating', {
     type: DataTypes.INTEGER,
     references: {
       model: estDrinks,
-      key: 'id',
+      key: 'drinkId',
     },
   },
   rating: {

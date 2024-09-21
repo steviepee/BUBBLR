@@ -13,6 +13,8 @@ const Reviews = () => {
   const [newComment, setNewComment] = useState('');
   const [rating, setRating] = useState(0);
   const [comments, setComments] = useState([]);
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editingCommentText, setEditingCommentText] = useState('');
   const [averageRating, setAverageRating] = useState(0);
 
   useEffect(() => {
@@ -44,17 +46,46 @@ const Reviews = () => {
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`/api/drinks/${drinkId}/comment`, { comment: newComment });
+      const response = await axios.post(`/api/drinks/${drinkId}/comment`, { comment: newComment });
+      setComments((prevComments) => [...prevComments, response.data]);
       setNewComment('');
     } catch (error) {
       setError('Failed to add comment');
     }
   };
 
-  const handleRatingSubmit = async (newRating) => {
+  const handleCommentDelete = async (commentId) => {
     try {
-      await axios.post(`/api/drinks/${drinkId}/rating`, { rating: newRating });
-      setAverageRating(newRating);  // Update the average rating
+      await axios.delete(`/api/drinks/${drinkId}/comment/${commentId}`);
+      setComments((prevComments) => prevComments.filter(comment => comment.id !== commentId));
+    } catch (error) {
+      setError('Failed to delete comment');
+    }
+  };
+
+  const handleEditClick = (commentId, commentText) => {
+    setEditingCommentId(commentId);
+    setEditingCommentText(commentText);
+  };
+
+  const handleCommentEdit = async (commentId) => {
+    try {
+      const response = await axios.patch(`/api/drinks/${drinkId}/comment/${commentId}`, { comment: editingCommentText });
+      setComments((prevComments) =>
+        prevComments.map(comment => (comment.id === commentId ? response.data : comment))
+      );
+      setEditingCommentId(null);
+    } catch (error) {
+      setError('Failed to update comment');
+    }
+  };
+
+  const handleRatingSubmit = async () => {
+    if (rating === 0) return;
+    try {
+      await axios.post(`/api/drinks/${drinkId}/rating`, { rating });
+      setAverageRating((prev) => (prev + rating) / 2);
+      setRating(0); // Reset rating
     } catch (error) {
       setError('Failed to add rating');
     }
@@ -95,14 +126,32 @@ const Reviews = () => {
 
         {/* Display Rating */}
         <h6>Average Rating: {averageRating.toFixed(1)}</h6>
-        <StarRating initialRating={averageRating} onRatingChange={handleRatingSubmit} />
+        <StarRating initialRating={averageRating} onRatingChange={handleRatingChange} />
 
         {/* Display Comments */}
         <h6>Comments:</h6>
         <ListGroup variant="flush">
           {comments.length > 0 ? (
-            comments.map((comment, index) => (
-              <ListGroup.Item key={index}>{comment}</ListGroup.Item>
+            comments.map((comment) => (
+              <ListGroup.Item key={comment.id}>
+                {/* If editing the current comment, show input field */}
+                {editingCommentId === comment.id ? (
+                  <>
+                    <Form.Control
+                      type="text"
+                      value={editingCommentText}
+                      onChange={(e) => setEditingCommentText(e.target.value)}
+                    />
+                    <Button variant="primary" onClick={() => handleCommentEdit(comment.id)}>Save</Button>
+                  </>
+                ) : (
+                  <>
+                    {comment.comment}
+                    <Button variant="link" onClick={() => handleEditClick(comment.id, comment.comment)}>Edit</Button>
+                    <Button variant="link" onClick={() => handleCommentDelete(comment.id)}>Delete</Button>
+                  </>
+                )}
+              </ListGroup.Item>
             ))
           ) : (
             <ListGroup.Item>No comments yet.</ListGroup.Item>

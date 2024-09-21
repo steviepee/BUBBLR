@@ -44,6 +44,8 @@ The most recently tested node version was node 22
 - Bar Hop: Currently when making a new event, the bar list does not show correctly until a page refresh
 - After refactoring, the filter in the nav bar is broken
 - Searching for users is currently broken after refactor
+- After editing a comment, the page does not immediately rerender properly
+- Account profile page does not render after estDrinks model update
 
 # Contributors
 Thanks to all the following people for contributing to this project:
