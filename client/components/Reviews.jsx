@@ -13,6 +13,8 @@ const Reviews = () => {
   const [newComment, setNewComment] = useState('');
   const [rating, setRating] = useState(0);
   const [comments, setComments] = useState([]);
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editingCommentText, setEditingCommentText] = useState('');
   const [averageRating, setAverageRating] = useState(0);
 
   useEffect(() => {
@@ -61,12 +63,18 @@ const Reviews = () => {
     }
   };
 
-  const handleCommentEdit = async (commentId, updatedComment) => {
+  const handleEditClick = (commentId, commentText) => {
+    setEditingCommentId(commentId);
+    setEditingCommentText(commentText);
+  };
+
+  const handleCommentEdit = async (commentId) => {
     try {
-      const response = await axios.patch(`/api/drinks/${drinkId}/comment/${commentId}`, { comment: updatedComment });
+      const response = await axios.patch(`/api/drinks/${drinkId}/comment/${commentId}`, { comment: editingCommentText });
       setComments((prevComments) =>
         prevComments.map(comment => (comment.id === commentId ? response.data : comment))
       );
+      setEditingCommentId(null);
     } catch (error) {
       setError('Failed to update comment');
     }
@@ -77,7 +85,7 @@ const Reviews = () => {
     try {
       await axios.post(`/api/drinks/${drinkId}/rating`, { rating });
       setAverageRating((prev) => (prev + rating) / 2);
-      setRating(0);
+      setRating(0); // Reset rating
     } catch (error) {
       setError('Failed to add rating');
     }
@@ -126,9 +134,23 @@ const Reviews = () => {
           {comments.length > 0 ? (
             comments.map((comment) => (
               <ListGroup.Item key={comment.id}>
-                {comment.comment}
-                <Button variant="link" onClick={() => handleCommentEdit(comment.id, comment.comment)}>Edit</Button>
-                <Button variant="link" onClick={() => handleCommentDelete(comment.id)}>Delete</Button>
+                {/* If editing the current comment, show input field */}
+                {editingCommentId === comment.id ? (
+                  <>
+                    <Form.Control
+                      type="text"
+                      value={editingCommentText}
+                      onChange={(e) => setEditingCommentText(e.target.value)}
+                    />
+                    <Button variant="primary" onClick={() => handleCommentEdit(comment.id)}>Save</Button>
+                  </>
+                ) : (
+                  <>
+                    {comment.comment}
+                    <Button variant="link" onClick={() => handleEditClick(comment.id, comment.comment)}>Edit</Button>
+                    <Button variant="link" onClick={() => handleCommentDelete(comment.id)}>Delete</Button>
+                  </>
+                )}
               </ListGroup.Item>
             ))
           ) : (
