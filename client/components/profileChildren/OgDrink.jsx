@@ -10,8 +10,6 @@ import Accordion from 'react-bootstrap/Accordion';
 import Button from 'react-bootstrap/Button';
 
 function OgDrink({ drink }) {
-  console.log('drink ingredients array', drink.drinkIngredients); // <-- Logs an array of objects,
-  // this component needs to be updated to render these properly now that the database actually utilizes estDrinks.
   // eslint-disable-next-line no-nested-ternary
   const ingredients = typeof drink.drinkIngredients === 'string'
     ? JSON.parse(drink.drinkIngredients || '[]')
