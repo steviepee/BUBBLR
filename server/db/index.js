@@ -195,7 +195,7 @@ const UserAchievements = sequelize.define('UserAchievements', {
       key: 'id',
     },
   },
-  achievementId: {
+  achievementData: {
     type: DataTypes.INTEGER,
     references: {
       model: Achievements,
