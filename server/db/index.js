@@ -165,7 +165,7 @@ const MatchGame = sequelize.define('MatchGame', {
 
 // Achievement model
 const Achievements = sequelize.define('Achievements', {
-  id: {
+  identification: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
@@ -188,14 +188,14 @@ const Achievements = sequelize.define('Achievements', {
 
 // User Achievements model
 const UserAchievements = sequelize.define('UserAchievements', {
-  userId: {
+  userIdentification: {
     type: DataTypes.INTEGER,
     references: {
       model: User,
       key: 'id',
     },
   },
-  achievementDat: {
+  achievementData: {
     type: DataTypes.INTEGER,
     references: {
       model: Achievements,
