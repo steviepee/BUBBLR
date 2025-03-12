@@ -10,7 +10,8 @@
     "prod": "webpack && node server/index.js",
     "seed": "node server/db/index.js",
     "greed": "node server/db/seedMatchData.js",
-    "ach": "node server/db/achievementsSeed.js"
+    "ach": "node server/db/achievementsSeed.js",
+    "liquor": "node server/db/seedLiquor.js"
   },
   "keywords": [],
   "author": "",
