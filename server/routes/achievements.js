@@ -29,6 +29,17 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// create achievement
+router.post('/', async (req, res) => {
+  try {
+    const newAchievement = await Achievements.create(req.body);
+    res.status(201).json(newAchievement);
+  } catch (err) {
+    console.error('err creating achievement', err);
+    res.status(500);
+  }
+});
+
 // delete achievement
 router.delete('/:id', async (req, res) => {
   try {
