@@ -252,6 +252,97 @@ const LiquorCabinet = sequelize.define('LiquorCabinet', {
   }
 });
 
+const Hangovers = sequelize.define('Hangovers', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+  },
+  day: {
+    type: DataTypes.DATE,
+  },
+  pastWater: {
+    type: DataTypes.INTEGER,
+  },
+  additional: {
+    DataTypes: BOOLEAN,
+  },
+
+})
+
+  const Symptoms = sequelize.define('Symptoms', {
+    id: {
+      type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      required: true,
+    },
+    severity: {
+      type: DataTypes.INTEGER,
+    },
+    duration: {
+      type: DataTypes.INTEGER,
+    },
+    date: {
+      type: DataTypes.DATE,
+    },
+  })
+  const PastDrinks = sequelize.define('PastDrinks', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      required: true,
+    },
+    timeSpan: {
+      type: DataTypes.INTEGER,
+    },
+    date: {
+      type: DataTypes.DATE,
+    },
+  })
+  const PastMixers = sequelize.define('Mixers', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.INTEGER,
+      required: true,
+    },
+    date: {
+      type: DataTypes.DATE,
+    },
+  })
+  const PastFoods = sequelize.define('PastFoods', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      required: true,
+    },
+    timeSpan: {
+      type: DataTypes.INTEGER,
+    },
+    date: {
+      type: DataTypes.DATE,
+    },
+  })
+
+
 
 
 // Model associations
@@ -294,4 +385,10 @@ module.exports = {
   Achievements,
   UserAchievements,
   LiquorCabinet,
+  Hangovers,
+  PastDrinks,
+  PastFoods,
+  PastMixers,
+  Symptoms,
+
 };
