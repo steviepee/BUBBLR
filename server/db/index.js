@@ -8,6 +8,11 @@ const sequelize = new Sequelize('bubblr', 'root', '', {
 
 // User model
 const User = sequelize.define('User', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
   googleId: { type: DataTypes.STRING, allowNull: false, unique: true },
   nameFirst: DataTypes.STRING,
   nameLast: DataTypes.STRING,
@@ -199,14 +204,17 @@ const UserAchievements = sequelize.define('UserAchievements', {
     type: DataTypes.INTEGER,
     references: {
       model: Achievements,
-      key: 'id',
+      key: 'identification',
     },
   },
   unlockedAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
   },
+}, {
+  timestamps: false,
 });
+
 
 
 const LiquorCabinet = sequelize.define('LiquorCabinet', {
@@ -256,22 +264,22 @@ Bar.belongsToMany(Event, { through: 'EventBars' });
 User.belongsToMany(Achievements, { through: UserAchievements });
 Achievements.belongsToMany(User, { through: UserAchievements });
 
-// sequelize.sync({ alter: true })
-//   .then(() => console.log('synced'))
-//   .catch((err) => console.error('Error syncing', err));
+sequelize.sync({ alter: true })
+  .then(() => console.log('synced'))
+  .catch((err) => console.error('Error syncing', err));
 
 // Sync models
-User.sync().catch((err) => console.error(err));
-UserFriends.sync().catch((err) => console.error('Failed syncing UserFriends: ', err));
-customDrinks.sync().catch((err) => console.error('Failed syncing customDrinks: ', err));
-estDrinks.sync().catch((err) => console.error('Failed syncing estDrinks: ', err));
-Comment.sync().catch((err) => console.error('Failed syncing Comment:', err));
-Rating.sync().catch((err) => console.error('Failed syncing Rating:', err));
-MatchGame.sync().catch((err) => console.error('Failed syncing MatchGame:', err));
-Achievements.sync().catch((err) => console.error('Failed syncing Achievements:', err));
-UserAchievements.sync().catch((err) => console.error('Failed syncing UserAchievements:', err));
-UserAchievements.sync().catch((err) => console.error('Failed syncing UserAchievements:', err));
-LiquorCabinet.sync().catch((err) => console.error('Failed syncing LiquorCabinet:', err));
+// User.sync().catch((err) => console.error(err));
+// UserFriends.sync().catch((err) => console.error('Failed syncing UserFriends: ', err));
+// customDrinks.sync().catch((err) => console.error('Failed syncing customDrinks: ', err));
+// estDrinks.sync().catch((err) => console.error('Failed syncing estDrinks: ', err));
+// Comment.sync().catch((err) => console.error('Failed syncing Comment:', err));
+// Rating.sync().catch((err) => console.error('Failed syncing Rating:', err));
+// MatchGame.sync().catch((err) => console.error('Failed syncing MatchGame:', err));
+// Achievements.sync().catch((err) => console.error('Failed syncing Achievements:', err));
+// UserAchievements.sync().catch((err) => console.error('Failed syncing UserAchievements:', err));
+// UserAchievements.sync().catch((err) => console.error('Failed syncing UserAchievements:', err));
+// LiquorCabinet.sync().catch((err) => console.error('Failed syncing LiquorCabinet:', err));
 
 module.exports = {
   User,
