@@ -195,7 +195,7 @@ const UserAchievements = sequelize.define('UserAchievements', {
       key: 'id',
     },
   },
-  achievementId: {
+  achievementDat: {
     type: DataTypes.INTEGER,
     references: {
       model: Achievements,
@@ -207,7 +207,6 @@ const UserAchievements = sequelize.define('UserAchievements', {
     defaultValue: DataTypes.NOW,
   },
 });
-
 // Model associations
 User.hasMany(Event, { foreignKey: 'userId', as: 'events' });
 Event.belongsTo(User, { foreignKey: 'userId', as: 'user' });
