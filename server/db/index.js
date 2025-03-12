@@ -207,6 +207,45 @@ const UserAchievements = sequelize.define('UserAchievements', {
     defaultValue: DataTypes.NOW,
   },
 });
+
+
+const LiquorCabinet = sequelize.define('LiquorCabinet', {
+  userId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: User,
+      key: 'id',
+    }
+  },
+  imageUrl: {
+    type: DataTypes.STRING
+  },
+  name: {
+    type: DataTypes.STRING
+  },
+  brand: {
+    type: DataTypes.STRING
+  },
+  typeLiquor: {
+    type: DataTypes.STRING
+  },
+  ABV: {
+    type: DataTypes.FLOAT
+  },
+  amountLeft: {
+    type: DataTypes.FLOAT,
+    defaultValue: 100.0
+  },
+  notes: {
+    type: DataTypes.STRING
+  },
+  date: {
+    type: DataTypes.DATE
+  }
+});
+
+
+
 // Model associations
 User.hasMany(Event, { foreignKey: 'userId', as: 'events' });
 Event.belongsTo(User, { foreignKey: 'userId', as: 'user' });
@@ -231,7 +270,8 @@ Rating.sync().catch((err) => console.error('Failed syncing Rating:', err));
 MatchGame.sync().catch((err) => console.error('Failed syncing MatchGame:', err));
 Achievements.sync().catch((err) => console.error('Failed syncing Achievements:', err));
 UserAchievements.sync().catch((err) => console.error('Failed syncing UserAchievements:', err));
-
+UserAchievements.sync().catch((err) => console.error('Failed syncing UserAchievements:', err));
+LiquorCabinet.sync().catch((err) => console.error('Failed syncing LiquorCabinet:', err));
 
 module.exports = {
   User,
@@ -245,4 +285,5 @@ module.exports = {
   MatchGame,
   Achievements,
   UserAchievements,
+  LiquorCabinet,
 };
