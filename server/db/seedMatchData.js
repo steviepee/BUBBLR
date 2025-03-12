@@ -1,44 +1,28 @@
-const { MatchGame } = require('./index');
-const matchGames = [
-  {
-    userId: 1,
-    drinkId: 1,
-    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR29Lepz2ldNXdJ54AQzfisezkgxvwYJbzddw&s",
-  },
-  {
-    userId: 1,
-    drinkId: 2,
-    imageUrl: "https://img.freepik.com/free-psd/refreshing-iced-tea-tall-glass-summer_191095-84730.jpg",
-  },
-  {
-    userId: 2,
-    drinkId: 3,
-    imageUrl: "https://images.creativefabrica.com/products/previews/2023/10/27/A6LvDbDM3/2XLKT0cyPbGEVtnNawEdFwocYTB-mobile.jpg",
-  },
-  {
-    userId: 2,
-    drinkId: 4,
-    imageUrl: "https://img.freepik.com/free-psd/refreshing-mojito-cocktail-glass-with-lemon-ice-cubes-transparent-background_84443-26917.jpg",
-  },
-  {
-    userId: 3,
-    drinkId: 1,
-    imageUrl:"https:imgfreepikcomfree-psdrefreshing-iced-tea-drink-with-mint-garnish-two-straws-tall-glass_632498-52446.jpg",
-  },
-  {
-    userId: 3,
-    drinkId: 4,
-    imageUrl: "https://img.freepik.com/free-psd/refreshing-lemon-margarita-cocktail_632498-25189.jpg",
-  },
-];
+const { User, MatchGame } = require('./index'); // Adjust the path as needed
 
-const seedMatchGames = async () => {
-  try {
-    await MatchGame.bulkCreate(matchGames);
-    console.log('MatchGame data seeded successfully!');
-  } catch (err) {
-    console.error('Failed to seed MatchGame data:', err);
-  }
-};
+async function seedUsers() {
+  const users = await User.bulkCreate([
+    { id: 1, googleId: 'user1_google', email: 'user1@example.com' },
+    { id: 2, googleId: 'user2_google', email: 'user2@example.com' },
+    { id: 3, googleId: 'user3_google', email: 'user3@example.com' },
+  ]);
+  console.log('Users seeded');
+  return users;
+}
 
-seedMatchGames();
+async function seedMatchGames() {
+  await seedUsers(); // Ensure Users exist before inserting MatchGames
+
+  await MatchGame.bulkCreate([
+    { userId: 1, drinkId: 1, imageUrl: 'https://example.com/image1.jpg' },
+    { userId: 1, drinkId: 2, imageUrl: 'https://example.com/image2.jpg' },
+    { userId: 2, drinkId: 3, imageUrl: 'https://example.com/image3.jpg' },
+    { userId: 2, drinkId: 4, imageUrl: 'https://example.com/image4.jpg' },
+    { userId: 3, drinkId: 1, imageUrl: 'https://example.com/image5.jpg' },
+    { userId: 3, drinkId: 4, imageUrl: 'https://example.com/image6.jpg' },
+  ]);
+
+  console.log('MatchGames seeded');
+}
+
+seedMatchGames().catch(console.error);
