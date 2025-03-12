@@ -17,7 +17,7 @@ import NavFilter from './homepageChildren/NavFilter.jsx';
 import FriendProfile from './profileChildren/FriendProfile.jsx';
 import BarHop from './BarHop.jsx';
 import Reviews from './Reviews.jsx';
-import LiquorCabinet from './LiquorCabinet.jsx';
+import LiquorCabinet from './liquorcabinetChildren/LiquorCabinet.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
