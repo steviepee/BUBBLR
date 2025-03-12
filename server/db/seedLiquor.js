@@ -1,6 +1,6 @@
 const { LiquorCabinet } = require('./index.js')
 LiquorCabinet.destroy({
-  where: {}
+  where: {}, truncate: true
 })
   .then(() => console.log('Data removed from LiquorCabinet'))
   .catch((err) => console.error('propblem removing data from LiquorCabinet', err))
@@ -27,7 +27,7 @@ LiquorCabinet.bulkCreate([
     notes: "great rum for mixed drinks",
     date: '2023-02-09 18:05:28.989 +00:00'
   },
-])
+], { ignoreDuplicates: true })
   .then(() => { console.log('seed data inserted') })
   .catch((err) => {
     console.error('Problem adding seed data', err)
