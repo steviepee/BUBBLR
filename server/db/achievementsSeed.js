@@ -19,6 +19,8 @@ const achievementsData = [
 
 const seedAchievements = async () => {
   try {
+    await Achievements.destroy({ where: {}, truncate: true });
+    console.log('old achievements deleted');
     await Achievements.bulkCreate(achievementsData, { ignoreDuplicates: true });
     console.log('achievements seeded');
   } catch (err) {
