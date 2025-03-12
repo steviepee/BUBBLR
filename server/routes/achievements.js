@@ -29,4 +29,15 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// delete achievement
+router.delete('/:id', async (req, res) => {
+  try {
+    const deleted = await Achievements.destroy({ where: { identification: req.params.id } });
+    res.json(deleted);
+  } catch (err) {
+    console.error('err deleting achievements', err);
+    res.status(500);
+  }
+});
+
 module.exports = router;
