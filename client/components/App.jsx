@@ -17,6 +17,7 @@ import NavFilter from './homepageChildren/NavFilter.jsx';
 import FriendProfile from './profileChildren/FriendProfile.jsx';
 import BarHop from './BarHop.jsx';
 import Reviews from './Reviews.jsx';
+import LiquorCabinet from './LiquorCabinet.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
@@ -77,7 +78,7 @@ const App = () => {
 
   return (
     <div style={appStyle}>
-      {isAuth && <NavFilter onLogout={handleLogout}/>}
+      {isAuth && <NavFilter onLogout={handleLogout} />}
       <Routes>
         <Route path='/' element={!isAuth ? <Login /> : <Navigate to='/home' replace />} />
         <Route path='/home' element={<ProtectedRoute><Homepage /></ProtectedRoute>} />
@@ -89,6 +90,7 @@ const App = () => {
         <Route path='/community' element={<ProtectedRoute><Community /></ProtectedRoute>} />
         <Route path='/filtered/:filter/*' element={<ProtectedRoute><FilteredPageHandler /></ProtectedRoute>} />
         <Route path='/profile/friend/:id' element={<ProtectedRoute><FriendProfile /></ProtectedRoute>} />
+        <Route path='/liquor' element={<ProtectedRoute><LiquorCabinet /></ProtectedRoute>} />
       </Routes>
     </div>
   );
