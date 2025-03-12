@@ -147,12 +147,13 @@ const Rating = sequelize.define('Rating', {
 // Match Game model
 const MatchGame = sequelize.define('MatchGame', {
   userId: {
+    // Change from googleId to userId
     type: DataTypes.INTEGER,
     references: {
       model: User,
       key: 'id',
     },
-    allowNull: false,
+    allowNull: false, // Ensure userId is always provided
   },
   drinkId: {
     type: DataTypes.INTEGER,
@@ -199,13 +200,15 @@ const UserAchievements = sequelize.define('UserAchievements', {
     type: DataTypes.INTEGER,
     references: {
       model: Achievements,
-      key: 'id',
+      key: 'identification',
     },
   },
   unlockedAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
   },
+  timestamps: false,
+  primaryKey: ['userIdentification', 'achievementData'],
 });
 
 // Model associations
@@ -224,15 +227,26 @@ Achievements.belongsToMany(User, { through: UserAchievements });
 
 // Sync models
 User.sync().catch((err) => console.error(err));
-UserFriends.sync().catch((err) => console.error('Failed syncing UserFriends: ', err));
-customDrinks.sync().catch((err) => console.error('Failed syncing customDrinks: ', err));
-estDrinks.sync().catch((err) => console.error('Failed syncing estDrinks: ', err));
+UserFriends.sync().catch((err) =>
+  console.error('Failed syncing UserFriends: ', err),
+);
+customDrinks
+  .sync()
+  .catch((err) => console.error('Failed syncing customDrinks: ', err));
+estDrinks
+  .sync()
+  .catch((err) => console.error('Failed syncing estDrinks: ', err));
 Comment.sync().catch((err) => console.error('Failed syncing Comment:', err));
 Rating.sync().catch((err) => console.error('Failed syncing Rating:', err));
-MatchGame.sync().catch((err) => console.error('Failed syncing MatchGame:', err));
-Achievements.sync().catch((err) => console.error('Failed syncing Achievements:', err));
-UserAchievements.sync().catch((err) => console.error('Failed syncing UserAchievements:', err));
-
+MatchGame.sync().catch((err) =>
+  console.error('Failed syncing MatchGame:', err),
+);
+Achievements.sync().catch((err) =>
+  console.error('Failed syncing Achievements:', err),
+);
+UserAchievements.sync().catch((err) =>
+  console.error('Failed syncing UserAchievements:', err),
+);
 
 module.exports = {
   User,
