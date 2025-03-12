@@ -8,7 +8,8 @@
     "build": "webpack -w",
     "start": "webpack -w & nodemon server/index.js",
     "prod": "webpack && node server/index.js",
-    "seed": "node server/db/index.js"
+    "seed": "node server/db/index.js",
+    "greed": "node server/db/seedMatchData.js"
   },
   "keywords": [],
   "author": "",
