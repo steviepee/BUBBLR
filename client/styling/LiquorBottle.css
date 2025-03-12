@@ -1,0 +1,38 @@
+.liquor-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.bottle {
+  width: 80px;
+  height: 200px;
+  border: 3px solid black;
+  border-radius: 10px 10px 5px 5px;
+  position: relative;
+  overflow: hidden; /* Keeps liquid inside the bottle */
+  background: linear-gradient(to bottom, #ccc 10%, transparent 90%);
+}
+
+.liquid {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%; /* Starts full */
+  background: rgba(139, 69, 19, 0.8); /* Brown liquid */
+  transition: height 0.5s ease-in-out;
+}
+
+button {
+  padding: 10px 15px;
+  background: #8b4513;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #a0522d;
+}
