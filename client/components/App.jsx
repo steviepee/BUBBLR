@@ -18,6 +18,7 @@ import FriendProfile from './profileChildren/FriendProfile.jsx';
 import BarHop from './BarHop.jsx';
 import Reviews from './Reviews.jsx';
 import LiquorCabinet from './LiquorCabinet.jsx';
+import Hangovers from './Hangovers.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
@@ -91,6 +92,7 @@ const App = () => {
         <Route path='/filtered/:filter/*' element={<ProtectedRoute><FilteredPageHandler /></ProtectedRoute>} />
         <Route path='/profile/friend/:id' element={<ProtectedRoute><FriendProfile /></ProtectedRoute>} />
         <Route path='/liquor' element={<ProtectedRoute><LiquorCabinet /></ProtectedRoute>} />
+        <Route path='/hangovers' element={<ProtectedRoute><Hangovers /></ProtectedRoute>}/>
       </Routes>
     </div>
   );

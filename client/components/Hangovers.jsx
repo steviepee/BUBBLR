@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Container } from 'react-bootstrap';
 
 const Hangovers = () => {
   const getAllHangoverInfo = () => {
@@ -10,7 +11,7 @@ const Hangovers = () => {
       })
       .catch((err) => console.error(err));
   };
-  return <div></div>;
+  return <Container></Container>;
 };
 
 export default Hangovers;
