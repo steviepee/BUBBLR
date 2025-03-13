@@ -22,19 +22,31 @@ const LiquorCabinet = () => {
       });
   }, []);
 
-  const pourDrink = (id) => {
+
+  const pourDrink = (id, currentFillLevel) => {
+    const newFillLevel = Math.max(currentFillLevel - 6.25, 0); // Ensure it doesn't go negative
+
+    // Update the UI first for instant feedback
     setLiquor((prevLiquor) =>
       prevLiquor.map((bottle) =>
-        bottle.id === id
-          ? { ...bottle, fillLevel: Math.max(bottle.fillLevel - 6.25, 0) }
-          : bottle
+        bottle.id === id ? { ...bottle, fillLevel: newFillLevel } : bottle
       )
     );
-  };
+    axios.patch(`/api/liquor/${id}`, { amountLeft: newFillLevel })
+      .then((response) => {
+        console.log(`Updated bottle ${id} successfully`, response.data);
+      })
+      .catch((error) => {
+        console.error(`Error updating liquor bottle ${id}`, error);
+      });
+
+
+  }
 
   return (
     <div className="liquor-cabinet">
-      <h3>This is your personal Liquor Cabinet</h3>
+
+      <h3>Your Virtual Liquor Cabinet</h3>
       <div className="liquor-list">
         {liquor.map(({ id, imageUrl, name, brand, ABV, typeLiquor, date, fillLevel }) => (
           <div key={id} className="liquor-item">
@@ -42,7 +54,7 @@ const LiquorCabinet = () => {
               <div className="bottle">
                 <div className="liquid" style={{ height: `${fillLevel}%` }}></div>
               </div>
-              <button onClick={() => pourDrink(id)}>Pour a Drink 🍷</button>
+              <button onClick={() => pourDrink(id, fillLevel)}>Pour a Drink 🍷</button>
             </div>
             <img src={imageUrl} alt={name} className="liquor-image" style={{ width: '150px', height: 'auto' }} />
             <h4>{name}</h4>
