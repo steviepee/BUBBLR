@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import '../../styling/LiquorBottle.css';
 
 const LiquorCabinet = () => {
   const [liquor, setLiquor] = useState([]);
+  let navigate = useNavigate();
 
   useEffect(() => {
     axios.get('/api/liquor')
@@ -47,6 +49,7 @@ const LiquorCabinet = () => {
     <div className="liquor-cabinet">
 
       <h3>Your Virtual Liquor Cabinet</h3>
+      <button onClick={() => navigate('/form')}>Creat Bottle</button>
       <div className="liquor-list">
         {liquor.map(({ id, imageUrl, name, brand, ABV, typeLiquor, date, fillLevel }) => (
           <div key={id} className="liquor-item">
