@@ -28,7 +28,17 @@ liquor.patch('/:id', async (req, res) => {
 
 })
 
-
+liquor.post('/', (req, res) => {
+  const { body } = req.body
+  LiquorCabinet.create(body)
+    .then((bottles) => {
+      res.status(201).send(bottles)
+    })
+    .catch((err) => {
+      console.error('Failed to create a new user:', err)
+      res.sendStatus(500)
+    })
+})
 
 
 
