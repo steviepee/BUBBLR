@@ -268,7 +268,7 @@ const Hangovers = sequelize.define('Hangovers', {
     type: DataTypes.INTEGER,
   },
   additional: {
-    DataTypes: BOOLEAN,
+    type: DataTypes.BOOLEAN,
   },
 
 })
@@ -285,13 +285,18 @@ const Hangovers = sequelize.define('Hangovers', {
     },
     severity: {
       type: DataTypes.INTEGER,
+      enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
     },
     duration: {
       type: DataTypes.INTEGER,
     },
-    date: {
-      type: DataTypes.DATE,
-    },
+    hangRef: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Hangovers,
+        key: 'id',
+      }
+    }
   })
   const PastDrinks = sequelize.define('PastDrinks', {
     id: {
@@ -303,12 +308,20 @@ const Hangovers = sequelize.define('Hangovers', {
       type: DataTypes.STRING,
       required: true,
     },
+    shots: {
+      type: DataTypes.STRING,
+      require: true,
+    },
     timeSpan: {
       type: DataTypes.INTEGER,
     },
-    date: {
-      type: DataTypes.DATE,
-    },
+    hangRef: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Hangovers,
+        key: 'id',
+      }
+    }
   })
   const PastMixers = sequelize.define('Mixers', {
     id: {
@@ -320,9 +333,13 @@ const Hangovers = sequelize.define('Hangovers', {
       type: DataTypes.INTEGER,
       required: true,
     },
-    date: {
-      type: DataTypes.DATE,
-    },
+    hangRef: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Hangovers,
+        key: 'id',
+      }
+    }
   })
   const PastFoods = sequelize.define('PastFoods', {
     id: {
@@ -334,12 +351,13 @@ const Hangovers = sequelize.define('Hangovers', {
       type: DataTypes.STRING,
       required: true,
     },
-    timeSpan: {
+    hangRef: {
       type: DataTypes.INTEGER,
-    },
-    date: {
-      type: DataTypes.DATE,
-    },
+      references: {
+        model: Hangovers,
+        key: 'id',
+      }
+    }
   })
 
 
