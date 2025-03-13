@@ -201,37 +201,52 @@ seedAll(models);
 const seedHangover = () => {
   Hangovers.destroy({
     where: {},
-  }).then(() => console.log("Hangovers successfully destroyed")).then(() => {
-    Hangovers.bulkCreate(hangoverData, { ignoreDuplicates: true });
-  }).catch((err) => console.error('failed to seed Hangovers', err));
+  })
+    .then(() => console.log('Hangovers successfully destroyed'))
+    .then(() => {
+      Hangovers.bulkCreate(hangoverData, { ignoreDuplicates: true });
+    })
+    .catch((err) => console.error('failed to seed Hangovers', err));
 };
 const seedSymptoms = () => {
   Symptoms.destroy({
     where: {},
-  }).then(() => console.log("Symptoms successfully destroyed")).then(() => {
-    Symptoms.bulkCreate(symptomsData, { ignoreDuplicates: true });
-  }).catch((err) => console.error('failed to seed Symptoms', err));
+  })
+    .then(() => console.log('Symptoms successfully destroyed'))
+    .then(() => {
+      Symptoms.bulkCreate(symptomsData, { ignoreDuplicates: true });
+    })
+    .catch((err) => console.error('failed to seed Symptoms', err));
 };
 const seedPastDrinks = () => {
   PastDrinks.destroy({
     where: {},
-  }).then(() => console.log("PastDrinks successfully destroyed")).then(() => {
-    PastDrinks.bulkCreate(pastDrinksData, { ignoreDuplicates: true });
-  }).catch((err) => console.error('failed to seed PastDrinks', err));
+  })
+    .then(() => console.log('PastDrinks successfully destroyed'))
+    .then(() => {
+      PastDrinks.bulkCreate(pastDrinksData, { ignoreDuplicates: true });
+    })
+    .catch((err) => console.error('failed to seed PastDrinks', err));
 };
 const seedPastFoods = () => {
   PastFoods.destroy({
     where: {},
-  }).then(() => console.log("PastFoods successfully destroyed")).then(() => {
-    PastFoods.bulkCreate(pastFoodsData, { ignoreDuplicates: true });
-  }).catch((err) => console.error('failed to seed PastFoods', err));
+  })
+    .then(() => console.log('PastFoods successfully destroyed'))
+    .then(() => {
+      PastFoods.bulkCreate(pastFoodsData, { ignoreDuplicates: true });
+    })
+    .catch((err) => console.error('failed to seed PastFoods', err));
 };
 const seedPastMixers = () => {
   PastMixers.destroy({
     where: {},
-  }).then(() => console.log("PastMixers successfully destroyed")).then(() => {
-    PastMixers.bulkCreate(pastMixersData, { ignoreDuplicates: true });
-  }).catch((err) => console.error('failed to seed PastMixers', err));
+  })
+    .then(() => console.log('PastMixers successfully destroyed'))
+    .then(() => {
+      PastMixers.bulkCreate(pastMixersData, { ignoreDuplicates: true });
+    })
+    .catch((err) => console.error('failed to seed PastMixers', err));
 };
 seedHangover();
 seedSymptoms();
