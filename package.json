@@ -11,7 +11,9 @@
     "seed": "node server/db/index.js",
     "greed": "node server/db/seedMatchData.js",
     "ach": "node server/db/achievementsSeed.js",
-    "liquor": "node server/db/seedLiquor.js"
+    "liquor": "node server/db/seedLiquor.js",
+    "hang": "node server/db/hangoverSeed.js"
+    
   },
   "keywords": [],
   "author": "",
