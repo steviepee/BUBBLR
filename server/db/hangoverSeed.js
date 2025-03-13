@@ -179,24 +179,24 @@ const seeds = [
   pastFoodsData,
 ];
 
-const seedDb = (model, array) => {
-  model
-    .destroy({
-      where: {},
-    })
-    .then(() => console.log(`${model} successfully destroyed`))
-    .then(() => {
-      model.bulkCreate(array, { ignoreDuplicates: true });
-    })
-    .catch((err) => console.error('failed to seed table', err));
-};
+// const seedDb = (model, array) => {
+//   model
+//     .destroy({
+//       where: {},
+//     })
+//     .then(() => console.log(`${model} successfully destroyed`))
+//     .then(() => {
+//       model.bulkCreate(array, { ignoreDuplicates: true });
+//     })
+//     .catch((err) => console.error('failed to seed table', err));
+// };
 
-const seedAll = (modArr) => {
-  modArr.forEach((mod, i) => {
-    seedDb(mod, seeds[i]);
-  });
-};
-seedAll(models);
+// const seedAll = (modArr) => {
+//   modArr.forEach((mod, i) => {
+//     seedDb(mod, seeds[i]);
+//   });
+// };
+// seedAll(models);
 
 const seedHangover = () => {
   Hangovers.destroy({
