@@ -30,4 +30,10 @@ hangoverRouter.get('/', (req, res) => {
   });
 });
 
+hangoverRouter.post('/', (req, res) => {});
+
+hangoverRouter.patch('/:id', (req, res) => {});
+
+hangoverRouter.delete('/:id', (req, res) => {});
+
 module.exports = hangoverRouter;
