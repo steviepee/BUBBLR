@@ -10,6 +10,7 @@ const LiquorCabinet = () => {
   const [show, setShow] = useState(false); // Initially set to false, will trigger when fillLevel is 25
   const [liquor, setLiquor] = useState([]);
   let navigate = useNavigate();
+  const [showempty, setShowempty] = useState(false)
 
   useEffect(() => {
     axios.get('/api/liquor')
@@ -44,6 +45,9 @@ const LiquorCabinet = () => {
         if (newFillLevel === 25) {
           setShow(true); // Show alert
         }
+        if (newFillLevel === 0) {
+          setShowempty(true)
+        }
       })
       .catch((error) => {
         console.error(`Error updating liquor bottle ${id}`, error);
@@ -68,22 +72,29 @@ const LiquorCabinet = () => {
 
       {/* Conditionally render the alert when the fill level reaches 25% */}
       {show && (
-        <Alert variant="success">
-          <Alert.Heading>My Alert</Alert.Heading>
+        <Alert variant="danger">
+          <Alert.Heading>Down to 25%</Alert.Heading>
           <p>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget
-            lacinia odio sem nec elit. Cras mattis consectetur purus sit amet
-            fermentum.
+            You have consumed 75% of this bottle! If you are enjoying the drinks, you may want to reorder.
           </p>
           <hr />
           <div className="d-flex justify-content-end">
-            <Button onClick={() => setShow(false)} variant="outline-success">
+            <Button onClick={() => setShow(false)} variant="outline-danger">
               Close me
             </Button>
           </div>
         </Alert>
       )}
-
+      {showempty && (
+        <Alert variant="danger">
+          <Alert.Heading>Bottle Empty</Alert.Heading>
+          <div className="d-flex justify-content-end">
+            <Button onClick={() => setShowempty(false)} variant="outline-danger">
+              Close me
+            </Button>
+          </div>
+        </Alert>
+      )}
       <div className="liquor-list">
         {liquor.map(({ id, imageUrl, name, brand, ABV, typeLiquor, date, fillLevel }) => (
           <div key={id} className="liquor-item">
