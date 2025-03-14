@@ -18,6 +18,9 @@ import FriendProfile from './profileChildren/FriendProfile.jsx';
 import BarHop from './BarHop.jsx';
 import Reviews from './Reviews.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import MemoryMatch from "./matchGame/memoryMatch.jsx";
+
+
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
@@ -89,6 +92,9 @@ const App = () => {
         <Route path='/community' element={<ProtectedRoute><Community /></ProtectedRoute>} />
         <Route path='/filtered/:filter/*' element={<ProtectedRoute><FilteredPageHandler /></ProtectedRoute>} />
         <Route path='/profile/friend/:id' element={<ProtectedRoute><FriendProfile /></ProtectedRoute>} />
+        <Route path="/memory-match" element={<ProtectedRoute><MemoryMatch /></ProtectedRoute>} />
+
+
       </Routes>
     </div>
   );
