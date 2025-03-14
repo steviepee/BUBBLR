@@ -95,9 +95,11 @@ function NavFilter({ onLogout }) {
               Creation Station
             </Nav.Link>
             {onProfile && (
-              <Nav.Link onClick={onLogout}>
+              <><Nav.Link onClick={onLogout}>
                 Logout
-              </Nav.Link>
+              </Nav.Link><Nav.Link as={Link} to="/memory-match">
+                  Memory Match
+                </Nav.Link></>
             )}
           </Nav>
         </Navbar.Collapse>
