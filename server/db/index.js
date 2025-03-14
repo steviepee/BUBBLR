@@ -406,7 +406,7 @@ sequelize.sync({ alter: true })
 // Achievements.sync().catch((err) => console.error('Failed syncing Achievements:', err));
 // UserAchievements.sync().catch((err) => console.error('Failed syncing UserAchievements:', err));
 // UserAchievements.sync().catch((err) => console.error('Failed syncing UserAchievements:', err));
-// LiquorCabinet.sync().catch((err) => console.error('Failed syncing LiquorCabinet:', err));
+// LiquorCabinet.sync().catch((err) => console.error('Failed syncing LiquorCabinet:', err));-----
 
 module.exports = {
   User,
