@@ -5,6 +5,10 @@ const { LiquorCabinet } = require('../db/index')
 liquor.get('/', (req, res) => {
   LiquorCabinet.findAll()
     .then((cabinetArray) => {
+
+      // let newUri = [cabinetArray[2].imageUrl.slice(0, 4), cabinetArray[2].imageUrl.slice(4 + 1)];
+      // console.log(newUri[1])
+      // cabinetArray[2].imageUrl = newUri[1]
       res.status(200).send(cabinetArray)
     })
 })
