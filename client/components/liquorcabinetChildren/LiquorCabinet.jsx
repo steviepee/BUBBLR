@@ -44,6 +44,17 @@ const LiquorCabinet = () => {
 
 
   }
+  const deleteBottle = (id) => {
+    axios.delete(`/api/liquor/${id}`)
+      .then((response) => {
+        console.log(response);
+        // Update the liquor state by removing the deleted bottle
+        setLiquor(prevLiquor => prevLiquor.filter(bottle => bottle.id !== id));
+      })
+      .catch((err) => {
+        console.error("could not delete bottle,", err);
+      });
+  }
 
   return (
     <div className="liquor-cabinet">
@@ -66,7 +77,9 @@ const LiquorCabinet = () => {
             <div><strong>Type:</strong> {typeLiquor}</div>
             <div><strong>Date Acquired:</strong> {date}</div>
             <div><strong>Amount Left in Bottle:</strong> {fillLevel}%</div>
+            <button onClick={() => deleteBottle(id)}>Delete</button>
           </div>
+
         ))}
       </div>
     </div>
