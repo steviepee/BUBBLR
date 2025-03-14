@@ -4,8 +4,10 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../../styling/LiquorBottle.css';
+import { Alert, Button } from 'react-bootstrap';
 
 const LiquorCabinet = () => {
+  const [show, setShow] = useState(false); // Initially set to false, will trigger when fillLevel is 25
   const [liquor, setLiquor] = useState([]);
   let navigate = useNavigate();
 
@@ -24,7 +26,6 @@ const LiquorCabinet = () => {
       });
   }, []);
 
-
   const pourDrink = (id, currentFillLevel) => {
     const newFillLevel = Math.max(currentFillLevel - 6.25, 0); // Ensure it doesn't go negative
 
@@ -34,33 +35,55 @@ const LiquorCabinet = () => {
         bottle.id === id ? { ...bottle, fillLevel: newFillLevel } : bottle
       )
     );
+
     axios.patch(`/api/liquor/${id}`, { amountLeft: newFillLevel })
       .then((response) => {
         console.log(`Updated bottle ${id} successfully`, response.data);
+
+        // Show alert if the new fill level is 25%
+        if (newFillLevel === 25) {
+          setShow(true); // Show alert
+        }
       })
       .catch((error) => {
         console.error(`Error updating liquor bottle ${id}`, error);
       });
+  };
 
-
-  }
   const deleteBottle = (id) => {
     axios.delete(`/api/liquor/${id}`)
       .then((response) => {
         console.log(response);
-        // Update the liquor state by removing the deleted bottle
         setLiquor(prevLiquor => prevLiquor.filter(bottle => bottle.id !== id));
       })
       .catch((err) => {
-        console.error("could not delete bottle,", err);
+        console.error("Could not delete bottle,", err);
       });
-  }
+  };
 
   return (
     <div className="liquor-cabinet">
-
       <h3>Your Virtual Liquor Cabinet</h3>
-      <button onClick={() => navigate('/form')}>Creat Bottle</button>
+      <button onClick={() => navigate('/form')}>Create Bottle</button>
+
+      {/* Conditionally render the alert when the fill level reaches 25% */}
+      {show && (
+        <Alert variant="success">
+          <Alert.Heading>My Alert</Alert.Heading>
+          <p>
+            Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget
+            lacinia odio sem nec elit. Cras mattis consectetur purus sit amet
+            fermentum.
+          </p>
+          <hr />
+          <div className="d-flex justify-content-end">
+            <Button onClick={() => setShow(false)} variant="outline-success">
+              Close me
+            </Button>
+          </div>
+        </Alert>
+      )}
+
       <div className="liquor-list">
         {liquor.map(({ id, imageUrl, name, brand, ABV, typeLiquor, date, fillLevel }) => (
           <div key={id} className="liquor-item">
@@ -84,7 +107,6 @@ const LiquorCabinet = () => {
             <div><strong>Amount Left in Bottle:</strong> {fillLevel}%</div>
             <button onClick={() => deleteBottle(id)}>Delete</button>
           </div>
-
         ))}
       </div>
     </div>
