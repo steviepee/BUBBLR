@@ -30,10 +30,12 @@ hangoverRouter.get('/', (req, res) => {
   });
 });
 
-hangoverRouter.post('/', async(req, res) => {
+hangoverRouter.post('/', async (req, res) => {
   try {
-    
-  } catch (error) {}
+    const newHang = await Hangover.create();
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 hangoverRouter.patch('/:id', (req, res) => {});

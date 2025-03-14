@@ -270,6 +270,9 @@ const Hangover = sequelize.define('Hangovers', {
   additional: {
     type: DataTypes.BOOLEAN,
   },
+  notes: {
+    type: DataTypes.TEXT,
+  },
 
 })
 
