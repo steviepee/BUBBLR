@@ -11,6 +11,9 @@ const profileRouter = require('./routes/profile');
 const barsRouter = require('./routes/bars');
 const eventsRouter = require('./routes/events');
 const drinksRouter = require('./routes/drinks');
+const matchGameRoutes = require('./routes/matchGame.js');
+
+
 require('dotenv').config();
 
 // MIDDLEWARES
@@ -25,18 +28,20 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-// SERVING REACT STATIC PAGES
-const CLIENT_PATH = path.resolve(__dirname, '../dist');
-app.use(express.static(CLIENT_PATH));
-
 // ROUTER SENDING TO WHEREVER
 app.use('/auth', authRouter);
 app.use('/profile', profileRouter);
 app.use('/api/bars', barsRouter);
 app.use('/events', eventsRouter);
 app.use('/api/drinks', drinksRouter);
+app.use('/api/match-games', matchGameRoutes);
+
 // ROUTES FOR THIS FILE
+
+// SERVING REACT STATIC PAGES
+const CLIENT_PATH = path.resolve(__dirname, '../dist');
+app.use(express.static(CLIENT_PATH));
+
 
 // Logout Route for users
 app.post('/logout', (req, res) => {
