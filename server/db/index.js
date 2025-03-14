@@ -254,6 +254,116 @@ const LiquorCabinet = sequelize.define('LiquorCabinet', {
   },
 });
 
+const Hangover = sequelize.define('Hangovers', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+  },
+  day: {
+    type: DataTypes.DATE,
+  },
+  pastWater: {
+    type: DataTypes.INTEGER,
+  },
+  additional: {
+    type: DataTypes.BOOLEAN,
+  },
+  notes: {
+    type: DataTypes.TEXT,
+  },
+
+})
+
+  const Symptom = sequelize.define('Symptoms', {
+    id: {
+      type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      required: true,
+    },
+    severity: {
+      type: DataTypes.INTEGER,
+      enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    },
+    duration: {
+      type: DataTypes.INTEGER,
+    },
+    // hangRef: {
+    //   type: DataTypes.INTEGER,
+    //   references: {
+    //     model: Hangover,
+    //     key: 'id',
+    //   }
+    // }
+  })
+  const PastDrink = sequelize.define('PastDrinks', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      required: true,
+    },
+    shots: {
+      type: DataTypes.INTEGER,
+      require: true,
+    },
+    timeSpan: {
+      type: DataTypes.INTEGER,
+    },
+    // hangRef: {
+    //   type: DataTypes.INTEGER,
+    //   references: {
+    //     model: Hangover,
+    //     key: 'id',
+    //   }
+    // }
+  })
+  const PastMixer = sequelize.define('Mixers', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.INTEGER,
+      required: true,
+    },
+    // hangRef: {
+    //   type: DataTypes.INTEGER,
+    //   references: {
+    //     model: Hangover,
+    //     key: 'id',
+    //   }
+    // }
+  })
+  const PastFood = sequelize.define('PastFoods', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      required: true,
+    },
+    // hangRef: {
+    //   type: DataTypes.INTEGER,
+    //   references: {
+    //     model: Hangover,
+    //     key: 'id',
+    //   }
+    // }
+  })
 
 
 // Model associations
