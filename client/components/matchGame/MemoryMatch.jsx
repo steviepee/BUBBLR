@@ -15,6 +15,18 @@ const MemoryMatch = ({ googleId }) => {
   const [showGameGrid, setShowGameGrid] = useState(false);
   const [matchGameId, setMatchGameId] = useState(null);
 
+  // Define fallback images
+  const fallbackImages = [
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE5Tc7qlEOQIvCm10G0J1E9FGWuw7xh7HV9g&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRb1WtLPgV2AUyuwe-I9vzRHnRrKME8rpciVw&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFDks5Rx4bZQFnVI5qAuLlFHI_BTFy5nv3FQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfclwOdfW3ZSsOo0xIju4O-W2cJTvR1cUh2w&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL0XfC6uez2H_UGolAKhXwKp_2e5o_yTHXsA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxhUQMLb3CWC17YT9M4KBtaWwoJJ1mb_kgvA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS3Nk5--pEptGU_oRHAVV4WViKWEaIrGGvgw&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWTIAmyaU220Z44Pz4YieYufBmQIbUlDuotA&s",
+  ];
+
   // Fetch match games
   const getMatch = () => {
     axios
@@ -85,11 +97,25 @@ const MemoryMatch = ({ googleId }) => {
   }, []);
 
   // Generate a unique default image URL for each pair of tiles
-  const generateDefaultImageUrl = (index) => {
-    const pairIndex = Math.floor(index / 2); // Group tiles into pairs (8 pairs for 16 tiles)
-    return `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIFX1ykU1ch48HaZtoSEGfe--mQhoHNufV7g&s${pairIndex + 1}`;
-  };
+  const assignedImages = new Set();
 
+  const generateDefaultImageUrl = () => {
+    // Filter out images that are already assigned
+    const availableImages = fallbackImages.filter(img => !assignedImages.has(img));
+  
+    // If all images are used, reset the assigned set
+    if (availableImages.length === 0) {
+      assignedImages.clear();
+    }
+  
+    // Pick a random image from the remaining pool
+    const randomImage = availableImages[Math.floor(Math.random() * availableImages.length)];
+  
+    // Mark the image as assigned
+    assignedImages.add(randomImage);
+  
+    return randomImage;
+  };
   // Initialize the game with fetched drink data or custom images
   const initializeGame = (data) => {
     // Create an array of unique items (custom images or drinks)
@@ -100,7 +126,8 @@ const MemoryMatch = ({ googleId }) => {
         ? {
             id: index,
             name: data[index].strDrink || "Default",
-            imageUrl: data[index].strDrinkThumb || generateDefaultImageUrl(index),
+            imageUrl: data[index]?.strDrinkThumb || generateDefaultImageUrl()
+            ,
           }
         : { id: index, name: "Default", imageUrl: generateDefaultImageUrl(index) }
     );
@@ -110,8 +137,8 @@ const MemoryMatch = ({ googleId }) => {
 
     // Create pairs by duplicating each item
     const pairs = finalItems.flatMap((item) => [
-      { ...item },
-      { ...item }, // Duplicate the item
+      { ...item, pairId: item.id }, // Add a pairId to identify the pair
+      { ...item, pairId: item.id }, // Duplicate the item with the same pairId
     ]);
 
     // Shuffle the pairs
@@ -130,7 +157,7 @@ const MemoryMatch = ({ googleId }) => {
       setIsChecking(true);
       setTimeout(() => {
         const [firstIndex, secondIndex] = newFlipped;
-        if (shuffledTiles[firstIndex].id === shuffledTiles[secondIndex].id) {
+        if (shuffledTiles[firstIndex].pairId === shuffledTiles[secondIndex].pairId) {
           setSolved((prevSolved) => [...prevSolved, firstIndex, secondIndex]);
         }
         setFlipped([]);
@@ -153,27 +180,31 @@ const MemoryMatch = ({ googleId }) => {
         console.error("No drinks data available");
         return;
       }
-
+  
       setFlipped([]);
       setSolved([]);
       setMoves(0);
       setIsChecking(false);
-
+  
       // Delete the current match game and create a new one
       if (matchGameId) {
         await deleteMatchGame(matchGameId);
       }
-
+  
+      // Reinitialize the game with new shuffled tiles
+      initializeGame(drinksData);
+  
       const newMatchGame = await createMatchGame(
         googleId,
         drinksData[0]?.idDrink,
-        customImages[0] || generateDefaultImageUrl(0)
+        customImages[0] || generateDefaultImageUrl()
       );
       setMatchGameId(newMatchGame.id);
     } catch (error) {
       console.error("Failed to reset game:", error);
     }
   };
+  
 
   // Handle image upload for a specific tile
   const handleImageUpload = (index, e) => {
@@ -196,6 +227,14 @@ const MemoryMatch = ({ googleId }) => {
   // Start the game with uploaded images
   const startGame = async () => {
     try {
+      // Check if at least one custom image has been uploaded
+      const hasCustomImages = customImages.some((image) => image !== null);
+
+      if (!hasCustomImages) {
+        alert("Please upload at least one image before starting the game.");
+        return;
+      }
+
       const drinksData = await getDrinks();
       if (!drinksData || drinksData.length === 0) {
         console.error("No drinks data available");
