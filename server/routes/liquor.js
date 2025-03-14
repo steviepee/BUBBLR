@@ -40,6 +40,22 @@ liquor.post('/', (req, res) => {
     })
 })
 
+liquor.delete('/:id', (req, res) => {
+  const { id } = req.params
+  LiquorCabinet.destroy({ where: { id } })
+    .then((rowsDel) => {
+      if (rowsDel) {
+        res.sendStatus(200)
+      } else {
+        res.sendStatus(404)
+      }
+    })
+    .catch((err) => {
+      console.error("Could not destory based on liqyor bottle ID", err)
+      res.sendStatus(500)
+
+    })
+})
 
 
 
