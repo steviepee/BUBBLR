@@ -94,6 +94,9 @@ function NavFilter({ onLogout }) {
             <Nav.Link as={Link} to='/creationStation'>
               Creation Station
             </Nav.Link>
+            <Nav.Link as={Link} to='/liquor'>
+              Liquor Cabinet
+            </Nav.Link>
             {onProfile && (
               <><Nav.Link onClick={onLogout}>
                 Logout

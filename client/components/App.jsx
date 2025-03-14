@@ -16,7 +16,10 @@ import Community from './Community.jsx';
 import NavFilter from './homepageChildren/NavFilter.jsx';
 import FriendProfile from './profileChildren/FriendProfile.jsx';
 import BarHop from './BarHop.jsx';
-import Reviews from './Reviews.jsx';
+import Reviews from './Reviews.jsx'
+import LiquorCabinet from './liquorcabinetChildren/LiquorCabinet.jsx';
+import LCForm from './liquorcabinetChildren/LCForm.jsx';
+import Hangovers from './Hangovers.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MemoryMatch from "./matchGame/memoryMatch.jsx";
 
@@ -80,7 +83,7 @@ const App = () => {
 
   return (
     <div style={appStyle}>
-      {isAuth && <NavFilter onLogout={handleLogout}/>}
+      {isAuth && <NavFilter onLogout={handleLogout} />}
       <Routes>
         <Route path='/' element={!isAuth ? <Login /> : <Navigate to='/home' replace />} />
         <Route path='/home' element={<ProtectedRoute><Homepage /></ProtectedRoute>} />
@@ -95,6 +98,9 @@ const App = () => {
         <Route path="/memory-match" element={<ProtectedRoute><MemoryMatch /></ProtectedRoute>} />
 
 
+        <Route path='/liquor' element={<ProtectedRoute><LiquorCabinet /></ProtectedRoute>} />
+        <Route path='/form' element={<ProtectedRoute><LCForm /></ProtectedRoute>} />
+        <Route path='/hangovers' element={<ProtectedRoute><Hangovers /></ProtectedRoute>}/>
       </Routes>
     </div>
   );

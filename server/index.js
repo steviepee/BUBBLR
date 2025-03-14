@@ -13,6 +13,9 @@ const eventsRouter = require('./routes/events');
 const drinksRouter = require('./routes/drinks');
 const matchGameRoutes = require('./routes/matchGame.js');
 
+const liquorRouter = require('./routes/liquor');
+const hangoverRouter = require('./routes/hangovers');
+const achievementsRouter = require('./routes/achievements');
 
 require('dotenv').config();
 
@@ -36,6 +39,9 @@ app.use('/events', eventsRouter);
 app.use('/api/drinks', drinksRouter);
 app.use('/api/match-games', matchGameRoutes);
 
+app.use('/api/liquor', liquorRouter);
+app.use('/api/hangover', hangoverRouter);
+app.use('/api/achievements', achievementsRouter);
 // ROUTES FOR THIS FILE
 
 // SERVING REACT STATIC PAGES

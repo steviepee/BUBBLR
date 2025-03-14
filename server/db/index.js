@@ -254,6 +254,8 @@ const LiquorCabinet = sequelize.define('LiquorCabinet', {
   },
 });
 
+
+
 // Model associations
 User.hasMany(Event, { foreignKey: 'userId', as: 'events' });
 Event.belongsTo(User, { foreignKey: 'userId', as: 'user' });
@@ -264,8 +266,22 @@ Bar.belongsToMany(Event, { through: 'EventBars' });
 User.belongsToMany(Achievements, { through: UserAchievements });
 Achievements.belongsToMany(User, { through: UserAchievements });
 
-sequelize
-  .sync({ alter: true })
+Hangover.hasMany(PastDrink, { allowNull: false, as: 'past_drinks' });
+PastDrink.belongsTo(Hangover, { foreignKey: 'id', as: 'hang_drink' });
+
+Hangover.hasMany(PastFood, { allowNull: false, as: 'past_foods' });
+PastFood.belongsTo(Hangover, { foreignKey: 'id', as: 'hang_food' });
+
+Hangover.hasMany(PastMixer, { allowNull: false, as: 'past_mixers' });
+PastMixer.belongsTo(Hangover, { foreignKey: 'id', as: 'hang_mixer' });
+
+Hangover.hasMany(Symptom, { allowNull: false, as: 'symptoms' });
+Symptom.belongsTo(Hangover, { foreignKey: 'id', as: 'hang_symptom' });
+
+User.hasMany(Hangover, {  allowNull: true, as: 'hangovers' });
+Hangover.belongsTo(User, { foreignKey: 'id', as: 'hang_user' });
+
+sequelize.sync({ alter: true })
   .then(() => console.log('synced'))
   .catch((err) => console.error('Error syncing', err));
 
@@ -295,4 +311,10 @@ module.exports = {
   Achievements,
   UserAchievements,
   LiquorCabinet,
+  Hangover,
+  PastDrink,
+  PastFood,
+  PastMixer,
+  Symptom,
+
 };
