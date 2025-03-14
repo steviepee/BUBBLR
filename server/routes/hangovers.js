@@ -1,11 +1,11 @@
 // don't forget to res.json instead of res.send info
 const express = require('express');
 const {
-  Hangovers,
-  Symptoms,
-  PastDrinks,
-  PastFoods,
-  PastMixers,
+  Hangover,
+  Symptom,
+  PastDrink,
+  PastFood,
+  PastMixer,
 } = require('../db/index');
 
 const hangoverRouter = express.Router();
@@ -16,11 +16,11 @@ const hangoverRouter = express.Router();
  */
 hangoverRouter.get('/', (req, res) => {
   Promise.all([
-    Hangovers.findAll(),
-    Symptoms.findAll(),
-    PastDrinks.findAll(),
-    PastFoods.findAll(),
-    PastMixers.findAll(),
+    Hangover.findAll(),
+    Symptom.findAll(),
+    PastDrink.findAll(),
+    PastFood.findAll(),
+    PastMixer.findAll(),
   ]).then((results) => {
     console.log(results);
     res.status(200).json(results);
@@ -30,7 +30,11 @@ hangoverRouter.get('/', (req, res) => {
   });
 });
 
-hangoverRouter.post('/', (req, res) => {});
+hangoverRouter.post('/', async(req, res) => {
+  try {
+    
+  } catch (error) {}
+});
 
 hangoverRouter.patch('/:id', (req, res) => {});
 
