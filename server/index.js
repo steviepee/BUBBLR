@@ -13,7 +13,7 @@ const eventsRouter = require('./routes/events');
 const drinksRouter = require('./routes/drinks');
 const liquorRouter = require('./routes/liquor');
 const hangoverRouter = require('./routes/hangovers');
-const achievementsRouter = require('./routes/achievements');
+const triviaRouter = require('./routes/trivia');
 
 require('dotenv').config();
 
@@ -42,7 +42,7 @@ app.use('/events', eventsRouter);
 app.use('/api/drinks', drinksRouter);
 app.use('/api/liquor', liquorRouter);
 app.use('/api/hangover', hangoverRouter);
-app.use('/api/achievements', achievementsRouter);
+app.use('/api/trivia', triviaRouter);
 // ROUTES FOR THIS FILE
 
 // Logout Route for users
