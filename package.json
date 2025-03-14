@@ -12,8 +12,8 @@
     "greed": "node server/db/seedMatchData.js",
     "ach": "node server/db/achievementsSeed.js",
     "liquor": "node server/db/seedLiquor.js",
-    "hang": "node server/db/hangoverSeed.js"
-    
+    "hang": "node server/db/hangoverSeed.js",
+    "seedAll": "node server/db/index.js && node server/db/seedLiquor.js && node server/db/hangoverSeed.js"
   },
   "keywords": [],
   "author": "",
@@ -35,6 +35,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@canvasjs/react-charts": "^1.0.2",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "cookie-parser": "^1.4.6",
