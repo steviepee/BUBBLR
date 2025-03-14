@@ -14,6 +14,7 @@ const drinksRouter = require('./routes/drinks');
 const liquorRouter = require('./routes/liquor');
 const hangoverRouter = require('./routes/hangovers');
 const triviaRouter = require('./routes/trivia');
+const leaderboardRoutes = require('./routes/leaderboard');
 
 require('dotenv').config();
 
@@ -43,6 +44,7 @@ app.use('/api/drinks', drinksRouter);
 app.use('/api/liquor', liquorRouter);
 app.use('/api/hangover', hangoverRouter);
 app.use('/api/trivia', triviaRouter);
+app.use('/leaderboard', leaderboardRoutes);
 
 // ROUTES FOR THIS FILE
 
