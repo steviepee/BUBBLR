@@ -269,96 +269,79 @@ const Hangovers = sequelize.define('Hangovers', {
   },
   additional: {
     type: DataTypes.BOOLEAN,
+    type: DataTypes.BOOLEAN,
   },
 
 })
 
-  const Symptoms = sequelize.define('Symptoms', {
-    id: {
-      type: DataTypes.INTEGER,
+const Symptoms = sequelize.define('Symptoms', {
+  id: {
+    type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      required: true,
-    },
-    severity: {
-      type: DataTypes.INTEGER,
-      enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    },
-    duration: {
-      type: DataTypes.INTEGER,
-    },
-    hangRef: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Hangovers,
-        key: 'id',
-      }
-    }
-  })
-  const PastDrinks = sequelize.define('PastDrinks', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      required: true,
-    },
-    shots: {
-      type: DataTypes.STRING,
-      require: true,
-    },
-    timeSpan: {
-      type: DataTypes.INTEGER,
-    },
-    hangRef: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Hangovers,
-        key: 'id',
-      }
-    }
-  })
-  const PastMixers = sequelize.define('Mixers', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.INTEGER,
-      required: true,
-    },
-    hangRef: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Hangovers,
-        key: 'id',
-      }
-    }
-  })
-  const PastFoods = sequelize.define('PastFoods', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      required: true,
-    },
-    hangRef: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Hangovers,
-        key: 'id',
-      }
-    }
-  })
+  },
+  name: {
+    type: DataTypes.STRING,
+    required: true,
+  },
+  severity: {
+    type: DataTypes.INTEGER,
+  },
+  duration: {
+    type: DataTypes.INTEGER,
+  },
+  date: {
+    type: DataTypes.DATE,
+  },
+})
+const PastDrinks = sequelize.define('PastDrinks', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    required: true,
+  },
+  timeSpan: {
+    type: DataTypes.INTEGER,
+  },
+  date: {
+    type: DataTypes.DATE,
+  },
+})
+const PastMixers = sequelize.define('Mixers', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.INTEGER,
+    required: true,
+  },
+  date: {
+    type: DataTypes.DATE,
+  },
+})
+const PastFoods = sequelize.define('PastFoods', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    required: true,
+  },
+  timeSpan: {
+    type: DataTypes.INTEGER,
+  },
+  date: {
+    type: DataTypes.DATE,
+  },
+})
 
 
 
