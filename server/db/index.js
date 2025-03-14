@@ -11,7 +11,7 @@ const User = sequelize.define('User', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
-    primaryKey: true
+    primaryKey: true,
   },
   googleId: { type: DataTypes.STRING, allowNull: false, unique: true },
   nameFirst: DataTypes.STRING,
@@ -160,7 +160,7 @@ const MatchGame = sequelize.define('MatchGame', {
     allowNull: false,
   },
   drinkId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   imageUrl: {
@@ -192,30 +192,32 @@ const Achievements = sequelize.define('Achievements', {
 });
 
 // User Achievements model
-const UserAchievements = sequelize.define('UserAchievements', {
-  userIdentification: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: User,
-      key: 'id',
+const UserAchievements = sequelize.define(
+  'UserAchievements',
+  {
+    userIdentification: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: User,
+        key: 'id',
+      },
+    },
+    achievementData: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Achievements,
+        key: 'identification',
+      },
+    },
+    unlockedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
     },
   },
-  achievementData: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: Achievements,
-      key: 'identification',
-    },
+  {
+    timestamps: false,
   },
-  unlockedAt: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
-}, {
-  timestamps: false,
-});
-
-
+);
 
 const LiquorCabinet = sequelize.define('LiquorCabinet', {
   userId: {
@@ -223,36 +225,34 @@ const LiquorCabinet = sequelize.define('LiquorCabinet', {
     references: {
       model: User,
       key: 'id',
-    }
+    },
   },
   imageUrl: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   name: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   brand: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   typeLiquor: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   ABV: {
-    type: DataTypes.FLOAT
+    type: DataTypes.FLOAT,
   },
   amountLeft: {
     type: DataTypes.FLOAT,
-    defaultValue: 100.0
+    defaultValue: 100.0,
   },
   notes: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   date: {
-    type: DataTypes.DATE
-  }
+    type: DataTypes.DATE,
+  },
 });
-
-
 
 // Model associations
 User.hasMany(Event, { foreignKey: 'userId', as: 'events' });
@@ -264,7 +264,8 @@ Bar.belongsToMany(Event, { through: 'EventBars' });
 User.belongsToMany(Achievements, { through: UserAchievements });
 Achievements.belongsToMany(User, { through: UserAchievements });
 
-sequelize.sync({ alter: true })
+sequelize
+  .sync({ alter: true })
   .then(() => console.log('synced'))
   .catch((err) => console.error('Error syncing', err));
 
