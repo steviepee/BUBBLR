@@ -46,14 +46,14 @@ const LCForm = () => {
 
   //  Post Form Data
   const postForm = () => {
-    const requestData = { body: formData }; // ✅ Wrap formData in "body"
+    const requestData = { body: formData };
 
     console.log("Submitting Data:", requestData); // ✅ Debugging log
 
     axios.post("/api/liquor", requestData)
       .then((response) => {
         console.log("Success:", response.data);
-        alert("Form submitted successfully!");
+
         navigate("/liquor");
       })
       .catch((error) => {
@@ -70,7 +70,7 @@ const LCForm = () => {
 
   return (
     <form onSubmit={handleSubmit} style={styles.form}>
-      <h2>Liquor Entry Form</h2>
+      <h2>Bottle Information</h2>
 
       <label>
         Name:
@@ -84,7 +84,7 @@ const LCForm = () => {
 
       <label>
         ABV (%):
-        <input type="number" name="ABV" value={formData.ABV} onChange={handleChange} step="0.1" required />
+        <input type="number" name="ABV" value={formData.ABV} onChange={handleChange} step="0.1" />
       </label>
 
       <label>

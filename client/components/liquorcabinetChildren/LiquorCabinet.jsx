@@ -67,8 +67,7 @@ const LiquorCabinet = () => {
 
   return (
     <div className="liquor-cabinet">
-      <h3>Your Virtual Liquor Cabinet</h3>
-      <button onClick={() => navigate('/form')}>Create Bottle</button>
+
 
       {/* Conditionally render the alert when the fill level reaches 25% */}
       {show && (
@@ -95,6 +94,8 @@ const LiquorCabinet = () => {
           </div>
         </Alert>
       )}
+      <h3>Your Virtual Liquor Cabinet</h3>
+      <button onClick={() => navigate('/form')}>Create Bottle</button>
       <div className="liquor-list">
         {liquor.map(({ id, imageUrl, name, brand, ABV, typeLiquor, date, fillLevel }) => (
           <div key={id} className="liquor-item">
@@ -109,7 +110,7 @@ const LiquorCabinet = () => {
                 Pour a Drink 🍷
               </button>
             </div>
-            <img src={imageUrl} alt={name} className="liquor-image" style={{ width: '150px', height: 'auto' }} />
+            <img src={`${imageUrl}`} alt={name} className="liquor-image" style={{ width: '150px', height: 'auto' }} />
             <h4>{name}</h4>
             <div><strong>Brand:</strong> {brand}</div>
             <div><strong>ABV:</strong> {ABV}%</div>
