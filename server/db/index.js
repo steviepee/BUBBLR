@@ -192,6 +192,53 @@ const MatchGame = sequelize.define('MatchGame', {
   },
 });
 
+// Achievement model
+const Achievements = sequelize.define('Achievements', {
+  identification: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  description: {
+    type: DataTypes.STRING,
+  },
+  achievementType: {
+    type: DataTypes.STRING,
+  },
+  badgeImage: {
+    type: DataTypes.STRING,
+  },
+});
+
+// User Achievements model
+const UserAchievements = sequelize.define('UserAchievements', {
+  userIdentification: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: User,
+      key: 'id',
+    },
+  },
+  achievementData: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Achievements,
+      key: 'identification',
+    },
+  },
+  unlockedAt: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+  },
+}, {
+  timestamps: false,
+});
+
 
 const LiquorCabinet = sequelize.define('LiquorCabinet', {
   userId: {

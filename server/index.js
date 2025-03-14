@@ -43,6 +43,7 @@ app.use('/api/drinks', drinksRouter);
 app.use('/api/liquor', liquorRouter);
 app.use('/api/hangover', hangoverRouter);
 app.use('/api/trivia', triviaRouter);
+
 // ROUTES FOR THIS FILE
 
 // Logout Route for users

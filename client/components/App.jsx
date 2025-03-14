@@ -20,6 +20,7 @@ import Reviews from './Reviews.jsx'
 import LiquorCabinet from './liquorcabinetChildren/LiquorCabinet.jsx';
 import LCForm from './liquorcabinetChildren/LCForm.jsx';
 import Hangovers from './Hangovers.jsx';
+import Trivia from './Trivia';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
@@ -95,6 +96,7 @@ const App = () => {
         <Route path='/liquor' element={<ProtectedRoute><LiquorCabinet /></ProtectedRoute>} />
         <Route path='/form' element={<ProtectedRoute><LCForm /></ProtectedRoute>} />
         <Route path='/hangovers' element={<ProtectedRoute><Hangovers /></ProtectedRoute>}/>
+        <Route path='/trivia' element={<ProtectedRoute><Trivia /></ProtectedRoute>} />
       </Routes>
     </div>
   );
