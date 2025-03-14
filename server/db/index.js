@@ -269,13 +269,13 @@ const Hangover = sequelize.define('Hangovers', {
   },
   additional: {
     type: DataTypes.BOOLEAN,
+    type: DataTypes.BOOLEAN,
   },
   notes: {
     type: DataTypes.TEXT,
   },
 
 })
-
   const Symptom = sequelize.define('Symptoms', {
     id: {
       type: DataTypes.INTEGER,
@@ -362,6 +362,7 @@ const Hangover = sequelize.define('Hangovers', {
     //   }
     // }
   })
+=
 
 
 
