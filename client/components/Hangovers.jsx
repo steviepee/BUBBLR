@@ -7,7 +7,6 @@ import CanvasJSReact from '@canvasjs/react-charts';
 const CanvasChart = CanvasJSReact.CanvasJSChart;
 
 const Hangovers = () => {
-
   const [arr1, setArr1] = useState([]);
   const [arr2, setArr2] = useState([]);
   const [arr3, setArr3] = useState([]);
@@ -44,6 +43,39 @@ const Hangovers = () => {
     getAllHangoverInfo();
   }, []);
 
+  const lineOptions = {
+    animationEnabled: true,
+    backgroundColor: 'dark grey',
+    width: 420,
+    height: 300,
+    title: {
+      text: 'Hangovers over time',
+      fontColor: 'white',
+      fontFamily: 'comic sans',
+    },
+    axisX: {
+      valueFormatString: 'DD',
+      labelFontColor: 'white',
+      labelFontFamily: 'comic sans',
+    },
+    axisY: {
+      title: 'timeSpan of symptoms',
+      suffix: ' hrs',
+    },
+    data: [
+      {
+        yValueFormatString: '## hrs',
+        xValueFormatString: 'DDDD',
+        type: 'spline',
+        dataPoints: [
+          { x: new Date(2025, 0), y: 6 },
+          { x: new Date(2025, 1), y: 7 },
+          { x: new Date(2025, 2), y: 12 },
+        ],
+      },
+    ],
+  };
+
   const barOptions = {
     backgroundColor: 'dark grey',
     width: 420,
@@ -67,7 +99,7 @@ const Hangovers = () => {
           { label: 'tequila', y: 3 },
           { label: 'rum', labelColor: 'white', y: 2 },
           { label: 'wine', labelColor: 'white', y: 1 },
-          { label: 'vodka', labelColor: 'white', y: 0 },
+          // { label: 'vodka', labelColor: 'white', y: 0 },
         ],
       },
     ],
@@ -75,6 +107,7 @@ const Hangovers = () => {
   return (
     <Container>
       <div>Line chart hangs/time</div>
+      <CanvasChart options={lineOptions} />
       <div>bar chart hangs by substance</div>
       <div>
         <CanvasChart options={barOptions} />
