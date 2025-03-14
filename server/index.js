@@ -12,6 +12,7 @@ const barsRouter = require('./routes/bars');
 const eventsRouter = require('./routes/events');
 const drinksRouter = require('./routes/drinks');
 const liquorRouter = require('./routes/liquor');
+const hangoverRouter = require('./routes/hangovers');
 const achievementsRouter = require('./routes/achievements');
 
 require('dotenv').config();
@@ -40,6 +41,7 @@ app.use('/api/bars', barsRouter);
 app.use('/events', eventsRouter);
 app.use('/api/drinks', drinksRouter);
 app.use('/api/liquor', liquorRouter);
+app.use('/api/hangover', hangoverRouter);
 app.use('/api/achievements', achievementsRouter);
 // ROUTES FOR THIS FILE
 
