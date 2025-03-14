@@ -68,7 +68,12 @@ const LiquorCabinet = () => {
               <div className="bottle">
                 <div className="liquid" style={{ height: `${fillLevel}%` }}></div>
               </div>
-              <button onClick={() => pourDrink(id, fillLevel)}>Pour a Drink 🍷</button>
+              <button
+                onClick={() => pourDrink(id, fillLevel)}
+                disabled={fillLevel <= 0}
+              >
+                Pour a Drink 🍷
+              </button>
             </div>
             <img src={imageUrl} alt={name} className="liquor-image" style={{ width: '150px', height: 'auto' }} />
             <h4>{name}</h4>
