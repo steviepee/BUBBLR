@@ -362,7 +362,6 @@ const Hangover = sequelize.define('Hangovers', {
     //   }
     // }
   })
-=
 
 
 
