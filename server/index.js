@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 const path = require('path');
 const express = require('express');
+const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
 const axios = require('axios');
@@ -21,6 +22,7 @@ require('dotenv').config();
 // MIDDLEWARES
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.use(session({
   secret: 'bubblr',

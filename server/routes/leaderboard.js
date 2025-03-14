@@ -6,11 +6,9 @@ const { User, Leaderboard } = require('../db/index');
 
 const router = express.Router();
 
-// Route to submit score
 router.post('/', async (req, res) => {
   const { googleId, score } = req.body;
   try {
-    // Find or create the user based on googleId
     const [user, created] = await User.findOrCreate({
       where: { googleId },
       defaults: { nameFirst: '', nameLast: '', email: '' },
@@ -23,13 +21,12 @@ router.post('/', async (req, res) => {
       await Leaderboard.create({ userId: user.id, score });
     }
 
-    res.status(200).json({ message: 'Score submitted successfully' });
+    res.status(200).json({ message: 'score submitted successfully' });
   } catch (err) {
     console.error('err submitting score', err);
     res.status(500);
   }
 });
-
 
 router.get('/top-scores', async (req, res) => {
   try {
