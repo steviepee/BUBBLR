@@ -39,9 +39,11 @@ const Leaderboard = () => {
 
   return (
     <Container>
+      <div className='text-center'>
+      <h1 className="leaderboard-title">Leaderboard</h1>
+      </div>
       <Card className="custom-card mt-4 mb-4">
         <Card.Body className="custom-card-body" style={{ color: '#ffffff' }}>
-          <Card.Title>Leaderboard</Card.Title>
           <Table striped bordered hover variant="dark">
             <thead>
               <tr>
