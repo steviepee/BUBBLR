@@ -276,93 +276,93 @@ const Hangover = sequelize.define('Hangovers', {
   },
 
 })
-  const Symptom = sequelize.define('Symptoms', {
-    id: {
-      type: DataTypes.INTEGER,
+const Symptom = sequelize.define('Symptoms', {
+  id: {
+    type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      required: true,
-    },
-    severity: {
-      type: DataTypes.INTEGER,
-      enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    },
-    duration: {
-      type: DataTypes.INTEGER,
-    },
-    // hangRef: {
-    //   type: DataTypes.INTEGER,
-    //   references: {
-    //     model: Hangover,
-    //     key: 'id',
-    //   }
-    // }
-  })
-  const PastDrink = sequelize.define('PastDrinks', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      required: true,
-    },
-    shots: {
-      type: DataTypes.INTEGER,
-      require: true,
-    },
-    timeSpan: {
-      type: DataTypes.INTEGER,
-    },
-    // hangRef: {
-    //   type: DataTypes.INTEGER,
-    //   references: {
-    //     model: Hangover,
-    //     key: 'id',
-    //   }
-    // }
-  })
-  const PastMixer = sequelize.define('Mixers', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.INTEGER,
-      required: true,
-    },
-    // hangRef: {
-    //   type: DataTypes.INTEGER,
-    //   references: {
-    //     model: Hangover,
-    //     key: 'id',
-    //   }
-    // }
-  })
-  const PastFood = sequelize.define('PastFoods', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      required: true,
-    },
-    // hangRef: {
-    //   type: DataTypes.INTEGER,
-    //   references: {
-    //     model: Hangover,
-    //     key: 'id',
-    //   }
-    // }
-  })
-=
+  },
+  name: {
+    type: DataTypes.STRING,
+    required: true,
+  },
+  severity: {
+    type: DataTypes.INTEGER,
+    enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+  },
+  duration: {
+    type: DataTypes.INTEGER,
+  },
+  // hangRef: {
+  //   type: DataTypes.INTEGER,
+  //   references: {
+  //     model: Hangover,
+  //     key: 'id',
+  //   }
+  // }
+})
+const PastDrink = sequelize.define('PastDrinks', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    required: true,
+  },
+  shots: {
+    type: DataTypes.INTEGER,
+    require: true,
+  },
+  timeSpan: {
+    type: DataTypes.INTEGER,
+  },
+  // hangRef: {
+  //   type: DataTypes.INTEGER,
+  //   references: {
+  //     model: Hangover,
+  //     key: 'id',
+  //   }
+  // }
+})
+const PastMixer = sequelize.define('Mixers', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.INTEGER,
+    required: true,
+  },
+  // hangRef: {
+  //   type: DataTypes.INTEGER,
+  //   references: {
+  //     model: Hangover,
+  //     key: 'id',
+  //   }
+  // }
+})
+const PastFood = sequelize.define('PastFoods', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    required: true,
+  },
+  // hangRef: {
+  //   type: DataTypes.INTEGER,
+  //   references: {
+  //     model: Hangover,
+  //     key: 'id',
+  //   }
+  // }
+})
+
 
 
 
@@ -389,7 +389,7 @@ PastMixer.belongsTo(Hangover, { foreignKey: 'id', as: 'hang_mixer' });
 Hangover.hasMany(Symptom, { allowNull: false, as: 'symptoms' });
 Symptom.belongsTo(Hangover, { foreignKey: 'id', as: 'hang_symptom' });
 
-User.hasMany(Hangover, {  allowNull: true, as: 'hangovers' });
+User.hasMany(Hangover, { allowNull: true, as: 'hangovers' });
 Hangover.belongsTo(User, { foreignKey: 'id', as: 'hang_user' });
 
 sequelize.sync({ alter: true })
