@@ -23,7 +23,7 @@ const User = sequelize.define('User', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
-    primaryKey: true
+    primaryKey: true,
   },
   googleId: {
     type: DataTypes.STRING,
@@ -184,7 +184,7 @@ const MatchGame = sequelize.define('MatchGame', {
     allowNull: false,
   },
   drinkId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   imageUrl: {
@@ -216,29 +216,32 @@ const Achievements = sequelize.define('Achievements', {
 });
 
 // User Achievements model
-const UserAchievements = sequelize.define('UserAchievements', {
-  userIdentification: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: User,
-      key: 'id',
+const UserAchievements = sequelize.define(
+  'UserAchievements',
+  {
+    userIdentification: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: User,
+        key: 'id',
+      },
+    },
+    achievementData: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Achievements,
+        key: 'identification',
+      },
+    },
+    unlockedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
     },
   },
-  achievementData: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: Achievements,
-      key: 'identification',
-    },
+  {
+    timestamps: false,
   },
-  unlockedAt: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
-}, {
-  timestamps: false,
-});
-
+);
 
 const LiquorCabinet = sequelize.define('LiquorCabinet', {
   userId: {
@@ -246,33 +249,33 @@ const LiquorCabinet = sequelize.define('LiquorCabinet', {
     references: {
       model: User,
       key: 'id',
-    }
+    },
   },
   imageUrl: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   name: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   brand: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   typeLiquor: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   ABV: {
-    type: DataTypes.FLOAT
+    type: DataTypes.FLOAT,
   },
   amountLeft: {
     type: DataTypes.FLOAT,
-    defaultValue: 100.0
+    defaultValue: 100.0,
   },
   notes: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   date: {
-    type: DataTypes.DATE
-  }
+    type: DataTypes.DATE,
+  },
 });
 
 const Hangover = sequelize.define('Hangovers', {
@@ -291,7 +294,6 @@ const Hangover = sequelize.define('Hangovers', {
     type: DataTypes.INTEGER,
   },
   additional: {
-    type: DataTypes.BOOLEAN,
     type: DataTypes.BOOLEAN,
   },
   notes: {
