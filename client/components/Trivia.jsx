@@ -78,7 +78,7 @@ const TriviaGame = () => {
         console.log('Score submitted', res.data);
       })
       .catch((err) => {
-        console.error('Error submitting score', err);
+        console.error('err submitting score', err);
       });
   };
 

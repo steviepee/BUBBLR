@@ -18,6 +18,8 @@ const liquorRouter = require('./routes/liquor');
 const hangoverRouter = require('./routes/hangovers');
 const triviaRouter = require('./routes/trivia');
 const leaderboardRoutes = require('./routes/leaderboard');
+const avatarRoutes = require('./routes/avatar');
+
 
 require('dotenv').config();
 
@@ -49,13 +51,15 @@ app.use('/api/liquor', liquorRouter);
 app.use('/api/hangover', hangoverRouter);
 app.use('/api/trivia', triviaRouter);
 app.use('/leaderboard', leaderboardRoutes);
+app.use('/avatar', avatarRoutes);
+
 
 // ROUTES FOR THIS FILE
 
 // SERVING REACT STATIC PAGES
 const CLIENT_PATH = path.resolve(__dirname, '../dist');
 app.use(express.static(CLIENT_PATH));
-
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // Logout Route for users
 app.post('/logout', (req, res) => {
