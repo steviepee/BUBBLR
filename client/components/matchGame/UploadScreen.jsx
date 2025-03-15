@@ -42,22 +42,29 @@ const UploadScreen = ({
                   }}
                 />
                 <button
-                  onClick={() => handleImageDelete(index)}
-                  style={{
-                    position: "absolute",
-                    top: "-10px",
-                    right: "-10px",
-                    background: "red",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "50%",
-                    width: "24px",
-                    height: "24px",
-                    cursor: "pointer",
-                  }}
-                >
-                  X
-                </button>
+  onClick={() => handleImageDelete(index)}
+  style={{
+    position: "absolute",
+    top: "5px",  // Adjusted position
+    right: "5px", // Adjusted position
+    background: "red",
+    color: "white",
+    border: "none",
+    borderRadius: "50%",
+    width: "24px",
+    height: "24px",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "16px",
+    fontWeight: "bold",
+    boxShadow: "0px 2px 5px rgba(0,0,0,0.2)", // Adds a subtle shadow for better visibility
+  }}
+>
+  ✖
+</button>
+
               </div>
             ) : (
               <label
