@@ -1,5 +1,4 @@
 /* eslint-disable linebreak-style */
-/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Table } from 'react-bootstrap';
@@ -18,8 +17,8 @@ const Leaderboard = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.error('err fetching leaderboard', err);
-        // setLoading(false);
+        setError('err fetching leaderboard');
+        setLoading(false);
       });
   }, []);
 

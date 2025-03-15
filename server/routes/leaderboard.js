@@ -6,40 +6,25 @@ const { User, Leaderboard } = require('../db/index');
 
 const router = express.Router();
 
-// router.post('/', async (req, res) => {
-//   const { googleId, score } = req.body;
-//   try {
-//     const [user, created] = await User.findOrCreate({
-//       where: { googleId },
-//       defaults: { nameFirst: '', nameLast: '', email: '' },
-//     });
-//     const leaderboard = await Leaderboard.findOne({ where: { userId: user.id } });
-//     if (leaderboard) {
-//       leaderboard.score = score;
-//       await leaderboard.save();
-//     } else {
-//       await Leaderboard.create({ userId: user.id, score });
-//     }
-
-//     res.status(200).json({ message: 'score submitted successfully' });
-//   } catch (err) {
-//     console.error('err submitting score', err);
-//     res.status(500);
-//   }
-// });
-
 router.post('/', async (req, res) => {
   const { googleId, score } = req.body;
   try {
-    const user = await User.findOrCreate({
+    const [user, created] = await User.findOrCreate({
       where: { googleId },
       defaults: { nameFirst: '', nameLast: '', email: '' },
     });
-    await Leaderboard.create({ userId: user.id, score });
-    res.status(200).json({ message: 'score submitted' });
+    const leaderboard = await Leaderboard.findOne({ where: { userId: user.id } });
+    if (leaderboard) {
+      leaderboard.score = score;
+      await leaderboard.save();
+    } else {
+      await Leaderboard.create({ userId: user.id, score });
+    }
+
+    res.status(200).json({ message: 'score submitted successfully' });
   } catch (err) {
     console.error('err submitting score', err);
-    res.status(500).json({ message: 'err submitting score' });
+    res.status(500);
   }
 });
 
