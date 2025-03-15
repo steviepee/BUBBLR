@@ -31,8 +31,10 @@ hangoverRouter.get('/', (req, res) => {
 });
 
 hangoverRouter.post('/', async (req, res) => {
+  const { info } = req.body;
+  const userId = req.user.id
   try {
-    const newHang = await Hangover.create();
+    const newHang = await Hangover.create({ info, userId });
   } catch (error) {
     console.error(error);
   }
