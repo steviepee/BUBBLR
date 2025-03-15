@@ -2,7 +2,8 @@
 /* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Table } from 'react-bootstrap';
+import { Container, Table, Card } from 'react-bootstrap';
+import '../styling/Profile.css';
 
 const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
@@ -38,27 +39,31 @@ const Leaderboard = () => {
 
   return (
     <Container>
-      <h2>Leaderboard</h2>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Score</th>
-          </tr>
-        </thead>
-        <tbody>
-          {leaderboard.map((entry, index) => (
-            <tr key={`${entry.userId}-${entry.id}`}>
-              <td>{index + 1}</td>
-              <td>
-                {entry.User && entry.User.nameFirst} {entry.User && entry.User.nameLast ? entry.User.nameLast : 'Unknown'}
-              </td>
-              <td>{entry.score}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <Card className="custom-card mt-4 mb-4">
+        <Card.Body className="custom-card-body" style={{ color: '#ffffff' }}>
+          <Card.Title>Leaderboard</Card.Title>
+          <Table striped bordered hover variant="dark">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {leaderboard.map((entry, index) => (
+                <tr key={`${entry.userId}-${entry.id}`}>
+                  <td>{index + 1}</td>
+                  <td>
+                    {entry.User && entry.User.nameFirst} {entry.User && entry.User.nameLast ? entry.User.nameLast : 'Unknown'}
+                  </td>
+                  <td>{entry.score}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Card.Body>
+      </Card>
     </Container>
   );
 };
