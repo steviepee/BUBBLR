@@ -7,16 +7,40 @@ const sequelize = new Sequelize('bubblr', 'root', '', {
 });
 
 // User model
+// const User = sequelize.define('User', {
+//   id: {
+//     type: DataTypes.INTEGER,
+//     autoIncrement: true,
+//     primaryKey: true
+//   },
+//   googleId: { type: DataTypes.STRING, allowNull: false, unique: true },
+//   nameFirst: DataTypes.STRING,
+//   nameLast: DataTypes.STRING,
+//   email: DataTypes.STRING,
+// });
+
 const User = sequelize.define('User', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true
   },
-  googleId: { type: DataTypes.STRING, allowNull: false, unique: true },
+  googleId: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
   nameFirst: DataTypes.STRING,
   nameLast: DataTypes.STRING,
   email: DataTypes.STRING,
+  score: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  avatar: {
+    type: DataTypes.STRING,
+    defaultValue: 'avatar.png'
+  },
 });
 
 // User friends model
@@ -216,7 +240,6 @@ const UserAchievements = sequelize.define('UserAchievements', {
 });
 
 
-
 const LiquorCabinet = sequelize.define('LiquorCabinet', {
   userId: {
     type: DataTypes.INTEGER,
@@ -363,6 +386,54 @@ const PastFood = sequelize.define('PastFoods', {
   // }
 })
 
+const Trivia = sequelize.define('Trivia', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  question: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  options: {
+    type: DataTypes.JSON,
+    allowNull: true
+  },
+  correctAnswer: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  imageUrl: {
+    type: DataTypes.STRING
+  },
+  // createdBy: {
+  //   type: DataTypes.INTEGER,
+  //   references: {
+  //     model: User,
+  //     key: 'id'
+  //   }
+  // }
+});
+
+const Leaderboard = sequelize.define('Leaderboard', {
+  userId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: User,
+      key: 'id',
+    },
+    allowNull: false
+  },
+  score: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    allowNull: false
+  },
+}, {
+  timestamps: true,
+
+});
 
 
 
@@ -391,6 +462,9 @@ Symptom.belongsTo(Hangover, { foreignKey: 'id', as: 'hang_symptom' });
 
 User.hasMany(Hangover, { allowNull: true, as: 'hangovers' });
 Hangover.belongsTo(User, { foreignKey: 'id', as: 'hang_user' });
+
+User.hasMany(Leaderboard, { foreignKey: 'userId' });
+Leaderboard.belongsTo(User, { foreignKey: 'userId' });
 
 sequelize.sync({ alter: true })
   .then(() => console.log('synced'))
@@ -427,5 +501,6 @@ module.exports = {
   PastFood,
   PastMixer,
   Symptom,
-
+  Trivia,
+  Leaderboard,
 };

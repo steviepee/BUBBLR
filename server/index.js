@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 const path = require('path');
 const express = require('express');
+const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
 const axios = require('axios');
@@ -13,13 +14,18 @@ const eventsRouter = require('./routes/events');
 const drinksRouter = require('./routes/drinks');
 const liquorRouter = require('./routes/liquor');
 const hangoverRouter = require('./routes/hangovers');
-const achievementsRouter = require('./routes/achievements');
+const triviaRouter = require('./routes/trivia');
+const leaderboardRoutes = require('./routes/leaderboard');
 
 require('dotenv').config();
 
 // MIDDLEWARES
 const app = express();
 app.use(express.json());
+app.use(cors({
+  origin: ['http://localhost:8000', 'http://127.0.0.1:8080'],
+  credentials: true,
+}));
 
 app.use(session({
   secret: 'bubblr',
@@ -42,7 +48,9 @@ app.use('/events', eventsRouter);
 app.use('/api/drinks', drinksRouter);
 app.use('/api/liquor', liquorRouter);
 app.use('/api/hangover', hangoverRouter);
-app.use('/api/achievements', achievementsRouter);
+app.use('/api/trivia', triviaRouter);
+app.use('/leaderboard', leaderboardRoutes);
+
 // ROUTES FOR THIS FILE
 
 // Logout Route for users
@@ -58,6 +66,23 @@ app.post('/logout', (req, res) => {
       res.status(200).json({ message: 'Logged out successfully' });
     });
   });
+});
+
+// current user
+app.get('/auth/current_user', (req, res) => {
+  if (req.isAuthenticated()) {
+    const userId = req.user.id;
+    User.findByPk(userId)
+      .then((userObj) => {
+        res.json(userObj);
+      })
+      .catch((err) => {
+        console.error('err fetching user', err);
+        res.status(500);
+      });
+  } else {
+    res.status(401).json({ message: 'not authenticated' });
+  }
 });
 
 // for getting user info from db
