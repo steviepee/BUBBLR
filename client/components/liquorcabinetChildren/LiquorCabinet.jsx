@@ -7,26 +7,28 @@ import '../../styling/LiquorBottle.css';
 import { Alert, Button } from 'react-bootstrap';
 
 const LiquorCabinet = () => {
-  const [show, setShow] = useState(false); // Initially set to false, will trigger when fillLevel is 25
+  const navigate = useNavigate();
   const [liquor, setLiquor] = useState([]);
-  let navigate = useNavigate();
-  const [showempty, setShowempty] = useState(false)
+  const [show, setShow] = useState(false);
+  const [showempty, setShowempty] = useState(false);
 
+  // Fetch liquor data on component mount
   useEffect(() => {
     axios.get('/api/liquor')
       .then((response) => {
-        // Ensure each bottle starts with its own amountLeft as fillLevel
-        const liquorWithLevels = response.data.map(bottle => ({
-          ...bottle,
-          fillLevel: bottle.amountLeft // Initialize fill level from DB
-        }));
-        setLiquor(liquorWithLevels);
+        const updatedLiquor = response.data.map((bottle) => {
+          // Ensure fillLevel is a valid number
+          const fillLevel = isNaN(bottle.fillLevel) ? 100 : bottle.fillLevel; // Default to 100 if NaN
+          return { ...bottle, fillLevel };
+        });
+        setLiquor(updatedLiquor);
       })
       .catch((err) => {
-        console.error("There was a problem fetching your Liquor Cabinet", err);
+        console.error("Error fetching liquor data", err);
       });
   }, []);
 
+  // Handle pour drink action
   const pourDrink = (id, currentFillLevel) => {
     const newFillLevel = Math.max(currentFillLevel - 6.25, 0); // Ensure it doesn't go negative
 
@@ -37,39 +39,38 @@ const LiquorCabinet = () => {
       )
     );
 
+    console.log(`Sending PATCH request to update bottle ${id} with new fill level: ${newFillLevel}`);
+
+    // Send the PATCH request to update the fill level
     axios.patch(`/api/liquor/${id}`, { amountLeft: newFillLevel })
       .then((response) => {
-        console.log(`Updated bottle ${id} successfully`, response.data);
-
-        // Show alert if the new fill level is 25%
+        console.log('PATCH request successful:', response.data);
         if (newFillLevel === 25) {
-          setShow(true); // Show alert
+          setShow(true); // Show alert at 25%
         }
         if (newFillLevel === 0) {
-          setShowempty(true)
+          setShowempty(true); // Show alert if empty
         }
       })
       .catch((error) => {
-        console.error(`Error updating liquor bottle ${id}`, error);
+        console.error('Error during PATCH request:', error);
       });
   };
 
+  // Handle delete bottle action
   const deleteBottle = (id) => {
     axios.delete(`/api/liquor/${id}`)
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         setLiquor(prevLiquor => prevLiquor.filter(bottle => bottle.id !== id));
       })
       .catch((err) => {
-        console.error("Could not delete bottle,", err);
+        console.error("Error deleting bottle", err);
       });
   };
 
   return (
     <div className="liquor-cabinet">
-
-
-      {/* Conditionally render the alert when the fill level reaches 25% */}
+      {/* Alert for 25% fill level */}
       {show && (
         <Alert variant="danger">
           <Alert.Heading>Down to 25%</Alert.Heading>
@@ -84,6 +85,8 @@ const LiquorCabinet = () => {
           </div>
         </Alert>
       )}
+
+      {/* Alert for empty bottle */}
       {showempty && (
         <Alert variant="danger">
           <Alert.Heading>Bottle Empty</Alert.Heading>
@@ -94,8 +97,10 @@ const LiquorCabinet = () => {
           </div>
         </Alert>
       )}
+
       <h3>Your Virtual Liquor Cabinet</h3>
       <button onClick={() => navigate('/form')}>Create Bottle</button>
+
       <div className="liquor-list">
         {liquor.map(({ id, imageUrl, name, brand, ABV, typeLiquor, date, fillLevel }) => (
           <div key={id} className="liquor-item">
@@ -103,14 +108,19 @@ const LiquorCabinet = () => {
               <div className="bottle">
                 <div className="liquid" style={{ height: `${fillLevel}%` }}></div>
               </div>
-              <button
-                onClick={() => pourDrink(id, fillLevel)}
-                disabled={fillLevel <= 0}
-              >
+              <button onClick={() => pourDrink(id, fillLevel)} disabled={fillLevel <= 0}>
                 Pour a Drink 🍷
               </button>
             </div>
-            <img src={`${imageUrl}`} alt={name} className="liquor-image" style={{ width: '150px', height: 'auto' }} />
+
+            {/* Render image with the imageUrl */}
+            <img
+              src={imageUrl}
+              alt={name}
+              className="liquor-image"
+              style={{ width: '150px', height: 'auto' }}
+            />
+
             <h4>{name}</h4>
             <div><strong>Brand:</strong> {brand}</div>
             <div><strong>ABV:</strong> {ABV}%</div>

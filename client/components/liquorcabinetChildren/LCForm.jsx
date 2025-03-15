@@ -9,18 +9,18 @@ const LCForm = () => {
     name: "",
     brand: "",
     ABV: 45,
-    imageUrl: "",
     typeLiquor: "",
     amountLeft: 100.0,
     date: "2025-03-12",
     notes: "",
+    image: null, // To store the actual image file
   });
 
   const [preview, setPreview] = useState("");
 
   useEffect(() => {
-    setPreview(formData.imageUrl);
-  }, [formData.imageUrl]);
+    setPreview(formData.image ? URL.createObjectURL(formData.image) : "");
+  }, [formData.image]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,33 +35,37 @@ const LCForm = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setPreview(imageUrl); // Show preview immediately
+      setPreview(URL.createObjectURL(file)); // Show preview immediately
       setFormData((prevData) => ({
         ...prevData,
-        imageUrl, // Store file preview URL
+        image: file, // Store the actual file
       }));
     }
   };
 
-  //  Post Form Data
+  // Post Form Data with FormData object to handle file uploads
   const postForm = () => {
-    const requestData = { body: formData };
+    const formToSend = new FormData();
+    // Append form data
+    Object.keys(formData).forEach((key) => {
+      if (key !== "image") {
+        formToSend.append(key, formData[key]);
+      }
+    });
 
-    console.log("Submitting Data:", requestData); // ✅ Debugging log
+    if (formData.image) {
+      formToSend.append("image", formData.image); // Add image file to form data
+    }
 
-    axios.post("/api/liquor", requestData)
+    axios.post("/api/liquor", formToSend)
       .then((response) => {
         console.log("Success:", response.data);
-
         navigate("/liquor");
       })
       .catch((error) => {
         console.error("Error submitting form:", error);
-        alert("Error submitting form. Check console.");
       });
   };
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -69,7 +73,7 @@ const LCForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={styles.form}>
+    <form onSubmit={handleSubmit} style={styles.form} encType="multipart/form-data">
       <h2>Bottle Information</h2>
 
       <label>
@@ -90,11 +94,6 @@ const LCForm = () => {
       <label>
         Upload Image:
         <input type="file" accept="image/*" onChange={handleImageUpload} />
-      </label>
-
-      <label>
-        Or enter Image URL:
-        <input type="url" name="imageUrl" value={formData.imageUrl} onChange={handleChange} />
       </label>
 
       {preview && (
@@ -130,7 +129,6 @@ const LCForm = () => {
 
 // Styles
 const styles = {
-
   imagePreview: {
     marginTop: "10px",
     textAlign: "center",
