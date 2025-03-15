@@ -17,6 +17,7 @@ const TriviaGame = () => {
   const [answered, setAnswered] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
 
   const fetchQuestions = (category = 'food_and_drink') => {
     axios
@@ -33,6 +34,16 @@ const TriviaGame = () => {
   };
 
   useEffect(() => {
+    axios
+      .get('/auth/current_user')
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((err) => {
+        console.error('err fetching user', err);
+        setUser(null);
+      });
+
     fetchQuestions('food_and_drink');
   }, []);
 
@@ -46,7 +57,10 @@ const TriviaGame = () => {
   };
 
   const submitScore = () => {
-    const googleId = '12345abcd';
+    if (!user) {
+      return;
+    }
+    const googleId = user.googleId;
     axios
       .post('http://127.0.0.1:8080/leaderboard', {
         googleId,

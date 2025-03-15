@@ -22,7 +22,10 @@ require('dotenv').config();
 // MIDDLEWARES
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:8000', 'http://127.0.0.1:8080'],
+  credentials: true,
+}));
 
 app.use(session({
   secret: 'bubblr',
@@ -63,6 +66,23 @@ app.post('/logout', (req, res) => {
       res.status(200).json({ message: 'Logged out successfully' });
     });
   });
+});
+
+// current user
+app.get('/auth/current_user', (req, res) => {
+  if (req.isAuthenticated()) {
+    const userId = req.user.id;
+    User.findByPk(userId)
+      .then((userObj) => {
+        res.json(userObj);
+      })
+      .catch((err) => {
+        console.error('err fetching user', err);
+        res.status(500);
+      });
+  } else {
+    res.status(401).json({ message: 'not authenticated' });
+  }
 });
 
 // for getting user info from db
