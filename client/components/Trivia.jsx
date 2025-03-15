@@ -123,6 +123,9 @@ const TriviaGame = () => {
 
   const currentTrivia = questions[currentQuestion];
 
+  const shuffledOptions = [...currentTrivia.incorrectAnswers, currentTrivia.correctAnswer]
+    .sort(() => Math.random() - 0.5);
+
   return (
     <Container>
       <Row className="justify-content-center">
@@ -132,19 +135,23 @@ const TriviaGame = () => {
             <p>{currentTrivia.question.text}</p>
 
             <div>
-              {currentTrivia.incorrectAnswers
-                .concat(currentTrivia.correctAnswer)
-                .map((option, idx) => (
-                  <Button
-                    key={idx}
-                    onClick={() => handleAnswerSelection(option)}
-                    variant={selectedAnswer === option ? (option === currentTrivia.correctAnswer ? 'success' : 'danger') : 'light'}
-                    className="mb-3 w-70"
-                    disabled={selectedAnswer !== null}
-                  >
-                    {option}
-                  </Button>
-                ))}
+              {shuffledOptions.map((option, idx) => (
+                <Button
+                  key={idx}
+                  onClick={() => handleAnswerSelection(option)}
+                  variant={
+                    selectedAnswer === option
+                      ? option === currentTrivia.correctAnswer
+                        ? "success"
+                        : "danger"
+                      : "light"
+                  }
+                  className="mb-3 w-70"
+                  disabled={selectedAnswer !== null}
+                >
+                  {option}
+                </Button>
+              ))}
             </div>
 
             {selectedAnswer !== null && (
