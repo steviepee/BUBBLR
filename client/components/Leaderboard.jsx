@@ -19,7 +19,7 @@ const Leaderboard = () => {
       })
       .catch((err) => {
         console.error('err fetching leaderboard', err);
-        setLoading(false);
+        // setLoading(false);
       });
   }, []);
 

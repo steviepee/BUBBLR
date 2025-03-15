@@ -97,12 +97,10 @@ function NavFilter({ onLogout }) {
             <Nav.Link as={Link} to='/liquor'>
               Liquor Cabinet
             </Nav.Link>
-            <Nav.Link as={Link} to="/trivia">
-              Trivia
-            </Nav.Link>
-            <Nav.Link as={Link} to="/leaderboard">
-              Leaderboard
-            </Nav.Link>
+            <NavDropdown title='Games' id='gamesDropdown'>
+              <NavDropdown.Item as={Link} to="/trivia">Trivia</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/leaderboard">Leaderboard</NavDropdown.Item>
+            </NavDropdown>
             {onProfile && (
               <Nav.Link onClick={onLogout}>
                 Logout
