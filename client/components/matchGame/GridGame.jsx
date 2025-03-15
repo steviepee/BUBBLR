@@ -40,7 +40,7 @@ const GameGrid = ({ shuffledTiles, flipped, solved, handleClick, moves, resetGam
                   position: "absolute",
                   backfaceVisibility: "hidden",
                   backgroundColor: "gray",
-                  borderRadius: "10px",
+                  borderRadius: "5px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -56,7 +56,7 @@ const GameGrid = ({ shuffledTiles, flipped, solved, handleClick, moves, resetGam
                   position: "absolute",
                   backfaceVisibility: "hidden",
                   backgroundColor: "lightblue",
-                  borderRadius: "10px",
+                  borderRadius: "5px",
                   transform: "rotateY(180deg)",
                   display: "flex",
                   alignItems: "center",
@@ -66,7 +66,7 @@ const GameGrid = ({ shuffledTiles, flipped, solved, handleClick, moves, resetGam
                 <img
                   src={tile.imageUrl}
                   alt={tile.name}
-                  style={{ width: "80px", height: "80px", borderRadius: "10px" }}
+                  style={{ width: "80px", height: "80px", borderRadius: "5px" }}
                 />
               </div>
             </div>
