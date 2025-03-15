@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../../styling/LiquorBottle.css';
-import { Alert, Button } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 
 const LiquorCabinet = () => {
   const navigate = useNavigate();
@@ -12,19 +12,18 @@ const LiquorCabinet = () => {
   const [show, setShow] = useState(false);
   const [showempty, setShowempty] = useState(false);
 
-  // Fetch liquor data on component mount
+
   useEffect(() => {
     axios.get('/api/liquor')
       .then((response) => {
-        const updatedLiquor = response.data.map((bottle) => {
-          // Ensure fillLevel is a valid number
-          const fillLevel = isNaN(bottle.fillLevel) ? 100 : bottle.fillLevel; // Default to 100 if NaN
-          return { ...bottle, fillLevel };
-        });
-        setLiquor(updatedLiquor);
+        const liquorWithLevels = response.data.map(bottle => ({
+          ...bottle,
+          fillLevel: bottle.amountLeft
+        }));
+        setLiquor(liquorWithLevels);
       })
       .catch((err) => {
-        console.error("Error fetching liquor data", err);
+        console.error("There was a problem fetching your Liquor Cabinet", err);
       });
   }, []);
 
@@ -39,12 +38,10 @@ const LiquorCabinet = () => {
       )
     );
 
-    console.log(`Sending PATCH request to update bottle ${id} with new fill level: ${newFillLevel}`);
-
     // Send the PATCH request to update the fill level
     axios.patch(`/api/liquor/${id}`, { amountLeft: newFillLevel })
-      .then((response) => {
-        console.log('PATCH request successful:', response.data);
+      .then(() => {
+
         if (newFillLevel === 25) {
           setShow(true); // Show alert at 25%
         }
@@ -67,36 +64,41 @@ const LiquorCabinet = () => {
         console.error("Error deleting bottle", err);
       });
   };
-
+  const handleClose = () => setShow(false);
+  const handleCloseEmpty = () => setShowempty(false);
   return (
     <div className="liquor-cabinet">
       {/* Alert for 25% fill level */}
-      {show && (
-        <Alert variant="danger">
-          <Alert.Heading>Down to 25%</Alert.Heading>
-          <p>
-            You have consumed 75% of this bottle! If you are enjoying the drinks, you may want to reorder.
-          </p>
-          <hr />
-          <div className="d-flex justify-content-end">
-            <Button onClick={() => setShow(false)} variant="outline-danger">
-              Close me
+      <>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Down to 25%</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>If you are enjoying this bottle, it might be time to reorder. </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
             </Button>
-          </div>
-        </Alert>
-      )}
+          </Modal.Footer>
+        </Modal>
+      </>
 
-      {/* Alert for empty bottle */}
-      {showempty && (
-        <Alert variant="danger">
-          <Alert.Heading>Bottle Empty</Alert.Heading>
-          <div className="d-flex justify-content-end">
-            <Button onClick={() => setShowempty(false)} variant="outline-danger">
-              Close me
+
+      {/* Model for an empty bottle */}
+      <>
+
+        <Modal show={showempty} onHide={handleCloseEmpty}>
+          <Modal.Header closeButton>
+            <Modal.Title>Empty Bottle</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Time to Recycle!</Modal.Body>
+          <Modal.Footer>
+            <Button variant='secondary' onClick={handleCloseEmpty}>
+              Close
             </Button>
-          </div>
-        </Alert>
-      )}
+          </Modal.Footer>
+        </Modal>
+      </>
 
       <h3>Your Virtual Liquor Cabinet</h3>
       <button onClick={() => navigate('/form')}>Create Bottle</button>
