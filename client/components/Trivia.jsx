@@ -142,9 +142,9 @@ const TriviaGame = () => {
                   variant={
                     selectedAnswer === option
                       ? option === currentTrivia.correctAnswer
-                        ? "success"
-                        : "danger"
-                      : "light"
+                        ? 'success'
+                        : 'danger'
+                      : 'light'
                   }
                   className="mb-3 w-70"
                   disabled={selectedAnswer !== null}

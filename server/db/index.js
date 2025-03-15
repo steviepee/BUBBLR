@@ -420,6 +420,11 @@ const Hangover = sequelize.define('Hangovers', {
   });
 
   const Leaderboard = sequelize.define('Leaderboard', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     userId: {
       type: DataTypes.INTEGER,
       references: {
@@ -435,7 +440,6 @@ const Hangover = sequelize.define('Hangovers', {
     },
   }, {
     timestamps: true,
-    
   });
 
 

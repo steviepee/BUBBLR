@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Table } from 'react-bootstrap';
@@ -8,15 +9,20 @@ const Leaderboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
   useEffect(() => {
     axios
       .get('http://127.0.0.1:8080/leaderboard/top-scores')
       .then((res) => {
-        setLeaderboard(res.data);
+        if (Array.isArray(res.data)) {
+          setLeaderboard(res.data);
+        } else {
+          console.error('leaderboard err', res.data);
+          setLeaderboard([]);
+        }
         setLoading(false);
       })
       .catch((err) => {
+        console.error('err fetching leaderboard', err);
         setError('err fetching leaderboard');
         setLoading(false);
       });
@@ -43,9 +49,11 @@ const Leaderboard = () => {
         </thead>
         <tbody>
           {leaderboard.map((entry, index) => (
-            <tr key={entry.userId}>
+            <tr key={`${entry.userId}-${entry.id}`}>
               <td>{index + 1}</td>
-              <td>{entry.User.nameFirst} {entry.User.nameLast}</td>
+              <td>
+                {entry.User && entry.User.nameFirst} {entry.User && entry.User.nameLast ? entry.User.nameLast : 'Unknown'}
+              </td>
               <td>{entry.score}</td>
             </tr>
           ))}
