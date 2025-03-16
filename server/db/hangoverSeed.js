@@ -185,7 +185,6 @@ const pastFoodData = [
  *
  * addPastDrinks
  * addPastFoods
- * addPastMixers
  */
 
 const seedHangovers = () => {
@@ -239,18 +238,8 @@ const seedPastFoods = () => {
     })
     .catch((err) => console.error('failed to seed PastFoods', err));
 };
-// const seedPastMixers = () => {
-//   PastMixer.destroy({
-//     where: {},
-//   })
-//     .then(() => console.log('PastMixers successfully destroyed'))
-//     .then(() => {
-//       PastMixer.bulkCreate(pastMixerData, { ignoreDuplicates: true });
-//     })
-//     .catch((err) => console.error('failed to seed PastMixers', err));
-// };
-seedHangovers();
+
+// seedHangovers();
 // seedSymptoms();
-seedPastDrinks();
-// seedPastMixers();
-seedPastFoods();
+// seedPastDrinks();
+// seedPastFoods();
