@@ -7,16 +7,40 @@ const sequelize = new Sequelize('bubblr', 'root', '', {
 });
 
 // User model
+// const User = sequelize.define('User', {
+//   id: {
+//     type: DataTypes.INTEGER,
+//     autoIncrement: true,
+//     primaryKey: true
+//   },
+//   googleId: { type: DataTypes.STRING, allowNull: false, unique: true },
+//   nameFirst: DataTypes.STRING,
+//   nameLast: DataTypes.STRING,
+//   email: DataTypes.STRING,
+// });
+
 const User = sequelize.define('User', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
-    primaryKey: true
+    primaryKey: true,
   },
-  googleId: { type: DataTypes.STRING, allowNull: false, unique: true },
+  googleId: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
   nameFirst: DataTypes.STRING,
   nameLast: DataTypes.STRING,
   email: DataTypes.STRING,
+  score: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  avatar: {
+    type: DataTypes.STRING,
+    defaultValue: 'avatar.png'
+  },
 });
 
 // User friends model
@@ -160,7 +184,7 @@ const MatchGame = sequelize.define('MatchGame', {
     allowNull: false,
   },
   drinkId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   imageUrl: {
@@ -192,30 +216,32 @@ const Achievements = sequelize.define('Achievements', {
 });
 
 // User Achievements model
-const UserAchievements = sequelize.define('UserAchievements', {
-  userIdentification: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: User,
-      key: 'id',
+const UserAchievements = sequelize.define(
+  'UserAchievements',
+  {
+    userIdentification: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: User,
+        key: 'id',
+      },
+    },
+    achievementData: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Achievements,
+        key: 'identification',
+      },
+    },
+    unlockedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
     },
   },
-  achievementData: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: Achievements,
-      key: 'identification',
-    },
+  {
+    timestamps: false,
   },
-  unlockedAt: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
-}, {
-  timestamps: false,
-});
-
-
+);
 
 const LiquorCabinet = sequelize.define('LiquorCabinet', {
   userId: {
@@ -223,33 +249,33 @@ const LiquorCabinet = sequelize.define('LiquorCabinet', {
     references: {
       model: User,
       key: 'id',
-    }
+    },
   },
   imageUrl: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   name: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   brand: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   typeLiquor: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   ABV: {
-    type: DataTypes.FLOAT
+    type: DataTypes.FLOAT,
   },
   amountLeft: {
     type: DataTypes.FLOAT,
-    defaultValue: 100.0
+    defaultValue: 100.0,
   },
   notes: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   date: {
-    type: DataTypes.DATE
-  }
+    type: DataTypes.DATE,
+  },
 });
 
 const Hangover = sequelize.define('Hangovers', {
@@ -272,6 +298,7 @@ const Hangover = sequelize.define('Hangovers', {
   },
 
 })
+
   const Symptom = sequelize.define('Symptoms', {
     id: {
       type: DataTypes.INTEGER,
@@ -359,6 +386,55 @@ const Hangover = sequelize.define('Hangovers', {
     }
   })
 
+  const Trivia = sequelize.define('Trivia', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    question: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    options: {
+      type: DataTypes.JSON,
+      allowNull: true
+    },
+    correctAnswer: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    imageUrl: {
+      type: DataTypes.STRING
+    },
+    // createdBy: {
+    //   type: DataTypes.INTEGER,
+    //   references: {
+    //     model: User,
+    //     key: 'id'
+    //   }
+    // }
+  });
+
+  const Leaderboard = sequelize.define('Leaderboard', {
+    userId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: User,
+        key: 'id',
+      },
+      allowNull: false
+    },
+    score: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      allowNull: false
+    },
+  }, {
+    timestamps: true,
+    
+  });
+
 
 
 
@@ -378,8 +454,8 @@ PastDrink.belongsTo(Hangover, { foreignKey: 'id' });
 Hangover.hasMany(PastFood, { allowNull: false, as: 'pastFoods' });
 PastFood.belongsTo(Hangover, { foreignKey: 'id' });
 
-Hangover.hasMany(PastMixer, { allowNull: false, as: 'pastMixers' });
-PastMixer.belongsTo(Hangover, { foreignKey: 'id' });
+// Hangover.hasMany(PastMixer, { allowNull: false, as: 'pastMixers' });
+// PastMixer.belongsTo(Hangover, { foreignKey: 'id' });
 
 Hangover.hasMany(Symptom, { allowNull: false, as: 'symptoms' });
 Symptom.belongsTo(Hangover, { foreignKey: 'id' });
@@ -387,7 +463,10 @@ Symptom.belongsTo(Hangover, { foreignKey: 'id' });
 User.hasMany(Hangover, {  allowNull: true, as: 'hangovers' });
 Hangover.belongsTo(User, { foreignKey: 'id' });
 
-sequelize.sync({ alter: true })
+User.hasMany(Leaderboard, { foreignKey: 'userId' });
+Leaderboard.belongsTo(User, { foreignKey: 'userId' });
+
+sequelize.sync({ force: true })
   .then(() => console.log('synced'))
   .catch((err) => console.error('Error syncing', err));
 
@@ -420,7 +499,8 @@ module.exports = {
   Hangover,
   PastDrink,
   PastFood,
-  PastMixer,
+  // PastMixer,
   Symptom,
-
+  Trivia,
+  Leaderboard,
 };
