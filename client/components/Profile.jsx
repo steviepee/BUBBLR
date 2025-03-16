@@ -174,7 +174,7 @@ class Profile extends React.Component {
 
         <Card className='custom-card mt-4 mb-4'>
   <Card.Body className='custom-card-body' style={{ color: '#ffffff' }}>
-    <Card.Title>Profile</Card.Title>
+    <Card.Title>Avatar</Card.Title>
     <AvatarUploader
       user={{
         googleId: this.state.id,

@@ -23,8 +23,21 @@ const avatarRoutes = require('./routes/avatar');
 
 require('dotenv').config();
 
+
 // MIDDLEWARES
 const app = express();
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
+
+// app.use('/uploads', express.static(path.join(__dirname, 'public/uploads'), {
+//   setHeaders: (res, path) => {
+//     if (path.endsWith('.jpg')) {
+//       res.setHeader('Content-Type', 'image/jpeg');
+//     } else if (path.endsWith('.png')) {
+//       res.setHeader('Content-Type', 'image/png');
+//     }
+//   },
+// }));
+
 app.use(express.json());
 app.use(cors({
   origin: ['http://localhost:8000', 'http://127.0.0.1:8080'],
@@ -39,6 +52,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 // ROUTER SENDING TO WHEREVER
 app.use('/auth', authRouter);
 app.use('/profile', profileRouter);
@@ -59,7 +73,7 @@ app.use('/avatar', avatarRoutes);
 // SERVING REACT STATIC PAGES
 const CLIENT_PATH = path.resolve(__dirname, '../dist');
 app.use(express.static(CLIENT_PATH));
-app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
+// app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // Logout Route for users
 app.post('/logout', (req, res) => {
@@ -221,6 +235,13 @@ app.post('/api/estDrinks', async (req, res) => {
 app.get('*', (req, res) => {
   res.sendFile(path.join(CLIENT_PATH, 'index.html'));
 });
+
+// app.get('*', (req, res, next) => {
+//   if (req.path.startsWith('/uploads/')) {
+//     return next();
+//   }
+//   res.sendFile(path.join(CLIENT_PATH, 'index.html'));
+// });
 
 const PORT = 8080;
 

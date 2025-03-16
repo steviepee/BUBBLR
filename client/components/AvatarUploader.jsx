@@ -18,7 +18,7 @@ const AvatarUploader = ({ refreshUser }) => {
       .then((res) => {
         console.log('User fetched:', res.data);
         setUser(res.data);
-        setAvatar(res.data.avatar || 'avatar.png');
+        setAvatar(`/uploads/${res.data.avatar}` || 'avatar.png');
       })
       .catch((err) => {
         console.error('err fetching user', err);
@@ -54,7 +54,7 @@ const AvatarUploader = ({ refreshUser }) => {
         { headers: { 'Content-Type': 'multipart/form-data' } },
       );
 
-      setAvatar(res.data.avatar);
+      setAvatar(`/uploads/${res.data.avatar}`);
       setMessage('Avatar updated');
       refreshUser();
     } catch (err) {
@@ -82,7 +82,7 @@ const AvatarUploader = ({ refreshUser }) => {
 
   return (
     <div className="avatar-uploader text-center">
-      <h5>Profile Picture</h5>
+      <h5>Avatar</h5>
       {user ? (
         <>
           <Image src={`/uploads/${avatar}`} roundedCircle width={100} height={100} alt="User Avatar" />
