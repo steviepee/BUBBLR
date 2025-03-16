@@ -30,19 +30,56 @@ hangoverRouter.get('/', (req, res) => {
   });
 });
 
-hangoverRouter.post('/', async (req, res) => {
-  const { info } = req.body;
-  const userId = req.user.id
+hangoverRouter.post('/', (req, res) => {
+  const {
+    hangoverName,
+    hangoverDate,
+    addSub,
+    hangoverNote,
+    SymptomName,
+    symptomSeverity,
+    SymptomDuration,
+    drink,
+    shot,
+    timeSpan,
+    food,
+  } = req.body.info;
   /**
    * This request will send information for many tables referencing only 1 hangover
    * The point here is that the hangover in question
    *  establishes its connection with the rest of them before heading to the database
+   * -------------------------------------------------------------------------------
+   * as far as using this with the arrays that come in (i.e. symptoms)
+   * I could set a Promise all with a map of one of the symptom qualities and its index.
+   * I'll have at every instance a Symptom being created with each of those values
+   *  and the correct hangover id
    */
-  try {
-    const newHang = await Hangover.create({ info, userId });
-  } catch (error) {
-    console.error(error);
-  }
+  Hangover.create({
+    hangoverName,
+    hangoverDate,
+    addSub,
+    hangoverNote,
+  }).then((results) => {
+    Symptom.create({
+      SymptomName,
+      symptomSeverity,
+      SymptomDuration,
+      HangoverId: results.dataValues.id,
+    }, { include: ['hangover'] });
+    PastDrink.create({
+      drink,
+      shot,
+      timeSpan,
+      HangoverId: results.dataValues.id,
+    }, { include: ['hangover'] });
+    PastFood.create({
+      food,
+      HangoverId: results.dataValues.id,
+    }, { include: ['hangover'] });
+  }).then(() => res.sendStatus(201)).catch((err) => {
+    console.error('unable to create', err);
+    res.sendStatus(500);
+  });
 });
 
 hangoverRouter.patch('/:id', (req, res) => {});
