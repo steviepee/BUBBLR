@@ -1,101 +1,60 @@
 /* eslint-disable linebreak-style */
-/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {
-  Button, Form, Alert, Image,
-} from 'react-bootstrap';
+import { Button, Image } from 'react-bootstrap';
+
+const avatars = [
+  '/avatars/avatar1.png',
+  '/avatars/avatar2.png',
+  '/avatars/avatar3.png',
+  '/avatars/avatar4.png',
+  '/avatars/avatar5.png',
+];
 
 const AvatarUploader = ({ refreshUser }) => {
-  const [file, setFile] = useState(null);
-  const [avatar, setAvatar] = useState('avatar.png');
-  const [message, setMessage] = useState('');
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    axios
-      .get('/auth/current_user')
+    axios.get('/auth/current_user')
       .then((res) => {
-        console.log('User fetched:', res.data);
         setUser(res.data);
-        setAvatar(`/uploads/${res.data.avatar}` || 'avatar.png');
+        setSelectedAvatar(res.data.avatar || avatars[0]);
       })
       .catch((err) => {
-        console.error('err fetching user', err);
-        setUser(null);
+        console.error('Error fetching user', err);
       });
   }, []);
 
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-  };
-
-  const uploadAvatar = async () => {
-    if (!file) {
-      setMessage('Please select an image');
-      return;
-    }
-
-    if (!user || !user.googleId) {
-      console.error('User not found', user);
-      setMessage('Error: User ID not found.');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('avatar', file);
-
+  const selectAvatar = async (avatar) => {
     try {
-      console.log('Uploading to:', `http://127.0.0.1:8080/avatar/update-avatar/${user.googleId}`);
-
-      const res = await axios.put(
-        `http://127.0.0.1:8080/avatar/update-avatar/${user.googleId}`,
-        formData,
-        { headers: { 'Content-Type': 'multipart/form-data' } },
-      );
-
-      setAvatar(`/uploads/${res.data.avatar}`);
-      setMessage('Avatar updated');
+      await axios.put(`/avatar/select-avatar/${user.googleId}`, { avatar });
+      setSelectedAvatar(avatar);
       refreshUser();
     } catch (err) {
-      console.error('err uploading avatar', err);
-      setMessage('Failed to upload avatar');
-    }
-  };
-
-  const deleteAvatar = async () => {
-    if (!user || !user.googleId) {
-      setMessage('Failed to delete avatar');
-      return;
-    }
-
-    try {
-      await axios.delete(`/avatar/delete-avatar/${user.googleId}`);
-      setAvatar('avatar.png');
-      setMessage('Avatar removed.');
-      refreshUser();
-    } catch (err) {
-      console.error('err deleting avatar', err);
-      setMessage('Failed to delete avatar');
+      console.error('Error updating avatar', err);
     }
   };
 
   return (
     <div className="avatar-uploader text-center">
-      <h5>Avatar</h5>
-      {user ? (
-        <>
-          <Image src={`/uploads/${avatar}`} roundedCircle width={100} height={100} alt="User Avatar" />
-          <Form.Group className="mt-3">
-            <Form.Control type="file" onChange={handleFileChange} />
-          </Form.Group>
-          <Button variant="primary" className="mt-2" onClick={uploadAvatar}>Upload</Button>
-          <Button variant="danger" className="mt-2" onClick={deleteAvatar}>Remove</Button>
-        </>
-      ) : (
-        <p>Loading user...</p>
-      )}
-      {message && <Alert className="mt-2" variant="info">{message}</Alert>}
+      <h5>Select Your Avatar</h5>
+      <div className="avatar-grid" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+        {avatars.map((avatar) => (
+          <Image
+            key={avatar}
+            src={avatar}
+            width={60}
+            height={60}
+            roundedCircle
+            style={{
+              border: selectedAvatar === avatar ? '3px solid blue' : '3px solid transparent',
+              cursor: 'pointer',
+            }}
+            onClick={() => selectAvatar(avatar)}
+          />
+        ))}
+      </div>
     </div>
   );
 };

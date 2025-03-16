@@ -39,7 +39,7 @@ const User = sequelize.define('User', {
   },
   avatar: {
     type: DataTypes.STRING,
-    defaultValue: 'avatar.png'
+    defaultValue: "/avatars/avatar1.png",
   },
 });
 

@@ -68,7 +68,7 @@ router.get('/top-scores', async (req, res) => {
       limit: 10,
       include: {
         model: User,
-        attributes: ['nameFirst', 'nameLast'],
+        attributes: ['nameFirst', 'nameLast', 'avatar'],
       },
     });
 

@@ -20,13 +20,12 @@ const triviaRouter = require('./routes/trivia');
 const leaderboardRoutes = require('./routes/leaderboard');
 const avatarRoutes = require('./routes/avatar');
 
-
 require('dotenv').config();
-
 
 // MIDDLEWARES
 const app = express();
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
+app.use('/avatars', express.static('public/avatars'));
 
 // app.use('/uploads', express.static(path.join(__dirname, 'public/uploads'), {
 //   setHeaders: (res, path) => {
@@ -66,7 +65,6 @@ app.use('/api/hangover', hangoverRouter);
 app.use('/api/trivia', triviaRouter);
 app.use('/leaderboard', leaderboardRoutes);
 app.use('/avatar', avatarRoutes);
-
 
 // ROUTES FOR THIS FILE
 

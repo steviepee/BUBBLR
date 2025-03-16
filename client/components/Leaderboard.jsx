@@ -68,13 +68,13 @@ const Leaderboard = () => {
                 <tr key={`${entry.userId}-${entry.id}`}>
                   <td>{index + 1}</td>
                   <td>
-                    <Image
-                      src={`/uploads/${entry.User.avatar}`}
-                      alt="User Avatar"
-                      roundedCircle
-                      width={40}
-                      height={40}
-                    />
+                  <Image
+  src={entry.User?.avatar ? entry.User.avatar : "/avatars/avatar1.jpg"} 
+  alt="User Avatar"
+  roundedCircle
+  width={40}
+  height={40}
+/>
                   </td>
                   <td>
                     {entry.User && entry.User.nameFirst} {entry.User && entry.User.nameLast || 'Unknown'}
