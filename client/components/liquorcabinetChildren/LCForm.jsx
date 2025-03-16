@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import '../.././styling/LiquorBottle'
 const LCForm = () => {
   const navigate = useNavigate();
 
@@ -73,73 +74,136 @@ const LCForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={styles.form} encType="multipart/form-data">
-      <h2>Bottle Information</h2>
+    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+      <Row className="w-100 justify-content-center">
+        <Col xs={12} md={4} lg={4}> {/* This sets the column to take up 4/12 of the width */}
+          <Form onSubmit={handleSubmit} encType="multipart/form-data">
+            <h2 className="text-center mb-4">Bottle Information</h2>
 
-      <label>
-        Name:
-        <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-      </label>
+            {/* Form Fields in One Column */}
+            <Form.Group className="mb-3" controlId="formGroupName">
+              <Form.Label>Name:</Form.Label>
+              <Form.Control
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                placeholder="Enter the name of the bottle"
+                size="md" // Smaller input
+              />
+            </Form.Group>
 
-      <label>
-        Brand:
-        <input type="text" name="brand" value={formData.brand} onChange={handleChange} required />
-      </label>
+            <Form.Group className="mb-3" controlId="formGroupBrand">
+              <Form.Label>Brand:</Form.Label>
+              <Form.Control
+                type="text"
+                name="brand"
+                value={formData.brand}
+                onChange={handleChange}
+                required
+                placeholder="Enter the brand"
+                size="md" // Smaller input
+              />
+            </Form.Group>
 
-      <label>
-        ABV (%):
-        <input type="number" name="ABV" value={formData.ABV} onChange={handleChange} step="0.1" />
-      </label>
+            <Form.Group className="mb-3" controlId="formGroupABV">
+              <Form.Label>ABV (%):</Form.Label>
+              <Form.Control
+                type="number"
+                name="ABV"
+                value={formData.ABV}
+                onChange={handleChange}
+                step="0.1"
+                placeholder="Enter the ABV percentage"
+                size="md" // Smaller input
+              />
+            </Form.Group>
 
-      <label>
-        Upload Image:
-        <input type="file" accept="image/*" onChange={handleImageUpload} />
-      </label>
+            <Form.Group className="mb-3" controlId="formGroupImage">
+              <Form.Label>Upload Image:</Form.Label>
+              <Form.Control
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleImageUpload}
+                size="md" // Smaller input
+              />
+            </Form.Group>
+            {/* Image Preview */}
+            {preview && (
+              <div className='imagePreview'>
+                <img src={preview} alt="Preview" className='img' />
+              </div>
+            )}
+            <Form.Group className="mb-3" controlId="formGroupTypeLiquor">
+              <Form.Label>Type of Liquor:</Form.Label>
+              <Form.Control
+                type="text"
+                name="typeLiquor"
+                value={formData.typeLiquor}
+                onChange={handleChange}
+                required
+                placeholder="Enter the type of liquor"
+                size="md"
+              />
+            </Form.Group>
 
-      {preview && (
-        <div style={styles.imagePreview}>
-          <img src={preview} alt="Preview" style={styles.img} />
-        </div>
-      )}
+            <Form.Group className="mb-3" controlId="formGroupAmountLeft">
+              <Form.Label>Amount Left (%):</Form.Label>
+              <Form.Control
+                type="number"
+                name="amountLeft"
+                value={formData.amountLeft}
+                onChange={handleChange}
+                step="0.1"
+                required
+                placeholder="Enter the amount left in percentage"
+                size="md"
+              />
+            </Form.Group>
 
-      <label>
-        Type of Liquor:
-        <input type="text" name="typeLiquor" value={formData.typeLiquor} onChange={handleChange} required />
-      </label>
+            <Form.Group className="mb-3" controlId="formGroupDate">
+              <Form.Label>Date Acquired:</Form.Label>
+              <Form.Control
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                required
+                size="md"
+              />
+            </Form.Group>
 
-      <label>
-        Amount Left (%):
-        <input type="number" name="amountLeft" value={formData.amountLeft} onChange={handleChange} step="0.1" required />
-      </label>
+            <Form.Group className="mb-3" controlId="formGroupNotes">
+              <Form.Label>Notes:</Form.Label>
+              <Form.Control
+                as="textarea"
+                name="notes"
+                value={formData.notes}
+                onChange={handleChange}
+                rows={3}
+                placeholder="Enter any notes here..."
+                size="md"
+              />
+            </Form.Group>
 
-      <label>
-        Date:
-        <input type="date" name="date" value={formData.date} onChange={handleChange} required />
-      </label>
 
-      <label>
-        Notes:
-        <textarea name="notes" value={formData.notes} onChange={handleChange} rows="3" placeholder="Enter any notes here..." />
-      </label>
 
-      <button type="submit">Submit</button>
-    </form>
+            {/* Submit Button */}
+            <Button block='true' bsPrefix='button' type="submit" >
+              Submit
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
-};
 
-// Styles
-const styles = {
-  imagePreview: {
-    marginTop: "10px",
-    textAlign: "center",
-  },
-  img: {
-    width: "100px",
-    height: "100px",
-    objectFit: "cover",
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-  },
-};
+}
+
+
+
+
 
 export default LCForm;
