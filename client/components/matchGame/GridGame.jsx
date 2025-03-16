@@ -6,7 +6,7 @@ const GameGrid = ({ shuffledTiles, flipped, solved, handleClick, moves, resetGam
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(4, 100px)",
+          gridTemplateColumns: "repeat(4, 120px)", // Increased tile size
           gap: "10px",
           justifyContent: "center",
           margin: "20px auto",
@@ -17,8 +17,8 @@ const GameGrid = ({ shuffledTiles, flipped, solved, handleClick, moves, resetGam
             key={index}
             onClick={() => handleClick(index)}
             style={{
-              width: "100px",
-              height: "100px",
+              width: "120px", // Increased tile size
+              height: "120px", // Increased tile size
               perspective: "1000px",
               cursor: "pointer",
             }}
@@ -33,6 +33,7 @@ const GameGrid = ({ shuffledTiles, flipped, solved, handleClick, moves, resetGam
                 transform: flipped.includes(index) || solved.includes(index) ? "rotateY(180deg)" : "rotateY(0)",
               }}
             >
+              {/* Front of the tile (gray background with question mark) */}
               <div
                 style={{
                   width: "100%",
@@ -49,24 +50,33 @@ const GameGrid = ({ shuffledTiles, flipped, solved, handleClick, moves, resetGam
               >
                 ?
               </div>
+
+              {/* Back of the tile (image with thicker orange border and no gap) */}
               <div
                 style={{
                   width: "100%",
                   height: "100%",
                   position: "absolute",
                   backfaceVisibility: "hidden",
-                  backgroundColor: "lightblue",
                   borderRadius: "5px",
                   transform: "rotateY(180deg)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  border: solved.includes(index) ? "4px solid green" : "4px solid orange", // Thicker border
+                  boxSizing: "border-box", // Ensures the border is included in the element's dimensions
+                  overflow: "hidden", // Ensures the image doesn't overflow the container
                 }}
               >
                 <img
                   src={tile.imageUrl}
                   alt={tile.name}
-                  style={{ width: "80px", height: "80px", borderRadius: "5px" }}
+                  style={{
+                    width: "100%", // Image fills the entire container
+                    height: "100%", // Image fills the entire container
+                    objectFit: "cover", // Ensures the image covers the area without distortion
+                    borderRadius: "5px", // Matches the container's border radius
+                  }}
                 />
               </div>
             </div>
@@ -76,21 +86,46 @@ const GameGrid = ({ shuffledTiles, flipped, solved, handleClick, moves, resetGam
 
       <p>Moves: {moves}</p>
 
-      {/* Reset Button */}
-      <button
-        onClick={resetGame}
-        style={{ marginTop: "10px", padding: "10px", fontSize: "16px" }}
-      >
-        Reset Game
-      </button>
+      {/* Buttons Container */}
+      <div style={{ display: "flex", gap: "10px", justifyContent: "center", marginTop: "20px" }}>
+        {/* Reset Game Button */}
+        <button
+          onClick={resetGame}
+          style={{
+            padding: "10px 20px",
+            fontSize: "16px",
+            backgroundColor: "#6b0042", // Default color
+            color: "rgb(255, 186, 15)", // Text color
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            transition: "background-color 0.3s ease", // Smooth transition for hover effect
+          }}
+          onMouseOver={(e) => (e.target.style.backgroundColor = "#8b0052")} // Hover color
+          onMouseOut={(e) => (e.target.style.backgroundColor = "#6b0042")} // Default color
+        >
+          Reset Game
+        </button>
 
-      {/* Edit Images Button */}
-      <button
-        onClick={goToUploadScreen}
-        style={{ marginTop: "10px", padding: "10px", fontSize: "16px" }}
-      >
-        Edit Images
-      </button>
+        {/* Edit Images Button */}
+        <button
+          onClick={goToUploadScreen}
+          style={{
+            padding: "10px 20px",
+            fontSize: "16px",
+            backgroundColor: "#6b0042", // Same as Reset Game button
+            color: "rgb(255, 186, 15)", // Text color
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            transition: "background-color 0.3s ease", // Smooth transition for hover effect
+          }}
+          onMouseOver={(e) => (e.target.style.backgroundColor = "#007bff")} // Hover color (blue)
+          onMouseOut={(e) => (e.target.style.backgroundColor = "#6b0042")} // Default color
+        >
+          Edit Images
+        </button>
+      </div>
 
       {/* End Game Condition */}
       {solved.length === shuffledTiles.length && (
