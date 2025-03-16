@@ -3,44 +3,86 @@ import axios from 'axios';
 import { Container, Row, Col } from 'react-bootstrap';
 import CanvasJSReact from '@canvasjs/react-charts';
 import HangoverForm from './HangoverForm.jsx';
-import RegForm from './RegForm.jsx'
+import RegForm from './RegForm.jsx';
 
 // const Canvas = CanvasJSReact.CanvasJS;
 const CanvasChart = CanvasJSReact.CanvasJSChart;
 
 const Hangovers = () => {
-  // const [arr1, setArr1] = useState([]);
-  // const [arr2, setArr2] = useState([]);
-  // const [arr3, setArr3] = useState([]);
+  const [arr1, setArr1] = useState([]);
+  const [arr2, setArr2] = useState([]);
+  const [arr3, setArr3] = useState([]);
   // const [arr4, setArr4] = useState([]);
-  // const [arr5, setArr5] = useState([]);
   // const [creatingHangover, toggleCreatingHangover] = useState;
 
   const getAllHangoverInfo = () => {
     axios
       .get('api/hangover')
-      .then(() => {
+      .then(({ data }) => {
         // console.log(data);
-        // setArr1(data[0]);
+        const fullData = [];
+        data[0].forEach((set) => {
+          const someData = [];
+          // const collate = (array, num) => {
+          //   if (array.length) {
+          //     array.forEach((element) => {
+          //       if (element.HangoverId === num) {
+          //         someData.push(element);
+          //       }
+          //     });
+          //   }
+          // };
+          someData.push(set);
+          data[1].forEach((element) => {
+            console.log('current element');
+            console.log(element);
+            // console.log(`checking... element hID:${element.HangoverId} ${}`);
+            if (element.HangoverId === set.id) {
+              someData.push(element);
+              console.log("post push");
+              console.log(someData);
+            }
+          });
+          data[2].forEach((element) => {
+            console.log('current element');
+            console.log(element);
+            if (element.HangoverId === set.id) {
+              someData.push(element);
+              console.log("post push");
+              console.log(someData);
+            }
+          });
+          data[3].forEach((element) => {
+            console.log('current element');
+            console.log(element);
+            if (element.HangoverId === set.id) {
+              someData.push(element);
+              console.log("post push");
+              console.log(someData);
+            }
+          });
+          // collate((data[1], set.id), (data[2], set.id), (data[3], set.id)),
+          console.log('some or none or all data');
+          console.log(someData);
+          fullData.push(someData);
+        });
+        setArr1(fullData);
         // setArr2(data[1]);
         // setArr3(data[2]);
         // setArr4(data[3]);
-        // setArr5(data[4]);
       })
       .catch((err) => console.error(err));
   };
-  // const lineCheck = () => {
-  //   console.log('arr1');
-  //   console.log(arr1);
-  //   console.log('arr2');
-  //   console.log(arr2);
-  //   console.log('arr3');
-  //   console.log(arr3);
-  //   console.log('arr4');
-  //   console.log(arr4);
-  //   console.log('arr5');
-  //   console.log(arr5);
-  // };
+  const lineCheck = () => {
+    console.log('all data');
+    console.log(arr1);
+    // console.log('arr2');
+    // console.log(arr2);
+    // console.log('arr3');
+    // console.log(arr3);
+    // console.log('arr4');
+    // console.log(arr4);
+  };
 
   useEffect(() => {
     getAllHangoverInfo();
@@ -115,22 +157,19 @@ const Hangovers = () => {
     <Container>
       <Row>
         <Col>
-      <div>Line chart hangs/time</div>
-      <CanvasChart options={lineOptions} />
+          <div>Line chart hangs/time</div>
+          <CanvasChart options={lineOptions} />
         </Col>
         <Col>
-      <div>bar chart hangs by substance</div>
-      <div>
-        <CanvasChart options={barOptions} />
-      </div>
+          <div>bar chart hangs by substance</div>
+          <div>
+            <CanvasChart options={barOptions} />
+          </div>
         </Col>
       </Row>
       <div>piechart by given category</div>
-    <RegForm
-    getAllHangoverInfo={getAllHangoverInfo}
-    closeForm={closeForm}
-    />
-      {/* <button onClick={lineCheck}>CHECK CONSOLE</button> */}
+      <RegForm getAllHangoverInfo={getAllHangoverInfo} closeForm={closeForm} />
+      <button onClick={lineCheck}>CHECK CONSOLE</button>
     </Container>
   );
 };
