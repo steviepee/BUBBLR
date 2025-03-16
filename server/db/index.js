@@ -284,16 +284,16 @@ const Hangover = sequelize.define('Hangovers', {
     autoIncrement: true,
     primaryKey: true,
   },
-  name: {
+  hangoverName: {
     type: DataTypes.STRING,
   },
-  day: {
+  hangoverDate: {
     type: DataTypes.DATE,
   },
-  additional: {
+  addSub: {
     type: DataTypes.BOOLEAN,
   },
-  notes: {
+  hangoverNote: {
     type: DataTypes.STRING,
   },
 
@@ -305,15 +305,14 @@ const Hangover = sequelize.define('Hangovers', {
     autoIncrement: true,
     primaryKey: true,
     },
-    name: {
+    SymptomName: {
       type: DataTypes.STRING,
       required: true,
     },
-    severity: {
+    symptomSeverity: {
       type: DataTypes.INTEGER,
-      enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
     },
-    duration: {
+    SymptomDuration: {
       type: DataTypes.INTEGER,
     },
     // hangRef: {
@@ -330,11 +329,11 @@ const Hangover = sequelize.define('Hangovers', {
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
+    drink: {
       type: DataTypes.STRING,
       required: true,
     },
-    shots: {
+    shot: {
       type: DataTypes.INTEGER,
       require: true,
     },
@@ -349,31 +348,14 @@ const Hangover = sequelize.define('Hangovers', {
     //   }
     // }
   })
-  // const PastMixer = sequelize.define('Mixers', {
-  //   id: {
-  //     type: DataTypes.INTEGER,
-  //     autoIncrement: true,
-  //     primaryKey: true,
-  //   },
-  //   name: {
-  //     type: DataTypes.INTEGER,
-  //     required: true,
-  //   },
-  //   // hangRef: {
-  //   //   type: DataTypes.INTEGER,
-  //   //   references: {
-  //   //     model: Hangover,
-  //   //     key: 'id',
-  //   //   }
-  //   // }
-  // })
+  
   const PastFood = sequelize.define('PastFoods', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
+    food: {
       type: DataTypes.STRING,
       required: true,
     },
@@ -449,24 +431,21 @@ User.belongsToMany(Achievements, { through: UserAchievements });
 Achievements.belongsToMany(User, { through: UserAchievements });
 
 Hangover.hasMany(PastDrink, { allowNull: false, as: 'pastDrinks' });
-PastDrink.belongsTo(Hangover, { foreignKey: 'id' });
+PastDrink.belongsTo(Hangover, { foreignKey: 'id', as: 'hangover' });
 
 Hangover.hasMany(PastFood, { allowNull: false, as: 'pastFoods' });
-PastFood.belongsTo(Hangover, { foreignKey: 'id' });
-
-// Hangover.hasMany(PastMixer, { allowNull: false, as: 'pastMixers' });
-// PastMixer.belongsTo(Hangover, { foreignKey: 'id' });
+PastFood.belongsTo(Hangover, { foreignKey: 'id', as: 'hangover' });
 
 Hangover.hasMany(Symptom, { allowNull: false, as: 'symptoms' });
-Symptom.belongsTo(Hangover, { foreignKey: 'id' });
+Symptom.belongsTo(Hangover, { foreignKey: 'id', as: 'hangover' });
 
 User.hasMany(Hangover, {  allowNull: true, as: 'hangovers' });
-Hangover.belongsTo(User, { foreignKey: 'id' });
+Hangover.belongsTo(User, { foreignKey: 'id', as: 'user' });
 
 User.hasMany(Leaderboard, { foreignKey: 'userId' });
 Leaderboard.belongsTo(User, { foreignKey: 'userId' });
 
-sequelize.sync({ force: true })
+sequelize.sync({ alter: true })
   .then(() => console.log('synced'))
   .catch((err) => console.error('Error syncing', err));
 
