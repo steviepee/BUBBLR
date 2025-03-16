@@ -21,45 +21,48 @@ const RegForm = ({ getAllHangoverInfo }) => {
   const [symptomDuration, setSymptomDuration] = useState(0);
   const [pastDrink, setPastDrink] = useState('');
   const [pastShot, setPastShot] = useState(0);
-  const [timespan, setTimeSpan] = useState(0);
+  const [timespan, setTimespan] = useState(0);
   const [pastFood, setPastFood] = useState('');
 
-  const handleInputChange = (key, event) => {
-    this.setState({ [key]: event.target.value }, console.log(`${key} has changed!`));
+  const handleInputChange = (key, event) => key(event.target.value);
+  // const extras = () => {
+  //   if (hangoverAddSub == 'on') {return true} else {return false}
+  // }
+  const resetState = () => {
+    setHangoverName('');
+    setHangoverDate(0);
+    setHangoverAddSub(false);
+    setHangoverNote('');
+    setSymptomName('');
+    setSymptomSeverity(0);
+    setSymptomDuration(0);
+    setPastDrink('');
+    setPastShot(0);
+    setTimespan('');
+    setPastFood('');
   };
-
-  const resetState = () => {};
-  setHangoverName('');
-  setHangoverDate(0);
-  setHangoverAddSub(false);
-  setHangoverNote('');
-  setSymptomName('');
-  setSymptomSeverity(0);
-  setSymptomDuration(0);
-  setPastDrink('');
-  setPastShot(0);
-  setTimeSpan('');
-  setPastFood('');
 
   const postForm = () => {
     const info = {
       info: {
         hangoverName,
         hangoverDate,
-        addSub: hangoverAddSub,
+        addSub: (hangoverAddSub === 'on'),
         hangoverNote,
-        symptomName,
+        SymptomName: symptomName,
         symptomSeverity,
-        symptomDuration,
+        SymptomDuration: symptomDuration,
         drink: pastDrink,
         shot: pastShot,
-        timespan,
+        timeSpan: timespan,
         food: pastFood,
       },
     };
+    console.log('info:');
+    console.log(info);
     axios
-      .post('api/hangovers', info)
-      .then(resetState())
+      .post('api/hangover', info)
+      .then(() => resetState())
       .then(() => getAllHangoverInfo)
       .catch((err) => console.error('unable to post form', err));
   };
@@ -80,30 +83,31 @@ const RegForm = ({ getAllHangoverInfo }) => {
                     <Form.Control
                       type='text'
                       placeholder='what did this to you'
-                      onClick={(event) => handleInputChange('hangoverName', event)
+                      onChange={(event) => handleInputChange(setHangoverName, event)
                       }
                     />
                   </Col>
                   <Col>
                     <Form.Control
                       type='date'
+                      name='date'
                       placeholder='2/25/25'
-                      onClick={(event) => handleInputChange('hangoverDate', event)
+                      onChange={(event) => handleInputChange(setHangoverDate, event)
                       }
                     />
                   </Col>
                   <Col>
                     <Form.Control
-                      type='text'
+                      type='radio'
                       placeholder='additional substances'
-                      onClick={(event) => handleInputChange('addSub', event)}
+                      onChange={(event) => handleInputChange(setHangoverAddSub, event)}
                     />
                   </Col>
                   <Col>
                     <Form.Control
                       type='text'
                       placeholder='what substances'
-                      onClick={(event) => handleInputChange('hangoverNote', event)
+                      onChange={(event) => handleInputChange(setHangoverNote, event)
                       }
                     />
                   </Col>
@@ -114,16 +118,16 @@ const RegForm = ({ getAllHangoverInfo }) => {
                     <Form.Control
                       type='text'
                       placeholder='Symptom'
-                      onClick={(event) => handleInputChange('symptomName', event)
+                      onChange={(event) => handleInputChange(setSymptomName, event)
                       }
                     />
                   </Col>
                   <Col>
-                    <div>How bad 1-10</div>
+                    <div>1-10</div>
                     <Form.Control
                       type='number'
-                      placeholder='11'
-                      onClick={(event) => handleInputChange('symptomSeverity', event)
+                      placeholder='How bad'
+                      onChange={(event) => handleInputChange(setSymptomSeverity, event)
                       }
                     />
                   </Col>
@@ -132,7 +136,7 @@ const RegForm = ({ getAllHangoverInfo }) => {
                     <Form.Control
                       type='number'
                       placeholder=''
-                      onClick={(event) => handleInputChange('symptomDuration', event)
+                      onChange={(event) => handleInputChange(setSymptomDuration, event)
                       }
                     />
                   </Col>
@@ -143,7 +147,7 @@ const RegForm = ({ getAllHangoverInfo }) => {
                     <Form.Control
                       type='text'
                       placeholder=''
-                      onClick={(event) => handleInputChange('pastDrink', event)
+                      onChange={(event) => handleInputChange(setPastDrink, event)
                       }
                     />
                   </Col>
@@ -152,7 +156,7 @@ const RegForm = ({ getAllHangoverInfo }) => {
                     <Form.Control
                       type='number'
                       placeholder='3'
-                      onClick={(event) => handleInputChange('pastShot', event)}
+                      onChange={(event) => handleInputChange(setPastShot, event)}
                     />
                   </Col>
                   <Col>
@@ -160,7 +164,7 @@ const RegForm = ({ getAllHangoverInfo }) => {
                     <Form.Control
                       type='number'
                       placeholder='in hours'
-                      onClick={(event) => handleInputChange('timespan', event)}
+                      onChange={(event) => handleInputChange(setTimespan, event)}
                     />
                   </Col>
                 </Row>
@@ -168,13 +172,14 @@ const RegForm = ({ getAllHangoverInfo }) => {
                 <Form.Control
                   type='text'
                   placeholder='tacos'
-                  onClick={(event) => handleInputChange('pastFood', event)}
+                  onChange={(event) => handleInputChange(setPastFood, event)}
                 />
               </Form.Group>
               <Form.Group
                 className='mb-3'
                 controlId='exampleForm.ControlTextarea1'
               ></Form.Group>
+              <Button onClick={postForm}>Submit</Button>
             </Form>
           </Accordion.Body>
         </Accordion.Item>

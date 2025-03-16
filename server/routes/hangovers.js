@@ -29,8 +29,9 @@ hangoverRouter.get('/', (req, res) => {
     res.sendStatus(500);
   });
 });
-
+// POST request should take all form info and separate it into linked tables
 hangoverRouter.post('/', (req, res) => {
+  // Extract the individual elements from the request body object
   const {
     hangoverName,
     hangoverDate,
@@ -54,18 +55,24 @@ hangoverRouter.post('/', (req, res) => {
    * I'll have at every instance a Symptom being created with each of those values
    *  and the correct hangover id
    */
+
+  // Create a Hangover instance from the hangover-specific elements of the form
   Hangover.create({
     hangoverName,
     hangoverDate,
     addSub,
     hangoverNote,
   }).then((results) => {
+    // create a Symptom instance from the symptom-specific elements in the form,
+    // using the new hangover ID from the created hangover instance
     Symptom.create({
       SymptomName,
       symptomSeverity,
       SymptomDuration,
       HangoverId: results.dataValues.id,
     }, { include: ['hangover'] });
+    // While still holding on to that hangover id, create a pastDrink and PastFood instance
+    // give them all that same hangover id
     PastDrink.create({
       drink,
       shot,
