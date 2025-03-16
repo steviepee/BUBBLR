@@ -58,19 +58,36 @@ router.put('/select-avatar/:googleId', async (req, res) => {
     res.status(200).json({ avatar: user.avatar });
   } catch (err) {
     console.error('err updating avatar:', err);
-    res.status(500).json({ error: 'Failed to update avatar' });
+    res.status(500);
   }
 });
 
 // delete avatar
+// router.delete('/delete-avatar/:googleId', async (req, res) => {
+//   const { googleId } = req.params;
+//   try {
+//     const user = await User.findOne({ where: { googleId } });
+//     if (!user) return res.status(404);
+//     user.avatar = 'avatar.png';
+//     await user.save();
+//     res.status(200).json({ message: 'avatar deleted' });
+//   } catch (err) {
+//     console.error('err deleting avatar:', err);
+//     res.status(500);
+//   }
+// });
+
 router.delete('/delete-avatar/:googleId', async (req, res) => {
   const { googleId } = req.params;
+
   try {
     const user = await User.findOne({ where: { googleId } });
-    if (!user) return res.status(404);
-    user.avatar = 'avatar.png';
+    if (!user) return res.status(404).json({ error: 'user not found' });
+
+    user.avatar = '/avatars/default.png';
     await user.save();
-    res.status(200).json({ message: 'avatar deleted' });
+
+    res.status(200).json({ message: 'avatar changed to default' });
   } catch (err) {
     console.error('err deleting avatar:', err);
     res.status(500);

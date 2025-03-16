@@ -183,7 +183,6 @@ class Profile extends React.Component {
       refreshUser={this.getUser}
     />
     <Card.Text>{this.state.displayName}</Card.Text>
-    <Card.Text>{`You joined on: ${this.state.createdAt}`}</Card.Text>
   </Card.Body>
 </Card>
 

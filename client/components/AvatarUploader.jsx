@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, Image } from 'react-bootstrap';
@@ -16,13 +17,14 @@ const AvatarUploader = ({ refreshUser }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    axios.get('/auth/current_user')
+    axios
+      .get('/auth/current_user')
       .then((res) => {
         setUser(res.data);
         setSelectedAvatar(res.data.avatar || avatars[0]);
       })
       .catch((err) => {
-        console.error('Error fetching user', err);
+        console.error('err fetching user', err);
       });
   }, []);
 
@@ -32,14 +34,26 @@ const AvatarUploader = ({ refreshUser }) => {
       setSelectedAvatar(avatar);
       refreshUser();
     } catch (err) {
-      console.error('Error updating avatar', err);
+      console.error('err updating avatar', err);
+    }
+  };
+
+  const deleteAvatar = async () => {
+    if (!user) return;
+
+    try {
+      await axios.delete(`/avatar/delete-avatar/${user.googleId}`);
+      setSelectedAvatar('/avatars/default.png');
+      refreshUser();
+    } catch (err) {
+      console.error('err deleting avatar', err);
     }
   };
 
   return (
-    <div className="avatar-uploader text-center">
-      <h5>Select Your Avatar</h5>
-      <div className="avatar-grid" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+    <div className='avatar-uploader'>
+      <div className='avatar-title-container'></div>
+      <div className='avatar-grid'>
         {avatars.map((avatar) => (
           <Image
             key={avatar}
@@ -47,14 +61,19 @@ const AvatarUploader = ({ refreshUser }) => {
             width={60}
             height={60}
             roundedCircle
-            style={{
-              border: selectedAvatar === avatar ? '3px solid blue' : '3px solid transparent',
-              cursor: 'pointer',
-            }}
+            className={`avatar-option ${selectedAvatar === avatar ? 'selected' : ''}`}
             onClick={() => selectAvatar(avatar)}
           />
         ))}
       </div>
+
+      <Button
+        variant='danger'
+        className='mt-3 avatar-reset-btn'
+        onClick={deleteAvatar}
+      >
+        Reset Avatar
+      </Button>
     </div>
   );
 };

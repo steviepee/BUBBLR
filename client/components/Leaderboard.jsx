@@ -5,9 +5,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import {
-  Container, Table, Card, Image,
-} from 'react-bootstrap';
+import { Container, Table, Card, Image } from 'react-bootstrap';
 
 import '../styling/Profile.css';
 
@@ -50,11 +48,11 @@ const Leaderboard = () => {
   return (
     <Container>
       <div className='text-center'>
-        <h1 className="leaderboard-title">🏆 Leaderboard 🏆</h1>
+        <h1 className='leaderboard-title'>🏆 Leaderboard 🏆</h1>
       </div>
-      <Card className="custom-card mt-4 mb-4">
-        <Card.Body className="custom-card-body" style={{ color: '#ffffff' }}>
-          <Table striped bordered hover variant="dark">
+      <Card className='custom-card mt-4 mb-4'>
+        <Card.Body className='custom-card-body' style={{ color: '#ffffff' }}>
+          <Table striped bordered hover variant='dark'>
             <thead>
               <tr>
                 <th>Rank</th>
@@ -68,16 +66,21 @@ const Leaderboard = () => {
                 <tr key={`${entry.userId}-${entry.id}`}>
                   <td>{index + 1}</td>
                   <td>
-                  <Image
-  src={entry.User?.avatar ? entry.User.avatar : "/avatars/avatar1.jpg"} 
-  alt="User Avatar"
-  roundedCircle
-  width={40}
-  height={40}
-/>
+                    <Image
+                      src={
+                        entry.User?.avatar
+                          ? entry.User.avatar
+                          : '/avatars/avatar1.jpg'
+                      }
+                      alt='User Avatar'
+                      roundedCircle
+                      width={40}
+                      height={40}
+                    />
                   </td>
                   <td>
-                    {entry.User && entry.User.nameFirst} {entry.User && entry.User.nameLast || 'Unknown'}
+                    {entry.User && entry.User.nameFirst}{' '}
+                    {(entry.User && entry.User.nameLast) || 'Unknown'}
                   </td>
                   <td>{entry.score}</td>
                 </tr>
