@@ -20,7 +20,6 @@ hangoverRouter.get('/', (req, res) => {
     Symptom.findAll(),
     PastDrink.findAll(),
     PastFood.findAll(),
-    // PastMixer.findAll(),
   ]).then((results) => {
     console.log(results);
     res.status(200).json(results);
@@ -28,6 +27,26 @@ hangoverRouter.get('/', (req, res) => {
     console.error('failed to retrieve', err);
     res.sendStatus(500);
   });
+
+  // Hangover.findAll()
+  //   .then((hangs) => {
+  //     hangs.forEach((hangover) => {
+  //       console.log(`Dissa pull for ${hangover.hangoverName}`);
+  //       Promise.all([
+  //         Symptom.findAll({ where: { HangoverId: hangover.id } }),
+  //         PastDrink.findAll({ where: { HangoverId: hangover.id } }),
+  //         PastFood.findAll({ where: { HangoverId: hangover.id } }),
+  //       ]);
+  //     });
+  //   })
+  //   .then((errything) => {
+  //     console.log(errything);
+  //     res.status(200).send(errything);
+  //   })
+  //   .catch((err) => {
+  //     console.error(err);
+  //     res.sendStatus(500);
+  //   });
 });
 // POST request should take all form info and separate it into linked tables
 hangoverRouter.post('/', (req, res) => {
@@ -62,31 +81,43 @@ hangoverRouter.post('/', (req, res) => {
     hangoverDate,
     addSub,
     hangoverNote,
-  }).then((results) => {
-    // create a Symptom instance from the symptom-specific elements in the form,
-    // using the new hangover ID from the created hangover instance
-    Symptom.create({
-      SymptomName,
-      symptomSeverity,
-      SymptomDuration,
-      HangoverId: results.dataValues.id,
-    }, { include: ['hangover'] });
-    // While still holding on to that hangover id, create a pastDrink and PastFood instance
-    // give them all that same hangover id
-    PastDrink.create({
-      drink,
-      shot,
-      timeSpan,
-      HangoverId: results.dataValues.id,
-    }, { include: ['hangover'] });
-    PastFood.create({
-      food,
-      HangoverId: results.dataValues.id,
-    }, { include: ['hangover'] });
-  }).then(() => res.sendStatus(201)).catch((err) => {
-    console.error('unable to create', err);
-    res.sendStatus(500);
-  });
+  })
+    .then((results) => {
+      // create a Symptom instance from the symptom-specific elements in the form,
+      // using the new hangover ID from the created hangover instance
+      Symptom.create(
+        {
+          SymptomName,
+          symptomSeverity,
+          SymptomDuration,
+          HangoverId: results.dataValues.id,
+        },
+        { include: ['hangover'] },
+      );
+      // While still holding on to that hangover id, create a pastDrink and PastFood instance
+      // give them all that same hangover id
+      PastDrink.create(
+        {
+          drink,
+          shot,
+          timeSpan,
+          HangoverId: results.dataValues.id,
+        },
+        { include: ['hangover'] },
+      );
+      PastFood.create(
+        {
+          food,
+          HangoverId: results.dataValues.id,
+        },
+        { include: ['hangover'] },
+      );
+    })
+    .then(() => res.sendStatus(201))
+    .catch((err) => {
+      console.error('unable to create', err);
+      res.sendStatus(500);
+    });
 });
 
 hangoverRouter.patch('/:id', (req, res) => {});
