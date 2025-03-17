@@ -284,20 +284,17 @@ const Hangover = sequelize.define('Hangovers', {
     autoIncrement: true,
     primaryKey: true,
   },
-  name: {
+  hangoverName: {
     type: DataTypes.STRING,
   },
-  day: {
+  hangoverDate: {
     type: DataTypes.DATE,
   },
-  pastWater: {
-    type: DataTypes.INTEGER,
-  },
-  additional: {
+  addSub: {
     type: DataTypes.BOOLEAN,
   },
-  notes: {
-    type: DataTypes.TEXT,
+  hangoverNote: {
+    type: DataTypes.STRING,
   },
 
 })
@@ -313,18 +310,10 @@ const Symptom = sequelize.define('Symptoms', {
   },
   severity: {
     type: DataTypes.INTEGER,
-    enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
   },
   duration: {
     type: DataTypes.INTEGER,
   },
-  // hangRef: {
-  //   type: DataTypes.INTEGER,
-  //   references: {
-  //     model: Hangover,
-  //     key: 'id',
-  //   }
-  // }
 })
 const PastDrink = sequelize.define('PastDrinks', {
   id: {
@@ -343,31 +332,6 @@ const PastDrink = sequelize.define('PastDrinks', {
   timeSpan: {
     type: DataTypes.INTEGER,
   },
-  // hangRef: {
-  //   type: DataTypes.INTEGER,
-  //   references: {
-  //     model: Hangover,
-  //     key: 'id',
-  //   }
-  // }
-})
-const PastMixer = sequelize.define('Mixers', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  name: {
-    type: DataTypes.INTEGER,
-    required: true,
-  },
-  // hangRef: {
-  //   type: DataTypes.INTEGER,
-  //   references: {
-  //     model: Hangover,
-  //     key: 'id',
-  //   }
-  // }
 })
 const PastFood = sequelize.define('PastFoods', {
   id: {
@@ -379,13 +343,6 @@ const PastFood = sequelize.define('PastFoods', {
     type: DataTypes.STRING,
     required: true,
   },
-  // hangRef: {
-  //   type: DataTypes.INTEGER,
-  //   references: {
-  //     model: Hangover,
-  //     key: 'id',
-  //   }
-  // }
 })
 
 const Trivia = sequelize.define('Trivia', {
@@ -409,13 +366,6 @@ const Trivia = sequelize.define('Trivia', {
   imageUrl: {
     type: DataTypes.STRING
   },
-  // createdBy: {
-  //   type: DataTypes.INTEGER,
-  //   references: {
-  //     model: User,
-  //     key: 'id'
-  //   }
-  // }
 });
 
   const Leaderboard = sequelize.define('Leaderboard', {
@@ -454,25 +404,22 @@ Bar.belongsToMany(Event, { through: 'EventBars' });
 User.belongsToMany(Achievements, { through: UserAchievements });
 Achievements.belongsToMany(User, { through: UserAchievements });
 
-Hangover.hasMany(PastDrink, { allowNull: false, as: 'past_drinks' });
-PastDrink.belongsTo(Hangover, { foreignKey: 'id', as: 'hang_drink' });
+Hangover.hasMany(PastDrink, { allowNull: false, as: 'pastDrinks' });
+PastDrink.belongsTo(Hangover, { foreignKey: 'id', as: 'hangover' });
 
-Hangover.hasMany(PastFood, { allowNull: false, as: 'past_foods' });
-PastFood.belongsTo(Hangover, { foreignKey: 'id', as: 'hang_food' });
-
-Hangover.hasMany(PastMixer, { allowNull: false, as: 'past_mixers' });
-PastMixer.belongsTo(Hangover, { foreignKey: 'id', as: 'hang_mixer' });
+Hangover.hasMany(PastFood, { allowNull: false, as: 'pastFoods' });
+PastFood.belongsTo(Hangover, { foreignKey: 'id', as: 'hangover' });
 
 Hangover.hasMany(Symptom, { allowNull: false, as: 'symptoms' });
-Symptom.belongsTo(Hangover, { foreignKey: 'id', as: 'hang_symptom' });
+Symptom.belongsTo(Hangover, { foreignKey: 'id', as: 'hangover' });
 
-User.hasMany(Hangover, { allowNull: true, as: 'hangovers' });
-Hangover.belongsTo(User, { foreignKey: 'id', as: 'hang_user' });
+User.hasMany(Hangover, {  allowNull: true, as: 'hangovers' });
+Hangover.belongsTo(User, { foreignKey: 'id', as: 'user' });
 
 User.hasMany(Leaderboard, { foreignKey: 'userId' });
 Leaderboard.belongsTo(User, { foreignKey: 'userId' });
 
-sequelize.sync({ force: true })
+sequelize.sync({ alter: true })
   .then(() => console.log('synced'))
   .catch((err) => console.error('Error syncing', err));
 
@@ -487,7 +434,7 @@ sequelize.sync({ force: true })
 // Achievements.sync().catch((err) => console.error('Failed syncing Achievements:', err));
 // UserAchievements.sync().catch((err) => console.error('Failed syncing UserAchievements:', err));
 // UserAchievements.sync().catch((err) => console.error('Failed syncing UserAchievements:', err));
-// LiquorCabinet.sync().catch((err) => console.error('Failed syncing LiquorCabinet:', err));
+// LiquorCabinet.sync().catch((err) => console.error('Failed syncing LiquorCabinet:', err));-----
 
 module.exports = {
   User,
@@ -505,7 +452,7 @@ module.exports = {
   Hangover,
   PastDrink,
   PastFood,
-  PastMixer,
+  // PastMixer,
   Symptom,
   Trivia,
   Leaderboard,

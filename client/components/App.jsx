@@ -23,7 +23,7 @@ import Hangovers from './Hangovers.jsx';
 import Trivia from './Trivia';
 import Leaderboard from './Leaderboard';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import MemoryMatch from "./matchGame/memoryMatch.jsx";
+import MemoryMatch from "./matchGame/MemoryMatch.jsx";
 
 
 

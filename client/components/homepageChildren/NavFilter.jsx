@@ -102,6 +102,9 @@ function NavFilter({ onLogout }) {
               <NavDropdown.Item as={Link} to="/leaderboard">Leaderboard</NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/memory-match">Memory Match</NavDropdown.Item>
             </NavDropdown>
+            <Nav.Link as={Link} to='/hangovers'>
+            Hangovers
+            </Nav.Link>
             {onProfile && (
               <><Nav.Link onClick={onLogout}>
                 Logout
