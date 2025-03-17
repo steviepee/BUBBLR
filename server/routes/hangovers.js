@@ -1,12 +1,6 @@
 // don't forget to res.json instead of res.send info
 const express = require('express');
-const {
-  Hangover,
-  Symptom,
-  PastDrink,
-  PastFood,
-  // PastMixer,
-} = require('../db/index');
+const { Hangover, Symptom, PastDrink, PastFood } = require('../db/index');
 
 const hangoverRouter = express.Router();
 /**
@@ -20,33 +14,14 @@ hangoverRouter.get('/', (req, res) => {
     Symptom.findAll(),
     PastDrink.findAll(),
     PastFood.findAll(),
-  ]).then((results) => {
-    console.log(results);
-    res.status(200).json(results);
-  }).catch((err) => {
-    console.error('failed to retrieve', err);
-    res.sendStatus(500);
-  });
-
-  // Hangover.findAll()
-  //   .then((hangs) => {
-  //     hangs.forEach((hangover) => {
-  //       console.log(`Dissa pull for ${hangover.hangoverName}`);
-  //       Promise.all([
-  //         Symptom.findAll({ where: { HangoverId: hangover.id } }),
-  //         PastDrink.findAll({ where: { HangoverId: hangover.id } }),
-  //         PastFood.findAll({ where: { HangoverId: hangover.id } }),
-  //       ]);
-  //     });
-  //   })
-  //   .then((errything) => {
-  //     console.log(errything);
-  //     res.status(200).send(errything);
-  //   })
-  //   .catch((err) => {
-  //     console.error(err);
-  //     res.sendStatus(500);
-  //   });
+  ])
+    .then((results) => {
+      res.status(200).json(results);
+    })
+    .catch((err) => {
+      console.error('failed to retrieve', err);
+      res.sendStatus(500);
+    });
 });
 // POST request should take all form info and separate it into linked tables
 hangoverRouter.post('/', (req, res) => {
@@ -120,8 +95,156 @@ hangoverRouter.post('/', (req, res) => {
     });
 });
 
-hangoverRouter.patch('/:id', (req, res) => {});
+// change hangover info
+hangoverRouter.patch('/hangover/:id', (req, res) => {
+  const { info } = req.body;
+  const { id } = req.params;
+  Hangover
+    .update({ info }, { returning: true, where: { id } })
+    .then((ret) => {
+      if (ret[0] !== 0) {
+        res.sendStatus(200);
+      } else {
+        res.status(404).send('Unable to change hangover info');
+      }
+    })
+    .catch((err) => {
+      console.error('could not complete request', err);
+      res.sendStatus(500);
+    });
+});
 
-hangoverRouter.delete('/:id', (req, res) => {});
+// change symptom info
+hangoverRouter.patch('/symptom/:id', (req, res) => {
+  const { info } = req.body;
+  const { id } = req.params;
+  Symptom
+    .update({ info }, { returning: true, where: { id } })
+    .then((ret) => {
+      if (ret[0] !== 0) {
+        res.sendStatus(200);
+      } else {
+        res.status(404).send('Unable to change symptom info');
+      }
+    })
+    .catch((err) => {
+      console.error('could not complete request', err);
+      res.sendStatus(500);
+    });
+});
+
+// change drink info
+hangoverRouter.patch('/drink/:id', (req, res) => {
+  const { info } = req.body;
+  const { id } = req.params;
+  PastFood
+    .update({ info }, { returning: true, where: { id } })
+    .then((ret) => {
+      if (ret[0] !== 0) {
+        res.sendStatus(200);
+      } else {
+        res.status(404).send('Unable to change drink info');
+      }
+    })
+    .catch((err) => {
+      console.error('could not complete request', err);
+      res.sendStatus(500);
+    });
+});
+
+// change food info
+hangoverRouter.patch('/food/:id', (req, res) => {
+  const { info } = req.body;
+  const { id } = req.params;
+  PastFood
+    .update((info), { where: { id } })
+    .then((ret) => {
+      if (ret[0] !== 0) {
+        res.sendStatus(200);
+      } else {
+        res.status(404).send('Unable to change food');
+      }
+    })
+    .catch((err) => {
+      console.error('could not complete request', err);
+      res.sendStatus(500);
+    });
+});
+
+// delete hangovers
+hangoverRouter.delete('/:id', (req, res) => {
+  // const { element } = req.body;
+  const { id } = req.params;
+  PastFood
+    .destroy({ where: { id } })
+    .then((row) => {
+      if (row !== 0) {
+        res.sendStatus(200);
+      } else {
+        res.status(404).send('could not delete hangover');
+      }
+    })
+    .catch((err) => {
+      console.error('Failed to delet hangover', err);
+      res.sendStatus(500);
+    });
+});
+
+// delete symptoms
+hangoverRouter.delete('/symptom/:id', (req, res) => {
+  // const { element } = req.body;
+  const { id } = req.params;
+  Symptom
+    .destroy({ where: { id } })
+    .then((row) => {
+      if (row !== 0) {
+        res.sendStatus(200);
+      } else {
+        res.status(404).send('could not delete symptom');
+      }
+    })
+    .catch((err) => {
+      console.error('Failed to delete symptom info', err);
+      res.sendStatus(500);
+    });
+});
+
+// delete drinks
+hangoverRouter.delete('/drink/:id', (req, res) => {
+  // const { element } = req.body;
+  const { id } = req.params;
+  PastDrink
+    .destroy({ where: { id } })
+    .then((row) => {
+      if (row !== 0) {
+        res.sendStatus(200);
+      } else {
+        res.status(404).send('could not delete drink');
+      }
+    })
+    .catch((err) => {
+      console.error('failed to delete drink info', err);
+      res.sendStatus(500);
+    });
+});
+
+// delete food
+hangoverRouter.delete('/food/:id', (req, res) => {
+  // const { element } = req.body;
+  const { id } = req.params;
+  PastFood
+    .destroy({ where: { id } })
+    .then((row) => {
+      if (row !== 0) {
+        res.sendStatus(200);
+      } else {
+        res.status(404).send('could not delete food');
+      }
+    })
+    .catch((err) => {
+      console.error('Failed to delete food', err);
+      res.sendStatus(500);
+    });
+});
 
 module.exports = hangoverRouter;
