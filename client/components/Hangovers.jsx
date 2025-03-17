@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import CanvasJSReact from '@canvasjs/react-charts';
 import HangoverForm from './HangoverForm.jsx';
 
@@ -9,6 +9,8 @@ const CanvasChart = CanvasJSReact.CanvasJSChart;
 
 const Hangovers = () => {
   const [hangData, setHangData] = useState([]);
+  const [editMode, setEditMode] = useState(false);
+  const [editArr, setEditArr] = useState([]);
 
   const getAllHangoverInfo = () => {
     axios
@@ -35,21 +37,35 @@ const Hangovers = () => {
           });
           fullData.push(someData);
         });
+        console.log('fullData');
+        console.log(fullData);
         setHangData(fullData);
       })
       .catch((err) => console.error(err));
   };
-  const lineCheck = () => {
-    console.log('all data');
-    console.log(hangData);
-  };
-  const setGraphs = () => {};
 
+  const sortToSpecificHangover = (matrix, title) => {
+    const rightSet = [];
+    for (let i = 0; i < matrix.length; i += 1) {
+      if (matrix[i][0].hangoverName === title) {
+        console.log('matrix stuff');
+        console.log(matrix[i]);
+        const [hang, symptom, drink, food] = matrix[i];
+        rightSet.push(hang, symptom, drink, food);
+        break;
+      }
+    }
+    setEditArr(rightSet);
+    setEditMode(true);
+  };
+
+  const setOfHangovers = [];
+  hangData.forEach((group) => {
+    setOfHangovers.push(group[0]);
+  });
   useEffect(() => {
     getAllHangoverInfo();
-    setGraphs();
   }, []);
-
   const createLineChartInfo = (arr) => {
     const lineChartHangoverArray = [];
     const lineChartSymptomArray = [];
@@ -81,7 +97,11 @@ const Hangovers = () => {
     });
     drinksArray.forEach((drinkObj) => {
       let tempArray = [];
-      if (barChartDrinkNamesAndValues.every((tuple) => !tuple.includes(drinkObj.drink))) {
+      if (
+        barChartDrinkNamesAndValues.every(
+          (tuple) => !tuple.includes(drinkObj.drink),
+        )
+      ) {
         tempArray.push(drinkObj.drink, 1);
         barChartDrinkNamesAndValues.push(tempArray);
         tempArray = [];
@@ -149,7 +169,7 @@ const Hangovers = () => {
     },
     axisX: {
       labelFontColor: 'white',
-      labelFontSize: 30,
+      labelFontSize: 20,
       labelFontFamily: 'comic sans',
     },
     data: [
@@ -175,12 +195,29 @@ const Hangovers = () => {
           </div>
         </Col>
       </Row>
-      <div>piechart by given category</div>
       <HangoverForm
         getAllHangoverInfo={getAllHangoverInfo}
-        closeForm={closeForm}
+        editMode={editMode}
+        setEditMode={setEditMode}
+        editArr={editArr}
+        setEditArr={setEditArr}
       />
-      <button onClick={lineCheck}>CHECK CONSOLE</button>
+      <Row>
+        <ul>
+          {setOfHangovers.map((hangover) => (
+            <Col key={hangover.id}>
+              <li>
+                {hangover.hangoverName}
+                <Button
+                  onClick={() => {
+                    sortToSpecificHangover(hangData, hangover.hangoverName);
+                  }}
+                >Edit hangover info</Button>
+              </li>
+            </Col>
+          ))}
+        </ul>
+      </Row>
     </Container>
   );
 };

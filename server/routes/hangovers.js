@@ -1,6 +1,11 @@
 // don't forget to res.json instead of res.send info
 const express = require('express');
-const { Hangover, Symptom, PastDrink, PastFood } = require('../db/index');
+const {
+  Hangover,
+  Symptom,
+  PastDrink,
+  PastFood,
+} = require('../db/index');
 
 const hangoverRouter = express.Router();
 /**
@@ -97,10 +102,10 @@ hangoverRouter.post('/', (req, res) => {
 
 // change hangover info
 hangoverRouter.patch('/hangover/:id', (req, res) => {
-  const { info } = req.body;
+  const { hangInfo } = req.body;
   const { id } = req.params;
   Hangover
-    .update({ info }, { returning: true, where: { id } })
+    .update({ hangInfo }, { returning: true, where: { id } })
     .then((ret) => {
       if (ret[0] !== 0) {
         res.sendStatus(200);
@@ -116,10 +121,10 @@ hangoverRouter.patch('/hangover/:id', (req, res) => {
 
 // change symptom info
 hangoverRouter.patch('/symptom/:id', (req, res) => {
-  const { info } = req.body;
+  const { symInfo } = req.body;
   const { id } = req.params;
   Symptom
-    .update({ info }, { returning: true, where: { id } })
+    .update({ symInfo }, { returning: true, where: { id } })
     .then((ret) => {
       if (ret[0] !== 0) {
         res.sendStatus(200);
@@ -135,10 +140,10 @@ hangoverRouter.patch('/symptom/:id', (req, res) => {
 
 // change drink info
 hangoverRouter.patch('/drink/:id', (req, res) => {
-  const { info } = req.body;
+  const { drinkInfo } = req.body;
   const { id } = req.params;
   PastFood
-    .update({ info }, { returning: true, where: { id } })
+    .update({ drinkInfo }, { returning: true, where: { id } })
     .then((ret) => {
       if (ret[0] !== 0) {
         res.sendStatus(200);
@@ -154,10 +159,10 @@ hangoverRouter.patch('/drink/:id', (req, res) => {
 
 // change food info
 hangoverRouter.patch('/food/:id', (req, res) => {
-  const { info } = req.body;
+  const { foodInfo } = req.body;
   const { id } = req.params;
   PastFood
-    .update((info), { where: { id } })
+    .update((foodInfo), { where: { id } })
     .then((ret) => {
       if (ret[0] !== 0) {
         res.sendStatus(200);
