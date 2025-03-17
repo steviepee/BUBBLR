@@ -37,8 +37,6 @@ const Hangovers = () => {
           });
           fullData.push(someData);
         });
-        console.log('fullData');
-        console.log(fullData);
         setHangData(fullData);
       })
       .catch((err) => console.error(err));
@@ -48,8 +46,6 @@ const Hangovers = () => {
     const rightSet = [];
     for (let i = 0; i < matrix.length; i += 1) {
       if (matrix[i][0].hangoverName === title) {
-        console.log('matrix stuff');
-        console.log(matrix[i]);
         const [hang, symptom, drink, food] = matrix[i];
         rightSet.push(hang, symptom, drink, food);
         break;
@@ -74,8 +70,6 @@ const Hangovers = () => {
       lineChartSymptomArray.push(nest[1]);
     });
     return lineChartHangoverArray.map((item, i) => {
-      console.log('checking symptom');
-      console.log(lineChartSymptomArray[i]);
       const lineYear = +item.hangoverDate.toString().substring(0, 4);
       const lineMonth = +item.hangoverDate.toString().substring(5, 7);
       const lineDay = +item.hangoverDate.toString().substring(8, 10);
@@ -88,8 +82,6 @@ const Hangovers = () => {
   };
 
   const createBarChartInfo = (arr) => {
-    console.log('the arr');
-    console.log(arr);
     const barChartDrinkNamesAndValues = [];
     const drinksArray = [];
     arr.forEach((nest) => {
@@ -116,7 +108,6 @@ const Hangovers = () => {
     });
     return barChartDrinkNamesAndValues.map((set) => {
       // {label: 'drink', y: <frequency>}
-      console.log('');
       return {
         label: set[0],
         y: set[1],

@@ -419,7 +419,7 @@ Hangover.belongsTo(User, { foreignKey: 'id', as: 'user' });
 User.hasMany(Leaderboard, { foreignKey: 'userId' });
 Leaderboard.belongsTo(User, { foreignKey: 'userId' });
 
-sequelize.sync({ force: true })
+sequelize.sync({ alter: true })
   .then(() => console.log('synced'))
   .catch((err) => console.error('Error syncing', err));
 
