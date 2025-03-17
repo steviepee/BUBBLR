@@ -3,23 +3,17 @@ import axios from 'axios';
 import { Container, Row, Col } from 'react-bootstrap';
 import CanvasJSReact from '@canvasjs/react-charts';
 import HangoverForm from './HangoverForm.jsx';
-import RegForm from './RegForm.jsx';
 
 // const Canvas = CanvasJSReact.CanvasJS;
 const CanvasChart = CanvasJSReact.CanvasJSChart;
 
 const Hangovers = () => {
-  const [arr1, setArr1] = useState([]);
-  const [arr2, setArr2] = useState([]);
-  const [arr3, setArr3] = useState([]);
-  // const [arr4, setArr4] = useState([]);
-  // const [creatingHangover, toggleCreatingHangover] = useState;
+  const [hangData, setHangData] = useState([]);
 
   const getAllHangoverInfo = () => {
     axios
       .get('api/hangover')
       .then(({ data }) => {
-        // console.log(data);
         const fullData = [];
         data[0].forEach((set) => {
           const someData = [];
@@ -34,59 +28,56 @@ const Hangovers = () => {
           // };
           someData.push(set);
           data[1].forEach((element) => {
-            console.log('current element');
-            console.log(element);
-            // console.log(`checking... element hID:${element.HangoverId} ${}`);
             if (element.HangoverId === set.id) {
               someData.push(element);
-              console.log("post push");
-              console.log(someData);
             }
           });
           data[2].forEach((element) => {
-            console.log('current element');
-            console.log(element);
             if (element.HangoverId === set.id) {
               someData.push(element);
-              console.log("post push");
-              console.log(someData);
             }
           });
           data[3].forEach((element) => {
-            console.log('current element');
-            console.log(element);
             if (element.HangoverId === set.id) {
               someData.push(element);
-              console.log("post push");
-              console.log(someData);
             }
           });
-          // collate((data[1], set.id), (data[2], set.id), (data[3], set.id)),
-          console.log('some or none or all data');
-          console.log(someData);
           fullData.push(someData);
         });
-        setArr1(fullData);
-        // setArr2(data[1]);
-        // setArr3(data[2]);
-        // setArr4(data[3]);
+        setHangData(fullData);
       })
       .catch((err) => console.error(err));
   };
   const lineCheck = () => {
     console.log('all data');
-    console.log(arr1);
-    // console.log('arr2');
-    // console.log(arr2);
-    // console.log('arr3');
-    // console.log(arr3);
-    // console.log('arr4');
-    // console.log(arr4);
+    console.log(hangData);
   };
+  const setGraphs = () => {};
 
   useEffect(() => {
     getAllHangoverInfo();
+    setGraphs();
   }, []);
+
+  const createLineChartInfo = (arr) => {
+    console.log('arr');
+    console.log(arr);
+    const puller = [];
+    for (let i = 0; i < arr.length; i += 1) {
+      arr.forEach((nest) => {
+        puller.push(nest[0]);
+      });
+    }
+    return puller.map((item) => {
+      const lineYear = +(item.hangoverDate.toString().substring(0, 4));
+      const lineMonth = +(item.hangoverDate.toString().substring(5, 7));
+      const lineDay = +(item.hangoverDate.toString().substring(8, 10));
+      return {
+        x: new Date(lineYear, lineMonth, lineDay),
+        y: item.id,
+      };
+    });
+  };
 
   const lineOptions = {
     animationEnabled: true,
@@ -110,13 +101,15 @@ const Hangovers = () => {
     data: [
       {
         yValueFormatString: '## hrs',
-        xValueFormatString: 'DDDD',
+        xValueFormatString: 'DD/MM/Y',
         type: 'spline',
-        dataPoints: [
-          { x: new Date(2025, 0), y: 6 },
-          { x: new Date(2025, 1), y: 7 },
-          { x: new Date(2025, 2), y: 12 },
-        ],
+        dataPoints:
+          createLineChartInfo(hangData),
+          // [
+          //   { x: new Date(2025, 11, 1), y: 6 },
+          //   { x: new Date(2025, 1), y: 7 },
+          //   { x: new Date(2025, 2), y: 12 },
+          // ],
       },
     ],
   };
@@ -168,7 +161,10 @@ const Hangovers = () => {
         </Col>
       </Row>
       <div>piechart by given category</div>
-      <RegForm getAllHangoverInfo={getAllHangoverInfo} closeForm={closeForm} />
+      <HangoverForm
+        getAllHangoverInfo={getAllHangoverInfo}
+        closeForm={closeForm}
+      />
       <button onClick={lineCheck}>CHECK CONSOLE</button>
     </Container>
   );
