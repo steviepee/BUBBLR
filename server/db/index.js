@@ -39,7 +39,7 @@ const User = sequelize.define('User', {
   },
   avatar: {
     type: DataTypes.STRING,
-    defaultValue: 'avatar.png'
+    defaultValue: "/avatars/avatar1.png",
   },
 });
 
@@ -298,107 +298,82 @@ const Hangover = sequelize.define('Hangovers', {
   },
 
 })
-
-  const Symptom = sequelize.define('Symptoms', {
-    id: {
-      type: DataTypes.INTEGER,
+const Symptom = sequelize.define('Symptoms', {
+  id: {
+    type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    },
-    SymptomName: {
-      type: DataTypes.STRING,
-      required: true,
-    },
-    symptomSeverity: {
-      type: DataTypes.INTEGER,
-    },
-    SymptomDuration: {
-      type: DataTypes.INTEGER,
-    },
-    // hangRef: {
-    //   type: DataTypes.INTEGER,
-    //   references: {
-    //     model: Hangover,
-    //     key: 'id',
-    //   }
-    // }
-  })
-  const PastDrink = sequelize.define('PastDrinks', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    drink: {
-      type: DataTypes.STRING,
-      required: true,
-    },
-    shot: {
-      type: DataTypes.INTEGER,
-      require: true,
-    },
-    timeSpan: {
-      type: DataTypes.INTEGER,
-    },
-    // hangRef: {
-    //   type: DataTypes.INTEGER,
-    //   references: {
-    //     model: Hangover,
-    //     key: 'id',
-    //   }
-    // }
-  })
-  
-  const PastFood = sequelize.define('PastFoods', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    food: {
-      type: DataTypes.STRING,
-      required: true,
-    },
-    hangRef: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Hangover,
-        key: 'id',
-      }
-    }
-  })
+  },
+  name: {
+    type: DataTypes.STRING,
+    required: true,
+  },
+  severity: {
+    type: DataTypes.INTEGER,
+  },
+  duration: {
+    type: DataTypes.INTEGER,
+  },
+})
+const PastDrink = sequelize.define('PastDrinks', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    required: true,
+  },
+  shots: {
+    type: DataTypes.INTEGER,
+    require: true,
+  },
+  timeSpan: {
+    type: DataTypes.INTEGER,
+  },
+})
+const PastFood = sequelize.define('PastFoods', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    required: true,
+  },
+})
 
-  const Trivia = sequelize.define('Trivia', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    question: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    options: {
-      type: DataTypes.JSON,
-      allowNull: true
-    },
-    correctAnswer: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    imageUrl: {
-      type: DataTypes.STRING
-    },
-    // createdBy: {
-    //   type: DataTypes.INTEGER,
-    //   references: {
-    //     model: User,
-    //     key: 'id'
-    //   }
-    // }
-  });
+const Trivia = sequelize.define('Trivia', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  question: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  options: {
+    type: DataTypes.JSON,
+    allowNull: true
+  },
+  correctAnswer: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  imageUrl: {
+    type: DataTypes.STRING
+  },
+});
 
   const Leaderboard = sequelize.define('Leaderboard', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     userId: {
       type: DataTypes.INTEGER,
       references: {
@@ -414,7 +389,6 @@ const Hangover = sequelize.define('Hangovers', {
     },
   }, {
     timestamps: true,
-    
   });
 
 
@@ -445,7 +419,7 @@ Hangover.belongsTo(User, { foreignKey: 'id', as: 'user' });
 User.hasMany(Leaderboard, { foreignKey: 'userId' });
 Leaderboard.belongsTo(User, { foreignKey: 'userId' });
 
-sequelize.sync({ alter: true })
+sequelize.sync({ force: true })
   .then(() => console.log('synced'))
   .catch((err) => console.error('Error syncing', err));
 

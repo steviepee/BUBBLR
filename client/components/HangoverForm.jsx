@@ -152,9 +152,9 @@ const HangoverForm = ({
                     />
                   </Col>
                   <Col>
-                    <div>Did you use other substances?</div>
+                    <div>other substances? click below</div>
                     <Form.Control
-                      type='checkbox'
+                      type='radio'
                       onChange={(event) =>
                         handleInputChange(setHangoverAddSub, event)
                       }

@@ -100,6 +100,7 @@ function NavFilter({ onLogout }) {
             <NavDropdown title='Games' id='gamesDropdown'>
               <NavDropdown.Item as={Link} to="/trivia">Trivia</NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/leaderboard">Leaderboard</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/memory-match">Memory Match</NavDropdown.Item>
             </NavDropdown>
             <Nav.Link as={Link} to='/hangovers'>
             Hangovers
@@ -107,8 +108,6 @@ function NavFilter({ onLogout }) {
             {onProfile && (
               <><Nav.Link onClick={onLogout}>
                 Logout
-              </Nav.Link><Nav.Link as={Link} to="/memory-match">
-                  Memory Match
                 </Nav.Link></>
             )}
           </Nav>
