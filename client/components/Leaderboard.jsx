@@ -20,7 +20,7 @@ const Leaderboard = () => {
 
   const fetchLeaderboard = () => {
     axios
-      .get('http://ec2-18-220-156-46.us-east-2.compute.amazonaws.com:8080/leaderboard/top-scores')
+      .get('http://127.0.0.1:8080/leaderboard/top-scores')
       .then((res) => {
         if (Array.isArray(res.data)) {
           setLeaderboard(res.data);
