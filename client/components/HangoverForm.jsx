@@ -1,196 +1,185 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import DividedListItem from './DividedListItem.jsx';
-import InputField from './InputField.jsx';
-import { Container, Accordion, Button, ListGroup } from 'react-bootstrap';
+import {
+  Form,
+  ListGroup,
+  Button,
+  Accordion,
+  Container,
+  Col,
+  Row,
+} from 'react-bootstrap';
 
-const HangoverForm = ({ getAllHangoverInfo, closeForm }) => {
+const HangoverForm = ({ getAllHangoverInfo }) => {
   // set state for all table variables
-  // const [hangoverName, setHangoverName] = useState('');
-  // const [hangoverWater, setHangoverWater] = useState(0);
-  // const [hangoverAddSub, setHangoverAddSub] = useState(false);
-  // const [hangoverNote, setHangoverNote] = useState('');
-  // const [symptomNames, setSymptomNames] = useState([]);
-  // const [symptomSeverities, setSymptomSeverities] = useState([]);
-  // const [symptomDurations, setSymptomDurations] = useState([]);
-  // const [pastDrinks, setPastDrinks] = useState([]);
-  // const [pastShots, setPastShots] = useState([]);
-  // const [timespan, setTimeSpan] = useState([]);
-  // const [pastFood, setPastFood] = useState([]);
+  const [hangoverName, setHangoverName] = useState('');
+  const [hangoverDate, setHangoverDate] = useState(0);
+  const [hangoverAddSub, setHangoverAddSub] = useState(false);
+  const [hangoverNote, setHangoverNote] = useState('');
+  const [symptomName, setSymptomName] = useState('');
+  const [symptomSeverity, setSymptomSeverity] = useState(0);
+  const [symptomDuration, setSymptomDuration] = useState(0);
+  const [pastDrink, setPastDrink] = useState('');
+  const [pastShot, setPastShot] = useState(0);
+  const [timespan, setTimespan] = useState(0);
+  const [pastFood, setPastFood] = useState('');
 
-  const [formValues, setFormValues] = useState({
-    hangoverName: '',
-    hangoverAddSub: false,
-    hangoverNote: '',
-    symptomNames: [],
-    symptomSeverities: [],
-    symptomDurations: [],
-    timeSpan: [],
-    pastDrinks: [],
-    pastAmt: [],
-    pastFood: [],
-  });
-  const inputGroups = [
-    'hangover_name',
-    'substance_check',
-    'substance_notes',
-    'symptom',
-    'symptom_severity',
-    'symptom_duration',
-    'span',
-    'drink',
-    'drink_amount',
-    'food',
-  ];
-  const [extras, toggleExtras] = useState(false);
-  const [inputValues, setInputValues] = useState([
-    {
-      label: 'name',
-      value: '',
-      group: 'hangover_name',
-      helperText: 'name the night(what did this to you?)',
-    },
-    {
-      label: 'Additional substances',
-      value: false,
-      group: 'substance_check',
-      helperText: 'did you take anything else?',
-    },
-    {
-      label: 'notes',
-      value: '',
-      group: 'substance_notes',
-      helperText: 'what else? (you can trust us)',
-    },
-    {
-      label: 'symptom_name',
-      value: '',
-      group: 'symptom',
-      helperText: 'add a symptom',
-    },
-    {
-      label: 'symptom_severity',
-      value: 0,
-      group: 'symptom_severity',
-      helperText: 'how bad is it? (1-10)',
-    },
-    {
-      label: 'symptom_duration',
-      value: 0,
-      group: 'symptom_duration',
-      helperText: 'how long did it last?',
-    },
-    {
-      label: 'timespan',
-      value: 0,
-      group: 'span',
-      helperText: 'over how long were you drinking',
-    },
-    {
-      label: 'Drink(s)',
-      value: '',
-      group: 'drink',
-      helperText: 'Add a drink',
-    },
-    {
-      label: 'Amount',
-      value: 0,
-      group: 'drink_amount',
-      helperText: 'how many?',
-    },
-    {
-      label: 'Food(s)',
-      value: '',
-      group: 'food',
-      helperText: 'Add food',
-    },
-  ]);
-  const changeInputValue = (key, newValue) => {
-    const inputsCopy = [...inputValues];
-    for (let i = 0; i < inputGroups.length; i += 1) {
-      if (inputGroups[i].label === key) {
-        inputsCopy[i + 1].value = newValue;
-        setInputValues(inputsCopy);
-        return;
-      }
-    }
-  };
-  const handleChange = (element) => {
-    const inputsCopy = [...inputValues];
-    const { id, value } = element.target;
-    if (id === 'name') {
-      formValues.name = value;
-      inputsCopy[0].value = value;
-      setInputValues(inputsCopy);
-    } else {
-      changeInputValue(id, value);
-    }
-  };
-
-  const handleAddClick = (element) => {
-    const { id } = element.target;
-    const formCopy = { ...formValues };
-    for (let i = 0; i < inputGroups.length; i += 1) {
-      if (inputGroups[i] === id) {
-        const currValue = inputValues[i + 1].value;
-        if (!currValue) {
-          return;
-        }
-        formCopy[id].push(currValue);
-        setFormValues(formCopy);
-        changeInputValue(id, '');
-        return;
-      }
-    }
+  const handleInputChange = (key, event) => key(event.target.value);
+  const resetState = () => {
+    setHangoverName('');
+    setHangoverDate(0);
+    setHangoverAddSub(false);
+    setHangoverNote('');
+    setSymptomName('');
+    setSymptomSeverity(0);
+    setSymptomDuration(0);
+    setPastDrink('');
+    setPastShot(0);
+    setTimespan('');
+    setPastFood('');
   };
 
   const postForm = () => {
     const info = {
-      info: { formValues },
+      info: {
+        hangoverName,
+        hangoverDate,
+        addSub: (hangoverAddSub === 'on'),
+        hangoverNote,
+        SymptomName: symptomName,
+        symptomSeverity,
+        SymptomDuration: symptomDuration,
+        drink: pastDrink,
+        shot: pastShot,
+        timeSpan: timespan,
+        food: pastFood,
+      },
     };
+    console.log('info:');
+    console.log(info);
     axios
-      .post('api/hangovers', info)
-      .then(/* reset form & state */)
+      .post('api/hangover', info)
+      .then(() => resetState())
       .then(() => getAllHangoverInfo)
       .catch((err) => console.error('unable to post form', err));
   };
-  const createDividedList = (collection, collectionName) => (
-    (
-    <ul>
-      {collection.map((element, i) => (
-        <DividedListItem
-          key={`${element}-${i * 2}`}
-          element={element}
-          index={i}
-          collectionName={collectionName}
-          formValues={formValues}
-          setFormValues={setFormValues}
-          changeInputValue={changeInputValue}
-        />
-      ))}
-    </ul>
-    )
-  );
   return (
     <Container>
       <Accordion>
-          <Accordion.Item>
-        {inputValues.map((input, index) => (
-            <InputField
-            key={`${input.label}`}
-            objValue={input}
-            handleChange={handleChange}
-            index={index}
-            formValues={formValues}
-            setFormValues={setFormValues}
-             handleAddClick={handleAddClick}
-            createDividedList={createDividedList}
-            postForm={postForm}
-            closeForm={closeForm}
-
-            />
-        ))}
-          </Accordion.Item>
+        <Accordion.Item eventKey='1'>
+          <Accordion.Header>Accordion Form Test</Accordion.Header>
+          <Accordion.Body>
+            <Form>
+              <Form.Group
+                className='mb-3'
+                controlId='exampleForm.ControlInput1'
+              >
+                <Row className='mb-3'>
+                  <Form.Label>Hangover Assessment</Form.Label>
+                  <Col>
+                    <Form.Control
+                      type='text'
+                      placeholder='what did this to you'
+                      onChange={(event) => handleInputChange(setHangoverName, event)
+                      }
+                    />
+                  </Col>
+                  <Col>
+                    <Form.Control
+                      type='date'
+                      name='date'
+                      placeholder='2/25/25'
+                      onChange={(event) => handleInputChange(setHangoverDate, event)
+                      }
+                    />
+                  </Col>
+                  <Col>
+                    <Form.Control
+                      type='radio'
+                      placeholder='additional substances'
+                      onChange={(event) => handleInputChange(setHangoverAddSub, event)}
+                    />
+                  </Col>
+                  <Col>
+                    <Form.Control
+                      type='text'
+                      placeholder='what substances'
+                      onChange={(event) => handleInputChange(setHangoverNote, event)
+                      }
+                    />
+                  </Col>
+                </Row>
+                <Row className='mb-3'>
+                  <Col>
+                    <div>Name a pain</div>
+                    <Form.Control
+                      type='text'
+                      placeholder='Symptom'
+                      onChange={(event) => handleInputChange(setSymptomName, event)
+                      }
+                    />
+                  </Col>
+                  <Col>
+                    <div>1-10</div>
+                    <Form.Control
+                      type='number'
+                      placeholder='How bad'
+                      onChange={(event) => handleInputChange(setSymptomSeverity, event)
+                      }
+                    />
+                  </Col>
+                  <Col>
+                    <div>How long did it last</div>
+                    <Form.Control
+                      type='number'
+                      placeholder=''
+                      onChange={(event) => handleInputChange(setSymptomDuration, event)
+                      }
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <div>What did you drink</div>
+                    <Form.Control
+                      type='text'
+                      placeholder=''
+                      onChange={(event) => handleInputChange(setPastDrink, event)
+                      }
+                    />
+                  </Col>
+                  <Col>
+                    <div>How many</div>
+                    <Form.Control
+                      type='number'
+                      placeholder='3'
+                      onChange={(event) => handleInputChange(setPastShot, event)}
+                    />
+                  </Col>
+                  <Col>
+                    <div>Over how long</div>
+                    <Form.Control
+                      type='number'
+                      placeholder='in hours'
+                      onChange={(event) => handleInputChange(setTimespan, event)}
+                    />
+                  </Col>
+                </Row>
+                <div>Did you eat anything?</div>
+                <Form.Control
+                  type='text'
+                  placeholder='tacos'
+                  onChange={(event) => handleInputChange(setPastFood, event)}
+                />
+              </Form.Group>
+              <Form.Group
+                className='mb-3'
+                controlId='exampleForm.ControlTextarea1'
+              ></Form.Group>
+              <Button onClick={postForm}>Submit</Button>
+            </Form>
+          </Accordion.Body>
+        </Accordion.Item>
       </Accordion>
     </Container>
   );
