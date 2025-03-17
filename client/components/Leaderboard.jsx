@@ -63,7 +63,7 @@ const Leaderboard = () => {
             </thead>
             <tbody>
               {leaderboard.map((entry, index) => (
-                <tr key={`${entry.userId}-${entry.id}`}>
+                <tr key={(entry.userId ? entry.userId : index) + '-' + entry.id}>
                   <td>{index + 1}</td>
                   <td>
                     <Image
