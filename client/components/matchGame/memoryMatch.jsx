@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import UploadScreen from "./UploadScreen";
 import GameGrid from "./GridGame";
 import axios from "axios";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 const MemoryMatch = ({ googleId }) => {
   const [shuffledTiles, setShuffledTiles] = useState([]);
@@ -14,6 +16,7 @@ const MemoryMatch = ({ googleId }) => {
   const [customImages, setCustomImages] = useState(Array(8).fill(null));
   const [showGameGrid, setShowGameGrid] = useState(false);
   const [matchGameId, setMatchGameId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   // Define fallback images
   const fallbackImages = [
@@ -102,20 +105,21 @@ const MemoryMatch = ({ googleId }) => {
   const generateDefaultImageUrl = () => {
     // Filter out images that are already assigned
     const availableImages = fallbackImages.filter(img => !assignedImages.has(img));
-  
+
     // If all images are used, reset the assigned set
     if (availableImages.length === 0) {
       assignedImages.clear();
     }
-  
+
     // Pick a random image from the remaining pool
     const randomImage = availableImages[Math.floor(Math.random() * availableImages.length)];
-  
+
     // Mark the image as assigned
     assignedImages.add(randomImage);
-  
+
     return randomImage;
   };
+
   // Initialize the game with fetched drink data or custom images
   const initializeGame = (data) => {
     // Create an array of unique items (custom images or drinks)
@@ -126,8 +130,7 @@ const MemoryMatch = ({ googleId }) => {
         ? {
             id: index,
             name: data[index].strDrink || "Default",
-            imageUrl: data[index]?.strDrinkThumb || generateDefaultImageUrl()
-            ,
+            imageUrl: data[index]?.strDrinkThumb || generateDefaultImageUrl(),
           }
         : { id: index, name: "Default", imageUrl: generateDefaultImageUrl(index) }
     );
@@ -180,20 +183,20 @@ const MemoryMatch = ({ googleId }) => {
         console.error("No drinks data available");
         return;
       }
-  
+
       setFlipped([]);
       setSolved([]);
       setMoves(0);
       setIsChecking(false);
-  
+
       // Delete the current match game and create a new one
       if (matchGameId) {
         await deleteMatchGame(matchGameId);
       }
-  
+
       // Reinitialize the game with new shuffled tiles
       initializeGame(drinksData);
-  
+
       const newMatchGame = await createMatchGame(
         googleId,
         drinksData[0]?.idDrink,
@@ -204,7 +207,6 @@ const MemoryMatch = ({ googleId }) => {
       console.error("Failed to reset game:", error);
     }
   };
-  
 
   // Handle image upload for a specific tile
   const handleImageUpload = (index, e) => {
@@ -306,6 +308,13 @@ const MemoryMatch = ({ googleId }) => {
     initialize();
   }, []);
 
+  // Check if the game is completed
+  useEffect(() => {
+    if (solved.length === shuffledTiles.length && shuffledTiles.length > 0) {
+      setShowModal(true);
+    }
+  }, [solved, shuffledTiles]);
+
   return (
     <div style={{ textAlign: "center", fontFamily: "Arial, sans-serif" }}>
       {console.log("drinks", drinks)}
@@ -332,6 +341,24 @@ const MemoryMatch = ({ googleId }) => {
           goToUploadScreen={goToUploadScreen}
         />
       )}
+
+      {/* Game Over Modal */}
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Game Over</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Congratulations! You've completed the game in {moves} moves.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={() => { setShowModal(false); resetGame(); }}>
+            Play Again
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
