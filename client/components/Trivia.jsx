@@ -73,7 +73,7 @@ const TriviaGame = () => {
     }
     const { googleId } = user;
     axios
-      .post('http://ec2-18-220-156-46.us-east-2.compute.amazonaws.com:8080/leaderboard', { googleId, score })
+      .post('http://127.0.0.1:8080/leaderboard', { googleId, score })
       .then((res) => {
         console.log('Score submitted', res.data);
       })
