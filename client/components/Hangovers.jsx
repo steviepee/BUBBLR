@@ -81,7 +81,7 @@ const Hangovers = () => {
     });
     drinksArray.forEach((drinkObj) => {
       let tempArray = [];
-      if (!barChartDrinkNamesAndValues.includes(drinkObj.drink)) {
+      if (barChartDrinkNamesAndValues.every((tuple) => !tuple.includes(drinkObj.drink))) {
         tempArray.push(drinkObj.drink, 1);
         barChartDrinkNamesAndValues.push(tempArray);
         tempArray = [];
@@ -89,6 +89,7 @@ const Hangovers = () => {
         for (let i = 0; i < barChartDrinkNamesAndValues.length; i += 1) {
           if (barChartDrinkNamesAndValues[i].includes(drinkObj.drink)) {
             barChartDrinkNamesAndValues[i][1] += 1;
+            break;
           }
         }
       }
