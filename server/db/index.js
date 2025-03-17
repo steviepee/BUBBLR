@@ -39,7 +39,7 @@ const User = sequelize.define('User', {
   },
   avatar: {
     type: DataTypes.STRING,
-    defaultValue: 'avatar.png'
+    defaultValue: "/avatars/avatar1.png",
   },
 });
 
@@ -418,24 +418,28 @@ const Trivia = sequelize.define('Trivia', {
   // }
 });
 
-const Leaderboard = sequelize.define('Leaderboard', {
-  userId: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: User,
-      key: 'id',
+  const Leaderboard = sequelize.define('Leaderboard', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
-    allowNull: false
-  },
-  score: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0,
-    allowNull: false
-  },
-}, {
-  timestamps: true,
-
-});
+    userId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: User,
+        key: 'id',
+      },
+      allowNull: false
+    },
+    score: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      allowNull: false
+    },
+  }, {
+    timestamps: true,
+  });
 
 
 
@@ -468,7 +472,7 @@ Hangover.belongsTo(User, { foreignKey: 'id', as: 'hang_user' });
 User.hasMany(Leaderboard, { foreignKey: 'userId' });
 Leaderboard.belongsTo(User, { foreignKey: 'userId' });
 
-sequelize.sync({ alter: true })
+sequelize.sync({ force: true })
   .then(() => console.log('synced'))
   .catch((err) => console.error('Error syncing', err));
 

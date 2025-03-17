@@ -31,17 +31,35 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   const { googleId, score } = req.body;
   try {
-    const user = await User.findOrCreate({
+    const [user, created] = await User.findOrCreate({
       where: { googleId },
       defaults: { nameFirst: '', nameLast: '', email: '' },
     });
     await Leaderboard.create({ userId: user.id, score });
-    res.status(200).json({ message: 'score submitted' });
+    res.status(200).json({ message: 'score submitted successfully' });
   } catch (err) {
-    console.error('err submitting score', err);
-    res.status(500).json({ message: 'err submitting score' });
+    console.error('err submitting score:', err);
+    res.status(500);
   }
 });
+
+// router.get('/top-scores', async (req, res) => {
+//   try {
+//     const leaderboard = await Leaderboard.findAll({
+//       order: [['score', 'DESC']],
+//       limit: 10,
+//       include: {
+//         model: User,
+//         attributes: ['nameFirst', 'nameLast'],
+//       },
+//     });
+
+//     res.status(200).json(leaderboard);
+//   } catch (err) {
+//     console.error('err fetching leaderboard', err);
+//     res.status(500);
+//   }
+// });
 
 router.get('/top-scores', async (req, res) => {
   try {
@@ -50,7 +68,7 @@ router.get('/top-scores', async (req, res) => {
       limit: 10,
       include: {
         model: User,
-        attributes: ['nameFirst', 'nameLast'],
+        attributes: ['nameFirst', 'nameLast', 'avatar'],
       },
     });
 
