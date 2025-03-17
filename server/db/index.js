@@ -7,16 +7,40 @@ const sequelize = new Sequelize('bubblr', 'root', '', {
 });
 
 // User model
+// const User = sequelize.define('User', {
+//   id: {
+//     type: DataTypes.INTEGER,
+//     autoIncrement: true,
+//     primaryKey: true
+//   },
+//   googleId: { type: DataTypes.STRING, allowNull: false, unique: true },
+//   nameFirst: DataTypes.STRING,
+//   nameLast: DataTypes.STRING,
+//   email: DataTypes.STRING,
+// });
+
 const User = sequelize.define('User', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
-    primaryKey: true
+    primaryKey: true,
   },
-  googleId: { type: DataTypes.STRING, allowNull: false, unique: true },
+  googleId: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
   nameFirst: DataTypes.STRING,
   nameLast: DataTypes.STRING,
   email: DataTypes.STRING,
+  score: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  avatar: {
+    type: DataTypes.STRING,
+    defaultValue: "/avatars/avatar1.png",
+  },
 });
 
 // User friends model
@@ -160,7 +184,7 @@ const MatchGame = sequelize.define('MatchGame', {
     allowNull: false,
   },
   drinkId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   imageUrl: {
@@ -192,30 +216,32 @@ const Achievements = sequelize.define('Achievements', {
 });
 
 // User Achievements model
-const UserAchievements = sequelize.define('UserAchievements', {
-  userIdentification: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: User,
-      key: 'id',
+const UserAchievements = sequelize.define(
+  'UserAchievements',
+  {
+    userIdentification: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: User,
+        key: 'id',
+      },
+    },
+    achievementData: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Achievements,
+        key: 'identification',
+      },
+    },
+    unlockedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
     },
   },
-  achievementData: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: Achievements,
-      key: 'identification',
-    },
+  {
+    timestamps: false,
   },
-  unlockedAt: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
-}, {
-  timestamps: false,
-});
-
-
+);
 
 const LiquorCabinet = sequelize.define('LiquorCabinet', {
   userId: {
@@ -223,36 +249,56 @@ const LiquorCabinet = sequelize.define('LiquorCabinet', {
     references: {
       model: User,
       key: 'id',
-    }
+    },
   },
   imageUrl: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   name: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   brand: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   typeLiquor: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   ABV: {
-    type: DataTypes.FLOAT
+    type: DataTypes.FLOAT,
   },
   amountLeft: {
     type: DataTypes.FLOAT,
-    defaultValue: 100.0
+    defaultValue: 100.0,
   },
   notes: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   date: {
-    type: DataTypes.DATE
-  }
+    type: DataTypes.DATE,
+  },
 });
 
-const Hangovers = sequelize.define('Hangovers', {
+const Hangover = sequelize.define('Hangovers', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  hangoverName: {
+    type: DataTypes.STRING,
+  },
+  hangoverDate: {
+    type: DataTypes.DATE,
+  },
+  addSub: {
+    type: DataTypes.BOOLEAN,
+  },
+  hangoverNote: {
+    type: DataTypes.STRING,
+  },
+
+})
+const Symptom = sequelize.define('Symptoms', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -260,87 +306,90 @@ const Hangovers = sequelize.define('Hangovers', {
   },
   name: {
     type: DataTypes.STRING,
+    required: true,
   },
-  day: {
-    type: DataTypes.DATE,
-  },
-  pastWater: {
+  severity: {
     type: DataTypes.INTEGER,
   },
-  additional: {
-    DataTypes: BOOLEAN,
+  duration: {
+    type: DataTypes.INTEGER,
   },
-
 })
-
-  const Symptoms = sequelize.define('Symptoms', {
-    id: {
-      type: DataTypes.INTEGER,
+const PastDrink = sequelize.define('PastDrinks', {
+  id: {
+    type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      required: true,
-    },
-    severity: {
-      type: DataTypes.INTEGER,
-    },
-    duration: {
-      type: DataTypes.INTEGER,
-    },
-    date: {
-      type: DataTypes.DATE,
-    },
-  })
-  const PastDrinks = sequelize.define('PastDrinks', {
+  },
+  name: {
+    type: DataTypes.STRING,
+    required: true,
+  },
+  shots: {
+    type: DataTypes.INTEGER,
+    require: true,
+  },
+  timeSpan: {
+    type: DataTypes.INTEGER,
+  },
+})
+const PastFood = sequelize.define('PastFoods', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    required: true,
+  },
+})
+
+const Trivia = sequelize.define('Trivia', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  question: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  options: {
+    type: DataTypes.JSON,
+    allowNull: true
+  },
+  correctAnswer: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  imageUrl: {
+    type: DataTypes.STRING
+  },
+});
+
+  const Leaderboard = sequelize.define('Leaderboard', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
-      type: DataTypes.STRING,
-      required: true,
-    },
-    timeSpan: {
+    userId: {
       type: DataTypes.INTEGER,
+      references: {
+        model: User,
+        key: 'id',
+      },
+      allowNull: false
     },
-    date: {
-      type: DataTypes.DATE,
-    },
-  })
-  const PastMixers = sequelize.define('Mixers', {
-    id: {
+    score: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
+      defaultValue: 0,
+      allowNull: false
     },
-    name: {
-      type: DataTypes.INTEGER,
-      required: true,
-    },
-    date: {
-      type: DataTypes.DATE,
-    },
-  })
-  const PastFoods = sequelize.define('PastFoods', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      required: true,
-    },
-    timeSpan: {
-      type: DataTypes.INTEGER,
-    },
-    date: {
-      type: DataTypes.DATE,
-    },
-  })
+  }, {
+    timestamps: true,
+  });
 
 
 
@@ -354,6 +403,21 @@ Bar.belongsToMany(Event, { through: 'EventBars' });
 
 User.belongsToMany(Achievements, { through: UserAchievements });
 Achievements.belongsToMany(User, { through: UserAchievements });
+
+Hangover.hasMany(PastDrink, { allowNull: false, as: 'pastDrinks' });
+PastDrink.belongsTo(Hangover, { foreignKey: 'id', as: 'hangover' });
+
+Hangover.hasMany(PastFood, { allowNull: false, as: 'pastFoods' });
+PastFood.belongsTo(Hangover, { foreignKey: 'id', as: 'hangover' });
+
+Hangover.hasMany(Symptom, { allowNull: false, as: 'symptoms' });
+Symptom.belongsTo(Hangover, { foreignKey: 'id', as: 'hangover' });
+
+User.hasMany(Hangover, {  allowNull: true, as: 'hangovers' });
+Hangover.belongsTo(User, { foreignKey: 'id', as: 'user' });
+
+User.hasMany(Leaderboard, { foreignKey: 'userId' });
+Leaderboard.belongsTo(User, { foreignKey: 'userId' });
 
 sequelize.sync({ alter: true })
   .then(() => console.log('synced'))
@@ -370,7 +434,7 @@ sequelize.sync({ alter: true })
 // Achievements.sync().catch((err) => console.error('Failed syncing Achievements:', err));
 // UserAchievements.sync().catch((err) => console.error('Failed syncing UserAchievements:', err));
 // UserAchievements.sync().catch((err) => console.error('Failed syncing UserAchievements:', err));
-// LiquorCabinet.sync().catch((err) => console.error('Failed syncing LiquorCabinet:', err));
+// LiquorCabinet.sync().catch((err) => console.error('Failed syncing LiquorCabinet:', err));-----
 
 module.exports = {
   User,
@@ -385,10 +449,11 @@ module.exports = {
   Achievements,
   UserAchievements,
   LiquorCabinet,
-  Hangovers,
-  PastDrinks,
-  PastFoods,
-  PastMixers,
-  Symptoms,
-
+  Hangover,
+  PastDrink,
+  PastFood,
+  // PastMixer,
+  Symptom,
+  Trivia,
+  Leaderboard,
 };
