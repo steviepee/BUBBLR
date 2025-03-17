@@ -17,15 +17,6 @@ const Hangovers = () => {
         const fullData = [];
         data[0].forEach((set) => {
           const someData = [];
-          // const collate = (array, num) => {
-          //   if (array.length) {
-          //     array.forEach((element) => {
-          //       if (element.HangoverId === num) {
-          //         someData.push(element);
-          //       }
-          //     });
-          //   }
-          // };
           someData.push(set);
           data[1].forEach((element) => {
             if (element.HangoverId === set.id) {
@@ -60,21 +51,54 @@ const Hangovers = () => {
   }, []);
 
   const createLineChartInfo = (arr) => {
-    console.log('arr');
-    console.log(arr);
-    const puller = [];
-    for (let i = 0; i < arr.length; i += 1) {
-      arr.forEach((nest) => {
-        puller.push(nest[0]);
-      });
-    }
-    return puller.map((item) => {
-      const lineYear = +(item.hangoverDate.toString().substring(0, 4));
-      const lineMonth = +(item.hangoverDate.toString().substring(5, 7));
-      const lineDay = +(item.hangoverDate.toString().substring(8, 10));
+    const lineChartHangoverArray = [];
+    const lineChartSymptomArray = [];
+    arr.forEach((nest) => {
+      lineChartHangoverArray.push(nest[0]);
+      lineChartSymptomArray.push(nest[1]);
+    });
+    return lineChartHangoverArray.map((item, i) => {
+      console.log('checking symptom');
+      console.log(lineChartSymptomArray[i]);
+      const lineYear = +item.hangoverDate.toString().substring(0, 4);
+      const lineMonth = +item.hangoverDate.toString().substring(5, 7);
+      const lineDay = +item.hangoverDate.toString().substring(8, 10);
+
       return {
         x: new Date(lineYear, lineMonth, lineDay),
-        y: item.id,
+        y: lineChartSymptomArray[i].SymptomDuration,
+      };
+    });
+  };
+
+  const createBarChartInfo = (arr) => {
+    console.log('the arr');
+    console.log(arr);
+    const barChartDrinkNamesAndValues = [];
+    const drinksArray = [];
+    arr.forEach((nest) => {
+      drinksArray.push(nest[2]);
+    });
+    drinksArray.forEach((drinkObj) => {
+      let tempArray = [];
+      if (!barChartDrinkNamesAndValues.includes(drinkObj.drink)) {
+        tempArray.push(drinkObj.drink, 1);
+        barChartDrinkNamesAndValues.push(tempArray);
+        tempArray = [];
+      } else {
+        for (let i = 0; i < barChartDrinkNamesAndValues.length; i += 1) {
+          if (barChartDrinkNamesAndValues[i].includes(drinkObj.drink)) {
+            barChartDrinkNamesAndValues[i][1] += 1;
+          }
+        }
+      }
+    });
+    return barChartDrinkNamesAndValues.map((set) => {
+      // {label: 'drink', y: <frequency>}
+      console.log('');
+      return {
+        label: set[0],
+        y: set[1],
       };
     });
   };
@@ -96,6 +120,10 @@ const Hangovers = () => {
     },
     axisY: {
       title: 'timeSpan of symptoms',
+      titleFontColor: 'white',
+      titleFontSize: 20,
+      titleFontFamily: 'comic sans',
+
       suffix: ' hrs',
     },
     data: [
@@ -103,13 +131,7 @@ const Hangovers = () => {
         yValueFormatString: '## hrs',
         xValueFormatString: 'DD/MM/Y',
         type: 'spline',
-        dataPoints:
-          createLineChartInfo(hangData),
-          // [
-          //   { x: new Date(2025, 11, 1), y: 6 },
-          //   { x: new Date(2025, 1), y: 7 },
-          //   { x: new Date(2025, 2), y: 12 },
-          // ],
+        dataPoints: createLineChartInfo(hangData),
       },
     ],
   };
@@ -133,28 +155,20 @@ const Hangovers = () => {
       {
         // (for each drink) dataPoints.push({label: drink, y: number})
         type: 'column',
-        dataPoints: [
-          { label: 'tequila', y: 3 },
-          { label: 'rum', labelColor: 'white', y: 2 },
-          { label: 'wine', labelColor: 'white', y: 1 },
-          // { label: 'vodka', labelColor: 'white', y: 0 },
-        ],
+        dataPoints: createBarChartInfo(hangData),
       },
     ],
   };
   const closeForm = () => {
-    // toggleCreatingHangover(!creatingHangover);
-    console.log('form closed');
+    // this is where I close the accordion and reset the form data visually.
   };
   return (
     <Container>
       <Row>
         <Col>
-          <div>Line chart hangs/time</div>
           <CanvasChart options={lineOptions} />
         </Col>
         <Col>
-          <div>bar chart hangs by substance</div>
           <div>
             <CanvasChart options={barOptions} />
           </div>
