@@ -20,7 +20,7 @@ const Leaderboard = () => {
 
   const fetchLeaderboard = () => {
     axios
-      .get('http://127.0.0.1:8080/leaderboard/top-scores')
+      .get('http://ec2-18-220-156-46.us-east-2.compute.amazonaws.com:8080/leaderboard/top-scores')
       .then((res) => {
         if (Array.isArray(res.data)) {
           setLeaderboard(res.data);
@@ -68,7 +68,7 @@ const Leaderboard = () => {
                   <td>
                     <Image
                       src={
-                        entry.User?.avatar
+                        entry.User && entry.User.avatar
                           ? entry.User.avatar
                           : '/avatars/avatar1.jpg'
                       }
@@ -79,8 +79,7 @@ const Leaderboard = () => {
                     />
                   </td>
                   <td>
-                    {entry.User && entry.User.nameFirst}{' '}
-                    {(entry.User && entry.User.nameLast) || 'Unknown'}
+                    {entry.User?.nameFirst} {entry.User?.nameLast || 'Unknown'}
                   </td>
                   <td>{entry.score}</td>
                 </tr>
