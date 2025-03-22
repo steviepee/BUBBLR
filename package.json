@@ -9,11 +9,8 @@
     "start": "webpack -w & nodemon server/index.js",
     "prod": "webpack && node server/index.js",
     "seed": "node server/db/index.js",
-    "greed": "node server/db/seedMatchData.js",
-    "ach": "node server/db/achievementsSeed.js",
-    "liquor": "node server/db/seedLiquor.js",
-    "hang": "node server/db/hangoverSeed.js",
-    "seedAll": "node server/db/index.js && node server/db/seedLiquor.js && node server/db/hangoverSeed.js"
+    "liquor": "node server/db/seedLiquor.js"
+    
   },
   "keywords": [],
   "author": "",
