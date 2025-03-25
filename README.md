@@ -56,6 +56,9 @@ The most recently tested node version was node 22
 - After editing a comment, the page does not immediately rerender properly
 - Leaderboard does not account for ties
 - Hangover Assessment does not fully render, information does not populate to graphs correctly
+- The information in the hangover seed data does not populate correctly and will result in errors.
+- When too many google client id's are made theres an error on the server that responds saying too many keys. The fix temporary fix was changing alter option when syncing the database to a force option as true .Then restarting the server, then changing force back to alter.
+
 
 # Contributors
 Thanks to all the following people for contributing to this project:
