@@ -36,12 +36,12 @@ hangoverRouter.post('/', (req, res) => {
     hangoverDate,
     addSub,
     hangoverNote,
-    SymptomName,
+    symptomName,
     symptomSeverity,
-    SymptomDuration,
+    symptomDuration,
     drink,
     shot,
-    timeSpan,
+    timespan,
     food,
   } = req.body.info;
   /**
@@ -67,9 +67,9 @@ hangoverRouter.post('/', (req, res) => {
       // using the new hangover ID from the created hangover instance
       Symptom.create(
         {
-          SymptomName,
+          symptomName,
           symptomSeverity,
-          SymptomDuration,
+          symptomDuration,
           HangoverId: results.dataValues.id,
         },
         { include: ['hangover'] },
@@ -80,7 +80,7 @@ hangoverRouter.post('/', (req, res) => {
         {
           drink,
           shot,
-          timeSpan,
+          timespan,
           HangoverId: results.dataValues.id,
         },
         { include: ['hangover'] },

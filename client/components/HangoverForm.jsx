@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Form,
-  ListGroup,
+  // ListGroup,
   Button,
   Accordion,
   Container,
@@ -50,9 +50,9 @@ const HangoverForm = ({
       setHangoverDate(editArr[0].hangoverDate);
       setHangoverAddSub(editArr[0].addSub);
       setHangoverNote(editArr[0].hangoverNote || '');
-      setSymptomName(editArr[1].SymptomName);
+      setSymptomName(editArr[1].symptomName);
       setSymptomSeverity(editArr[1].symptomSeverity);
-      setSymptomDuration(editArr[1].SymptomDuration);
+      setSymptomDuration(editArr[1].symptomDuration);
       setPastDrink(editArr[2].drink);
       setPastShot(editArr[2].shot);
       setTimespan(editArr[2].timespan);
@@ -67,12 +67,12 @@ const HangoverForm = ({
         hangoverDate,
         addSub: hangoverAddSub === 'on',
         hangoverNote,
-        SymptomName: symptomName,
+        symptomName,
         symptomSeverity,
-        SymptomDuration: symptomDuration,
+        symptomDuration,
         drink: pastDrink,
         shot: pastShot,
-        timeSpan: timespan,
+        timespan,
         food: pastFood,
       },
     };
@@ -94,7 +94,7 @@ const HangoverForm = ({
       symInfo: {
         SymptomName: symptomName,
         symptomSeverity,
-        SymptomDuration: symptomDuration,
+        symptomDuration: symptomDuration,
       },
       drinkInfo: {
         drink: pastDrink,

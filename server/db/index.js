@@ -304,14 +304,14 @@ const Symptom = sequelize.define('Symptoms', {
     autoIncrement: true,
     primaryKey: true,
   },
-  name: {
+  symptomName: {
     type: DataTypes.STRING,
     required: true,
   },
-  severity: {
+  symptomSeverity: {
     type: DataTypes.INTEGER,
   },
-  duration: {
+  symptomDuration: {
     type: DataTypes.INTEGER,
   },
 })
@@ -321,15 +321,15 @@ const PastDrink = sequelize.define('PastDrinks', {
     autoIncrement: true,
     primaryKey: true,
   },
-  name: {
+  drink: {
     type: DataTypes.STRING,
     required: true,
   },
-  shots: {
+  shot: {
     type: DataTypes.INTEGER,
     require: true,
   },
-  timeSpan: {
+  timespan: {
     type: DataTypes.INTEGER,
   },
 })
@@ -339,7 +339,7 @@ const PastFood = sequelize.define('PastFoods', {
     autoIncrement: true,
     primaryKey: true,
   },
-  name: {
+  food: {
     type: DataTypes.STRING,
     required: true,
   },
@@ -452,7 +452,6 @@ module.exports = {
   Hangover,
   PastDrink,
   PastFood,
-  // PastMixer,
   Symptom,
   Trivia,
   Leaderboard,

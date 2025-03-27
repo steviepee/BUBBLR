@@ -17,6 +17,22 @@ const Hangovers = () => {
       .get('api/hangover')
       .then(({ data }) => {
         const fullData = [];
+        /**
+         * Data as it comes in from base:
+         * Array 1(0 index): Main hangover info
+         * Array 2(1 index): Symptom info
+         * Array 3(2 index): Drink info
+         * Array 4(3 index): Food name
+         *
+         * Items are sorted in the array according to the corresponding index number of
+         *  their related main hangover info object. Sorting below is focused on separating
+         * each set by index number for sorting
+         *
+         * NOTE: everything except the hangover info comes out null no matter what
+         * I write into the forrm. This leads me to believe the issue resides in
+         * the form/post portion of the program
+         */
+        console.log(data);
         data[0].forEach((set) => {
           const someData = [];
           someData.push(set);
@@ -76,7 +92,7 @@ const Hangovers = () => {
 
       return {
         x: new Date(lineYear, lineMonth, lineDay),
-        y: lineChartSymptomArray[i].SymptomDuration,
+        y: lineChartSymptomArray[i].symptomDuration,
       };
     });
   };
@@ -198,12 +214,12 @@ const Hangovers = () => {
           {setOfHangovers.map((hangover) => (
             <Col key={hangover.id}>
               <li>
-                {hangover.hangoverName}
                 <Button
                   onClick={() => {
                     sortToSpecificHangover(hangData, hangover.hangoverName);
                   }}
-                >Edit hangover info</Button>
+                >Edit</Button>
+                {hangover.hangoverName}
               </li>
             </Col>
           ))}
