@@ -29,8 +29,18 @@ const Hangovers = () => {
          * each set by index number for sorting
          *
          * NOTE: everything except the hangover info comes out null no matter what
-         * I write into the forrm. This leads me to believe the issue resides in
+         * I write into the form. This leads me to believe the issue resides in
          * the form/post portion of the program
+         *
+         * UPDATE: The graph issue was, in fact,  a form/post issue.
+         *  The name changes to the schema/routing, etc, didn't make the merge and reverted.
+         * problem resolved. CURRENT ISSUE: Screen blanks out after submitting a post from the form
+         * refresh fixes it, so I don't believe it's a GET problem. the error says
+         * the properties of symptomDuration are undefined..
+         *
+         * Just tried to recreate and didn't cause an issue...
+         * Just tried again.. This issue has apparently fixed itself.
+         * Moving on to deletion.
          */
         console.log(data);
         data[0].forEach((set) => {
@@ -187,9 +197,20 @@ const Hangovers = () => {
       },
     ],
   };
-  const closeForm = () => {
-    // this is where I close the accordion and reset the form data visually.
+  // const closeForm = () => {
+  //   // this is where I close the accordion and reset the form data visually.
+  // };
+
+  // Delete hangover and all subcategories
+  const handleDelete = (id) => {
+    axios
+      .delete(`api/hangover/${id}`)
+      .then(() => {
+        getAllHangoverInfo();
+      })
+      .catch((err) => console.error(err));
   };
+
   return (
     <Container>
       <Row>
@@ -214,11 +235,14 @@ const Hangovers = () => {
           {setOfHangovers.map((hangover) => (
             <Col key={hangover.id}>
               <li>
+                <button onClick={() => handleDelete(hangover.id)}>🗑️</button>
                 <Button
                   onClick={() => {
                     sortToSpecificHangover(hangData, hangover.hangoverName);
                   }}
-                >Edit</Button>
+                >
+                  Edit
+                </Button>
                 {hangover.hangoverName}
               </li>
             </Col>

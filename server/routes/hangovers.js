@@ -179,9 +179,9 @@ hangoverRouter.patch('/food/:id', (req, res) => {
 // delete hangovers
 hangoverRouter.delete('/:id', (req, res) => {
   // const { element } = req.body;
-  const { id } = req.params;
-  PastFood
-    .destroy({ where: { id } })
+  // const { id } = req.params;
+  Hangover
+    .destroy({ where: { id: req.params.id } })
     .then((row) => {
       if (row !== 0) {
         res.sendStatus(200);
@@ -190,7 +190,7 @@ hangoverRouter.delete('/:id', (req, res) => {
       }
     })
     .catch((err) => {
-      console.error('Failed to delet hangover', err);
+      console.error('Failed to delete hangover', err);
       res.sendStatus(500);
     });
 });
