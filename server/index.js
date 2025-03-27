@@ -90,7 +90,7 @@ app.post('/logout', (req, res) => {
 
 // current user
 app.get('/auth/current_user', (req, res) => {
-  if (req.isAuthenticated()) {
+  // if (req.isAuthenticated()) {
     const userId = req.user.id;
     User.findByPk(userId)
       .then((userObj) => {
@@ -100,9 +100,9 @@ app.get('/auth/current_user', (req, res) => {
         console.error('err fetching user', err);
         res.status(500);
       });
-  } else {
-    res.status(401).json({ message: 'not authenticated' });
-  }
+  // } else {
+    // res.status(401).json({ message: 'not authenticated' });
+  // }
 });
 
 // for getting user info from db
