@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useForm } from 'react-hook-form';
 import {
   Form,
   // ListGroup,
@@ -15,7 +16,6 @@ const HangoverForm = ({
   editMode,
   setEditMode,
   editArr,
-  setEditArr,
 }) => {
   // set state for all table variables
   const [hangoverName, setHangoverName] = useState('');
@@ -29,34 +29,84 @@ const HangoverForm = ({
   const [pastShot, setPastShot] = useState(0);
   const [timespan, setTimespan] = useState(0);
   const [pastFood, setPastFood] = useState('');
+  const { register, handleSubmit, setValue } = useForm();
+  const [formData, setFormData] = useState({
+    hangoverName: '',
+    hangoverDate: '',
+    hangoverAddSub: false,
+    hangoverNote: '',
+    symptomName: '',
+    symptomSeverity: 0,
+    symptomDuration: 0,
+    pastDrink: '',
+    pastShot: 0,
+    timespan: 0,
+    pastFood: '',
+  });
+
+  useEffect(() => {
+    if (editMode === true) {
+      console.log(editArr)
+      // const {
+      //   hangoverName,
+      //   hangoverDate,
+      //   hangoverAddSub,
+      //   hangoverNote,
+      //   symptomName,
+      //   symptomSeverity,
+      //   symptomDuration,
+      //   pastDrink,
+      //   pastShot,
+      //   timespan,
+      //   pastFood,
+      // } = editArr;
+      setValue('hangoverName', editArr[0].hangoverName);
+      setValue('hangoverDate', editArr[0].hangoverDate);
+      setValue('hangoverAddSub', editArr[0].hangoverAddSub);
+      setValue('hangoverNote', editArr[0].hangoverNote);
+      setValue('symptomName', editArr[1].symptomName);
+      setValue('symptomSeverity', editArr[1].symptomSeverity);
+      setValue('symptomDuration', editArr[1].symptomDuration);
+      setValue('pastDrink', editArr[2].pastDrink);
+      setValue('pastShot', editArr[2].pastShot);
+      setValue('timespan', editArr[2].timespan);
+      setValue('pastFood', editArr[3].pastFood);
+    }
+  }, [editMode]);
 
   const handleInputChange = (key, event) => key(event.target.value);
-  const resetStateAndForm = () => {
-    setHangoverName('');
-    setHangoverDate(0);
-    setHangoverAddSub(false);
-    setHangoverNote('');
-    setSymptomName('');
-    setSymptomSeverity(0);
-    setSymptomDuration(0);
-    setPastDrink('');
-    setPastShot(0);
-    setTimespan('');
-    setPastFood('');
-  };
+  // const resetStateAndForm = () => {
+  //   setHangoverName('');
+  //   setHangoverDate(0);
+  //   setHangoverAddSub(false);
+  //   setHangoverNote('');
+  //   setSymptomName('');
+  //   setSymptomSeverity(0);
+  //   setSymptomDuration(0);
+  //   setPastDrink('');
+  //   setPastShot(0);
+  //   setTimespan(0);
+  //   setPastFood('');
+  // };
   useEffect(() => {
     if (editMode) {
-      setHangoverName(editArr[0].hangoverName || '');
-      setHangoverDate(editArr[0].hangoverDate);
-      setHangoverAddSub(editArr[0].addSub);
-      setHangoverNote(editArr[0].hangoverNote || '');
-      setSymptomName(editArr[1].symptomName);
-      setSymptomSeverity(editArr[1].symptomSeverity);
-      setSymptomDuration(editArr[1].symptomDuration);
-      setPastDrink(editArr[2].drink);
-      setPastShot(editArr[2].shot);
-      setTimespan(editArr[2].timespan);
-      setPastFood(editArr[3].food || '');
+      const chosenHangover = {
+        hangoverName: editArr[0].hangoverName || '',
+        hangoverDate: editArr[0].hangoverDate,
+        hangoverAddSub: editArr[0].addSub,
+        hangoverNote: editArr[0].hangoverNote || '',
+        symptomName: editArr[1].symptomName,
+        symptomSeverity: editArr[1].symptomSeverity,
+        symptomDuration: editArr[1].symptomDuration,
+        pastDrink: editArr[2].drink,
+        pastShot: editArr[2].shot,
+        timespan: editArr[2].timespan,
+        pastFood: editArr[3].food || '',
+      };
+      setFormData(chosenHangover);
+      Object.keys(chosenHangover).forEach((property) => {
+        setValue(property, chosenHangover[property]);
+      });
     }
   }, []);
 
@@ -78,7 +128,7 @@ const HangoverForm = ({
     };
     axios
       .post('api/hangover', info)
-      .then(() => resetStateAndForm())
+      // .then(() => resetStateAndForm())
       .then(() => getAllHangoverInfo())
       .catch((err) => console.error('unable to post form', err));
   };
@@ -94,7 +144,7 @@ const HangoverForm = ({
       symInfo: {
         SymptomName: symptomName,
         symptomSeverity,
-        symptomDuration: symptomDuration,
+        symptomDuration,
       },
       drinkInfo: {
         drink: pastDrink,
@@ -114,27 +164,32 @@ const HangoverForm = ({
       .then(() => {
         setEditMode(false);
         setEditArr([]);
-        resetStateAndForm();
+        // resetStateAndForm();
         getAllHangoverInfo();
       })
       .catch((err) => console.error(err));
   };
 
+  const submitForm = () => (editMode ? patchForm : postForm);
+
   return (
     <Container>
       <Accordion className='hangover_accordion' data-bs-theme='dark'>
         <Accordion.Item eventKey='1'>
-          <Accordion.Header>Accordion Form Test</Accordion.Header>
+          <Accordion.Header>Hangover Assessment</Accordion.Header>
           <Accordion.Body>
-            <Form>
+            <Form onSubmit={handleSubmit(submitForm)}>
               <Form.Group className='mb-3' controlId='hangoverInfo'>
                 <Row className='mb-3'>
-                  <Form.Label>Hangover Assessment</Form.Label>
+                  <Form.Label>Hangover Basics</Form.Label>
                   <Col>
                     <Form.Control
+                      label='hangover-name'
                       type='text'
+                      {...register('hangoverName')}
+                      // defaultValue={editArr.hangoverName || ''}
                       value={hangoverName}
-                      placeholder='what did this to you'
+                      placeholder='what caused this'
                       onChange={(event) =>
                         handleInputChange(setHangoverName, event)
                       }
@@ -142,6 +197,8 @@ const HangoverForm = ({
                   </Col>
                   <Col>
                     <Form.Control
+                      label='hangoverDate'
+                      {...register('hangoverDate')}
                       type='date'
                       value={hangoverDate}
                       name='date'
@@ -154,6 +211,8 @@ const HangoverForm = ({
                   <Col>
                     <div>other substances? click below</div>
                     <Form.Control
+                      label='hangoverAddSub'
+                      {...register('hangoverAddSub')}
                       type='radio'
                       onChange={(event) =>
                         handleInputChange(setHangoverAddSub, event)
@@ -163,6 +222,8 @@ const HangoverForm = ({
                   <Col>
                     <Form.Control
                       type='text'
+                      label='hangoverNote'
+                      {...register('hangoverNote')}
                       value={hangoverNote}
                       placeholder='what substances'
                       onChange={(event) =>
@@ -176,6 +237,8 @@ const HangoverForm = ({
                     <div>Worst symptom</div>
                     <Form.Control
                       type='text'
+                      label='symptomName'
+                      {...register('symptomName')}
                       value={symptomName}
                       placeholder='Symptom'
                       onChange={(event) =>
@@ -186,6 +249,8 @@ const HangoverForm = ({
                   <Col>
                     <div>1-10</div>
                     <Form.Control
+                      label='symptomSeverity'
+                      {...register('symptomSeverity')}
                       type='number'
                       value={symptomSeverity}
                       placeholder='How bad'
@@ -198,6 +263,8 @@ const HangoverForm = ({
                     <div>How long did it last</div>
                     <Form.Control
                       type='number'
+                      label='symptomDuration'
+                      {...register('symptomDuration')}
                       value={symptomDuration}
                       placeholder=''
                       onChange={(event) =>
@@ -210,6 +277,8 @@ const HangoverForm = ({
                   <Col>
                     <div>Main drink</div>
                     <Form.Control
+                      label='pastDrink'
+                      {...register('pastDrink')}
                       type='text'
                       value={pastDrink}
                       placeholder=''
@@ -221,6 +290,8 @@ const HangoverForm = ({
                   <Col>
                     <div>How many</div>
                     <Form.Control
+                      label='pastShot'
+                      {...register('pastShot')}
                       type='number'
                       value={pastShot}
                       // placeholder='3'
@@ -232,6 +303,8 @@ const HangoverForm = ({
                   <Col>
                     <div>Over how long</div>
                     <Form.Control
+                      label='timespan'
+                      {...register('timespan')}
                       type='number'
                       value={timespan}
                       placeholder='in hours'
@@ -243,16 +316,20 @@ const HangoverForm = ({
                 </Row>
                 <div>Did you eat anything?</div>
                 <Form.Control
+                  label='pastFood'
+                  {...register('pastFood')}
                   type='text'
                   value={pastFood}
                   placeholder='tacos'
                   onChange={(event) => handleInputChange(setPastFood, event)}
                 />
               </Form.Group>
-              <Form.Group
-                className='mb-3'
-              ></Form.Group>
-              <Button onClick={postForm}>Submit</Button>
+              <Form.Group className='mb-3'></Form.Group>
+              {editMode ? (
+                <Button onClick={patchForm}>Confirm edit</Button>
+              ) : (
+                <Button onClick={postForm}>Submit</Button>
+              )}
             </Form>
           </Accordion.Body>
         </Accordion.Item>

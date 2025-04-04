@@ -10,7 +10,6 @@
     "prod": "webpack && node server/index.js",
     "seed": "node server/db/index.js",
     "liquor": "node server/db/seedLiquor.js"
-    
   },
   "keywords": [],
   "author": "",
@@ -51,6 +50,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.55.0",
     "react-rating": "^2.0.5",
     "react-router-dom": "^6.22.3",
     "sequelize": "^6.37.1",

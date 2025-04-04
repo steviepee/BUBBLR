@@ -42,7 +42,7 @@ const Hangovers = () => {
          * Just tried again.. This issue has apparently fixed itself.
          * Moving on to deletion.
          */
-        console.log(data);
+        // console.log(data);
         data[0].forEach((set) => {
           const someData = [];
           someData.push(set);
@@ -114,6 +114,7 @@ const Hangovers = () => {
       drinksArray.push(nest[2]);
     });
     drinksArray.forEach((drinkObj) => {
+      console.log('drink obj', drinkObj);
       let tempArray = [];
       if (
         barChartDrinkNamesAndValues.every(
@@ -228,7 +229,6 @@ const Hangovers = () => {
         editMode={editMode}
         setEditMode={setEditMode}
         editArr={editArr}
-        setEditArr={setEditArr}
       />
       <Row>
         <ul>
