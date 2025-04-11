@@ -29,7 +29,12 @@ const HangoverForm = ({
   const [pastShot, setPastShot] = useState(0);
   const [timespan, setTimespan] = useState(0);
   const [pastFood, setPastFood] = useState('');
-  const { register, handleSubmit, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+  } = useForm();
   const [formData, setFormData] = useState({
     hangoverName: '',
     hangoverDate: '',
@@ -45,36 +50,28 @@ const HangoverForm = ({
   });
 
   useEffect(() => {
-    if (editMode === true) {
-      console.log(editArr)
-      // const {
-      //   hangoverName,
-      //   hangoverDate,
-      //   hangoverAddSub,
-      //   hangoverNote,
-      //   symptomName,
-      //   symptomSeverity,
-      //   symptomDuration,
-      //   pastDrink,
-      //   pastShot,
-      //   timespan,
-      //   pastFood,
-      // } = editArr;
-      setValue('hangoverName', editArr[0].hangoverName);
-      setValue('hangoverDate', editArr[0].hangoverDate);
-      setValue('hangoverAddSub', editArr[0].hangoverAddSub);
-      setValue('hangoverNote', editArr[0].hangoverNote);
-      setValue('symptomName', editArr[1].symptomName);
-      setValue('symptomSeverity', editArr[1].symptomSeverity);
-      setValue('symptomDuration', editArr[1].symptomDuration);
-      setValue('pastDrink', editArr[2].pastDrink);
-      setValue('pastShot', editArr[2].pastShot);
-      setValue('timespan', editArr[2].timespan);
-      setValue('pastFood', editArr[3].pastFood);
+    if (editMode) {
+      reset({
+        hangoverName: editArr[0].hangoverName,
+        hangoverDate: editArr[0].hangoverDate,
+        hangoverAddSub: editArr[0].hangoverAddSub,
+        hangoverNote: editArr[0].hangoverNote,
+        symptomName: editArr[1].symptomName,
+        symptomSeverity: editArr[1].symptomSeverity,
+        symptomDuration: editArr[1].symptomDuration,
+        pastDrink: editArr[2].pastDrink,
+        pastShot: editArr[2].pastShot,
+        timespan: editArr[2].timespan,
+        pastFood: editArr[3].pastFood,
+      });
     }
   }, [editMode]);
 
-  const handleInputChange = (key, event) => key(event.target.value);
+  const handleInputChange = (key, event) => {
+    // const { name, value } = event.target;
+    // setValue((prevValue) => [...prevValue, value]);
+    key(event.target.value);
+  };
   // const resetStateAndForm = () => {
   //   setHangoverName('');
   //   setHangoverDate(0);
@@ -88,27 +85,27 @@ const HangoverForm = ({
   //   setTimespan(0);
   //   setPastFood('');
   // };
-  useEffect(() => {
-    if (editMode) {
-      const chosenHangover = {
-        hangoverName: editArr[0].hangoverName || '',
-        hangoverDate: editArr[0].hangoverDate,
-        hangoverAddSub: editArr[0].addSub,
-        hangoverNote: editArr[0].hangoverNote || '',
-        symptomName: editArr[1].symptomName,
-        symptomSeverity: editArr[1].symptomSeverity,
-        symptomDuration: editArr[1].symptomDuration,
-        pastDrink: editArr[2].drink,
-        pastShot: editArr[2].shot,
-        timespan: editArr[2].timespan,
-        pastFood: editArr[3].food || '',
-      };
-      setFormData(chosenHangover);
-      Object.keys(chosenHangover).forEach((property) => {
-        setValue(property, chosenHangover[property]);
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (editMode) {
+  //     const chosenHangover = {
+  //       hangoverName: editArr[0].hangoverName || '',
+  //       hangoverDate: editArr[0].hangoverDate,
+  //       hangoverAddSub: editArr[0].addSub,
+  //       hangoverNote: editArr[0].hangoverNote || '',
+  //       symptomName: editArr[1].symptomName,
+  //       symptomSeverity: editArr[1].symptomSeverity,
+  //       symptomDuration: editArr[1].symptomDuration,
+  //       pastDrink: editArr[2].drink,
+  //       pastShot: editArr[2].shot,
+  //       timespan: editArr[2].timespan,
+  //       pastFood: editArr[3].food || '',
+  //     };
+  //     setFormData(chosenHangover);
+  //     Object.keys(chosenHangover).forEach((property) => {
+  //       setValue(property, chosenHangover[property]);
+  //     });
+  //   }
+  // }, []);
 
   const postForm = () => {
     const info = {
@@ -142,14 +139,14 @@ const HangoverForm = ({
         hangoverNote,
       },
       symInfo: {
-        SymptomName: symptomName,
+        symptomName,
         symptomSeverity,
         symptomDuration,
       },
       drinkInfo: {
         drink: pastDrink,
         shot: pastShot,
-        timeSpan: timespan,
+        timespan,
       },
       foodInfo: {
         food: pastFood || '',
@@ -163,7 +160,6 @@ const HangoverForm = ({
     ])
       .then(() => {
         setEditMode(false);
-        setEditArr([]);
         // resetStateAndForm();
         getAllHangoverInfo();
       })

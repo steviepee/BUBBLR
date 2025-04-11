@@ -103,6 +103,7 @@ hangoverRouter.post('/', (req, res) => {
 // change hangover info
 hangoverRouter.patch('/hangover/:id', (req, res) => {
   const { hangInfo } = req.body;
+  console.log('hangover stuff', hangInfo);
   const { id } = req.params;
   Hangover
     .update({ hangInfo }, { returning: true, where: { id } })
@@ -122,6 +123,7 @@ hangoverRouter.patch('/hangover/:id', (req, res) => {
 // change symptom info
 hangoverRouter.patch('/symptom/:id', (req, res) => {
   const { symInfo } = req.body;
+  console.log('symptom info', symInfo);
   const { id } = req.params;
   Symptom
     .update({ symInfo }, { returning: true, where: { id } })
@@ -141,6 +143,7 @@ hangoverRouter.patch('/symptom/:id', (req, res) => {
 // change drink info
 hangoverRouter.patch('/drink/:id', (req, res) => {
   const { drinkInfo } = req.body;
+  console.log('drinkInfo', drinkInfo);
   const { id } = req.params;
   PastFood
     .update({ drinkInfo }, { returning: true, where: { id } })
@@ -160,6 +163,7 @@ hangoverRouter.patch('/drink/:id', (req, res) => {
 // change food info
 hangoverRouter.patch('/food/:id', (req, res) => {
   const { foodInfo } = req.body;
+  console.log('foodz', foodInfo);
   const { id } = req.params;
   PastFood
     .update((foodInfo), { where: { id } })
