@@ -29,12 +29,7 @@ const HangoverForm = ({
   const [pastShot, setPastShot] = useState(0);
   const [timespan, setTimespan] = useState(0);
   const [pastFood, setPastFood] = useState('');
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    reset,
-  } = useForm();
+  const { register, handleSubmit, setValue, reset } = useForm();
   const [formData, setFormData] = useState({
     hangoverName: '',
     hangoverDate: '',
@@ -50,28 +45,146 @@ const HangoverForm = ({
   });
 
   useEffect(() => {
-    if (editMode) {
-      reset({
-        hangoverName: editArr[0].hangoverName,
-        hangoverDate: editArr[0].hangoverDate,
-        hangoverAddSub: editArr[0].hangoverAddSub,
-        hangoverNote: editArr[0].hangoverNote,
-        symptomName: editArr[1].symptomName,
-        symptomSeverity: editArr[1].symptomSeverity,
-        symptomDuration: editArr[1].symptomDuration,
-        pastDrink: editArr[2].pastDrink,
-        pastShot: editArr[2].pastShot,
-        timespan: editArr[2].timespan,
-        pastFood: editArr[3].pastFood,
-      });
+    if (editMode === true) {
+      console.log(editArr);
+      // const {
+      //   hangoverName,
+      //   hangoverDate,
+      //   hangoverAddSub,
+      //   hangoverNote,
+      //   symptomName,
+      //   symptomSeverity,
+      //   symptomDuration,
+      //   pastDrink,
+      //   pastShot,
+      //   timespan,
+      //   pastFood,
+      // } = editArr;
+      setValue(
+        'hangoverName',
+        editArr[0].hangoverName,
+        {
+          shouldDirty: true,
+          // shouldTouch: true,
+          shouldUnregister: false,
+        },
+        [],
+      );
+      setValue(
+        'hangoverDate',
+        editArr[0].hangoverDate,
+        {
+          shouldDirty: true,
+          // shouldTouch: true,
+          shouldUnregister: false,
+        },
+        [],
+      );
+      setValue(
+        'hangoverAddSub',
+        editArr[0].hangoverAddSub,
+        {
+          shouldDirty: true,
+          // shouldTouch: true,
+          shouldUnregister: false,
+        },
+        [],
+      );
+      setValue(
+        'hangoverNote',
+        editArr[0].hangoverNote,
+        {
+          shouldDirty: true,
+          // shouldTouch: true,
+          shouldUnregister: false,
+        },
+        [],
+      );
+      setValue(
+        'symptomName',
+        editArr[1].symptomName,
+        {
+          shouldDirty: true,
+          // shouldTouch: true,
+          shouldUnregister: false,
+        },
+        [],
+      );
+      setValue(
+        'symptomSeverity',
+        editArr[1].symptomSeverity,
+        {
+          shouldDirty: true,
+          // shouldTouch: true,
+          shouldUnregister: false,
+        },
+        [],
+      );
+      setValue(
+        'symptomDuration',
+        editArr[1].symptomDuration,
+        {
+          shouldDirty: true,
+          // shouldTouch: true,
+          shouldUnregister: false,
+        },
+        [],
+      );
+      setValue(
+        'pastDrink',
+        editArr[2].pastDrink,
+        {
+          shouldDirty: true,
+          // shouldTouch: true,
+          shouldUnregister: false,
+        },
+        [],
+      );
+      setValue(
+        'pastShot',
+        editArr[2].pastShot,
+        {
+          shouldDirty: true,
+          // shouldTouch: true,
+          shouldUnregister: false,
+        },
+        [],
+      );
+      setValue(
+        'timespan',
+        editArr[2].timespan,
+        {
+          shouldDirty: true,
+          // shouldTouch: true,
+          shouldUnregister: false,
+        },
+        [],
+      );
+      setValue(
+        'pastFood',
+        editArr[3].pastFood,
+        {
+          shouldDirty: true,
+          // shouldTouch: true,
+          shouldUnregister: false,
+        },
+        [],
+      );
     }
   }, [editMode]);
 
-  const handleInputChange = (key, event) => {
+  function handleInputChange(e) {
     // const { name, value } = event.target;
-    // setValue((prevValue) => [...prevValue, value]);
-    key(event.target.value);
-  };
+    // console.log(formData);
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+    // setValue((...prevValue) => {
+
+    // });
+    // key(event.target.value);
+  }
   // const resetStateAndForm = () => {
   //   setHangoverName('');
   //   setHangoverDate(0);
@@ -85,27 +198,27 @@ const HangoverForm = ({
   //   setTimespan(0);
   //   setPastFood('');
   // };
-  // useEffect(() => {
-  //   if (editMode) {
-  //     const chosenHangover = {
-  //       hangoverName: editArr[0].hangoverName || '',
-  //       hangoverDate: editArr[0].hangoverDate,
-  //       hangoverAddSub: editArr[0].addSub,
-  //       hangoverNote: editArr[0].hangoverNote || '',
-  //       symptomName: editArr[1].symptomName,
-  //       symptomSeverity: editArr[1].symptomSeverity,
-  //       symptomDuration: editArr[1].symptomDuration,
-  //       pastDrink: editArr[2].drink,
-  //       pastShot: editArr[2].shot,
-  //       timespan: editArr[2].timespan,
-  //       pastFood: editArr[3].food || '',
-  //     };
-  //     setFormData(chosenHangover);
-  //     Object.keys(chosenHangover).forEach((property) => {
-  //       setValue(property, chosenHangover[property]);
-  //     });
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (editMode) {
+      const chosenHangover = {
+        hangoverName: editArr[0].hangoverName || '',
+        hangoverDate: editArr[0].hangoverDate,
+        hangoverAddSub: editArr[0].addSub,
+        hangoverNote: editArr[0].hangoverNote || '',
+        symptomName: editArr[1].symptomName,
+        symptomSeverity: editArr[1].symptomSeverity,
+        symptomDuration: editArr[1].symptomDuration,
+        pastDrink: editArr[2].drink,
+        pastShot: editArr[2].shot,
+        timespan: editArr[2].timespan,
+        pastFood: editArr[3].food || '',
+      };
+      setFormData(chosenHangover);
+      Object.keys(chosenHangover).forEach((property) => {
+        setValue(property, chosenHangover[property]);
+      });
+    }
+  }, []);
 
   const postForm = () => {
     const info = {
@@ -185,10 +298,11 @@ const HangoverForm = ({
                       {...register('hangoverName')}
                       // defaultValue={editArr.hangoverName || ''}
                       value={hangoverName}
+                      name='hangoverName'
                       placeholder='what caused this'
-                      onChange={(event) =>
-                        handleInputChange(setHangoverName, event)
-                      }
+                      onChange={(e) => {
+                        handleInputChange(e);
+                      }}
                     />
                   </Col>
                   <Col>
@@ -197,34 +311,36 @@ const HangoverForm = ({
                       {...register('hangoverDate')}
                       type='date'
                       value={hangoverDate}
-                      name='date'
+                      name='hangoverDate'
                       placeholder='2/25/25'
-                      onChange={(event) =>
-                        handleInputChange(setHangoverDate, event)
-                      }
+                      onChange={(e) => {
+                        handleInputChange(e);
+                      }}
                     />
                   </Col>
                   <Col>
                     <div>other substances? click below</div>
                     <Form.Control
                       label='hangoverAddSub'
+                      name='hangoverAddSub'
                       {...register('hangoverAddSub')}
                       type='radio'
-                      onChange={(event) =>
-                        handleInputChange(setHangoverAddSub, event)
-                      }
+                      onChange={(e) => {
+                        handleInputChange(e);
+                      }}
                     />
                   </Col>
                   <Col>
                     <Form.Control
                       type='text'
                       label='hangoverNote'
+                      name='hangoverNote'
                       {...register('hangoverNote')}
                       value={hangoverNote}
                       placeholder='what substances'
-                      onChange={(event) =>
-                        handleInputChange(setHangoverNote, event)
-                      }
+                      onChange={(e) => {
+                        handleInputChange(e);
+                      }}
                     />
                   </Col>
                 </Row>
@@ -234,25 +350,27 @@ const HangoverForm = ({
                     <Form.Control
                       type='text'
                       label='symptomName'
+                      name='symptomName'
                       {...register('symptomName')}
                       value={symptomName}
                       placeholder='Symptom'
-                      onChange={(event) =>
-                        handleInputChange(setSymptomName, event)
-                      }
+                      onChange={(e) => {
+                        handleInputChange(e);
+                      }}
                     />
                   </Col>
                   <Col>
                     <div>1-10</div>
                     <Form.Control
                       label='symptomSeverity'
+                      name='symptomSeverity'
                       {...register('symptomSeverity')}
                       type='number'
                       value={symptomSeverity}
                       placeholder='How bad'
-                      onChange={(event) =>
-                        handleInputChange(setSymptomSeverity, event)
-                      }
+                      onChange={(e) => {
+                        handleInputChange(e);
+                      }}
                     />
                   </Col>
                   <Col>
@@ -260,12 +378,13 @@ const HangoverForm = ({
                     <Form.Control
                       type='number'
                       label='symptomDuration'
+                      name='symptomDuration'
                       {...register('symptomDuration')}
                       value={symptomDuration}
                       placeholder=''
-                      onChange={(event) =>
-                        handleInputChange(setSymptomDuration, event)
-                      }
+                      onChange={(e) => {
+                        handleInputChange(e);
+                      }}
                     />
                   </Col>
                 </Row>
@@ -274,50 +393,56 @@ const HangoverForm = ({
                     <div>Main drink</div>
                     <Form.Control
                       label='pastDrink'
+                      name='pastDrink'
                       {...register('pastDrink')}
                       type='text'
                       value={pastDrink}
                       placeholder=''
-                      onChange={(event) =>
-                        handleInputChange(setPastDrink, event)
-                      }
+                      onChange={(event) => {
+                        handleInputChange(event);
+                      }}
                     />
                   </Col>
                   <Col>
                     <div>How many</div>
                     <Form.Control
                       label='pastShot'
+                      name='pastShot'
                       {...register('pastShot')}
                       type='number'
                       value={pastShot}
                       // placeholder='3'
-                      onChange={(event) =>
-                        handleInputChange(setPastShot, event)
-                      }
+                      onChange={(event) => {
+                        handleInputChange(event);
+                      }}
                     />
                   </Col>
                   <Col>
                     <div>Over how long</div>
                     <Form.Control
                       label='timespan'
+                      name='timespan'
                       {...register('timespan')}
                       type='number'
                       value={timespan}
                       placeholder='in hours'
-                      onChange={(event) =>
-                        handleInputChange(setTimespan, event)
-                      }
+                      onChange={(event) => {
+                        handleInputChange(event);
+                      }}
                     />
                   </Col>
                 </Row>
                 <div>Did you eat anything?</div>
                 <Form.Control
                   label='pastFood'
+                  name='pastFood'
                   {...register('pastFood')}
                   type='text'
                   value={pastFood}
                   placeholder='tacos'
-                  onChange={(event) => handleInputChange(setPastFood, event)}
+                  onChange={(event) => {
+                    handleInputChange(event);
+                  }}
                 />
               </Form.Group>
               <Form.Group className='mb-3'></Form.Group>
