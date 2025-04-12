@@ -29,7 +29,12 @@ const HangoverForm = ({
   const [pastShot, setPastShot] = useState(0);
   const [timespan, setTimespan] = useState(0);
   const [pastFood, setPastFood] = useState('');
-  const { register, handleSubmit, setValue, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset
+  } = useForm();
   const [formData, setFormData] = useState({
     hangoverName: '',
     hangoverDate: '',
@@ -175,29 +180,13 @@ const HangoverForm = ({
 
   function handleInputChange(e) {
     // const { name, value } = event.target;
-    // console.log(formData);
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
-    // setValue((...prevValue) => {
-
-    // });
     // key(event.target.value);
   }
-  // const resetStateAndForm = () => {
-  //   setHangoverName('');
-  //   setHangoverDate(0);
-  //   setHangoverAddSub(false);
-  //   setHangoverNote('');
-  //   setSymptomName('');
-  //   setSymptomSeverity(0);
-  //   setSymptomDuration(0);
-  //   setPastDrink('');
-  //   setPastShot(0);
-  //   setTimespan(0);
-  //   setPastFood('');
-  // };
+
   useEffect(() => {
     if (editMode) {
       const chosenHangover = {
