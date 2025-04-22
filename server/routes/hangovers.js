@@ -1,11 +1,6 @@
 // don't forget to res.json instead of res.send info
 const express = require('express');
-const {
-  Hangover,
-  Symptom,
-  PastDrink,
-  PastFood,
-} = require('../db/index');
+const { Hangover, Symptom, PastDrink, PastFood } = require('../db/index');
 
 const hangoverRouter = express.Router();
 /**
@@ -29,8 +24,13 @@ hangoverRouter.get('/', (req, res) => {
     });
 });
 // POST request should take all form info and separate it into linked tables
-hangoverRouter.post('/', (req, res) => {
+hangoverRouter.post('/', async (req, res) => {
   // Extract the individual elements from the request body object
+  for (let i = 0; i < Object.keys(req.body).length; i += 1) {
+    console.log('the government is keeping it away');
+    console.log(Object.keys(req.body.info)[i]);
+    // console.log(Object.values(req.body.info)[i]);
+  }
   const {
     hangoverName,
     hangoverDate,
@@ -56,48 +56,48 @@ hangoverRouter.post('/', (req, res) => {
    */
 
   // Create a Hangover instance from the hangover-specific elements of the form
-  Hangover.create({
-    hangoverName,
-    hangoverDate,
-    addSub,
-    hangoverNote,
-  })
-    .then((results) => {
-      // create a Symptom instance from the symptom-specific elements in the form,
-      // using the new hangover ID from the created hangover instance
-      Symptom.create(
-        {
-          symptomName,
-          symptomSeverity,
-          symptomDuration,
-          HangoverId: results.dataValues.id,
-        },
-        { include: ['hangover'] },
-      );
-      // While still holding on to that hangover id, create a pastDrink and PastFood instance
-      // give them all that same hangover id
-      PastDrink.create(
-        {
-          drink,
-          shot,
-          timespan,
-          HangoverId: results.dataValues.id,
-        },
-        { include: ['hangover'] },
-      );
-      PastFood.create(
-        {
-          food,
-          HangoverId: results.dataValues.id,
-        },
-        { include: ['hangover'] },
-      );
-    })
-    .then(() => res.sendStatus(201))
-    .catch((err) => {
-      console.error('unable to create', err);
-      res.sendStatus(500);
+
+  try {
+    const firstSet = await Hangover.create({
+      hangoverName,
+      hangoverDate,
+      addSub,
+      hangoverNote,
     });
+    // create a Symptom instance from the symptom-specific elements in the form,
+    // using the new hangover ID from the created hangover instance
+    const secondSet = await Symptom.create(
+      {
+        symptomName,
+        symptomSeverity,
+        symptomDuration,
+        HangoverId: firstSet.id,
+      },
+      { include: ['hangover'] },
+    );
+    // While still holding on to that hangover id, create a pastDrink and PastFood instance
+    // give them all that same hangover id
+    const thirdSet = await PastDrink.create(
+      {
+        drink,
+        shot,
+        timespan,
+        HangoverId: firstSet.id,
+      },
+      { include: ['hangover'] },
+    );
+    const lastSet = await PastFood.create(
+      {
+        food,
+        HangoverId: firstSet.id,
+      },
+      { include: ['hangover'] },
+    );
+    res.sendStatus(201);
+  } catch (err) {
+    console.error('unable to create', err);
+    res.sendStatus(500);
+  }
 });
 
 // change hangover info
@@ -105,8 +105,7 @@ hangoverRouter.patch('/hangover/:id', (req, res) => {
   const { hangInfo } = req.body;
   console.log('hangover stuff', hangInfo);
   const { id } = req.params;
-  Hangover
-    .update({ hangInfo }, { returning: true, where: { id } })
+  Hangover.update({ hangInfo }, { returning: true, where: { id } })
     .then((ret) => {
       if (ret[0] !== 0) {
         res.sendStatus(200);
@@ -125,8 +124,15 @@ hangoverRouter.patch('/symptom/:id', (req, res) => {
   const { symInfo } = req.body;
   console.log('symptom info', symInfo);
   const { id } = req.params;
-  Symptom
-    .update({ symInfo }, { returning: true, where: { id } })
+  Symptom.update(
+    { symInfo },
+    {
+      returning: true,
+      where: {
+        hangoverId: id,
+      },
+    },
+  )
     .then((ret) => {
       if (ret[0] !== 0) {
         res.sendStatus(200);
@@ -145,8 +151,15 @@ hangoverRouter.patch('/drink/:id', (req, res) => {
   const { drinkInfo } = req.body;
   console.log('drinkInfo', drinkInfo);
   const { id } = req.params;
-  PastFood
-    .update({ drinkInfo }, { returning: true, where: { id } })
+  PastFood.update(
+    { drinkInfo },
+    {
+      returning: true,
+      where: {
+        hangoverId: id,
+      },
+    },
+  )
     .then((ret) => {
       if (ret[0] !== 0) {
         res.sendStatus(200);
@@ -165,8 +178,11 @@ hangoverRouter.patch('/food/:id', (req, res) => {
   const { foodInfo } = req.body;
   console.log('foodz', foodInfo);
   const { id } = req.params;
-  PastFood
-    .update((foodInfo), { where: { id } })
+  PastFood.update(foodInfo, {
+    where: {
+      hangoverId: id,
+    },
+  })
     .then((ret) => {
       if (ret[0] !== 0) {
         res.sendStatus(200);
@@ -184,8 +200,7 @@ hangoverRouter.patch('/food/:id', (req, res) => {
 hangoverRouter.delete('/:id', (req, res) => {
   // const { element } = req.body;
   // const { id } = req.params;
-  Hangover
-    .destroy({ where: { id: req.params.id } })
+  Hangover.destroy({ where: { id: req.params.id } })
     .then((row) => {
       if (row !== 0) {
         res.sendStatus(200);
@@ -203,8 +218,7 @@ hangoverRouter.delete('/:id', (req, res) => {
 hangoverRouter.delete('/symptom/:id', (req, res) => {
   // const { element } = req.body;
   const { id } = req.params;
-  Symptom
-    .destroy({ where: { id } })
+  Symptom.destroy({ where: { id } })
     .then((row) => {
       if (row !== 0) {
         res.sendStatus(200);
@@ -222,8 +236,7 @@ hangoverRouter.delete('/symptom/:id', (req, res) => {
 hangoverRouter.delete('/drink/:id', (req, res) => {
   // const { element } = req.body;
   const { id } = req.params;
-  PastDrink
-    .destroy({ where: { id } })
+  PastDrink.destroy({ where: { id } })
     .then((row) => {
       if (row !== 0) {
         res.sendStatus(200);
@@ -241,8 +254,7 @@ hangoverRouter.delete('/drink/:id', (req, res) => {
 hangoverRouter.delete('/food/:id', (req, res) => {
   // const { element } = req.body;
   const { id } = req.params;
-  PastFood
-    .destroy({ where: { id } })
+  PastFood.destroy({ where: { id } })
     .then((row) => {
       if (row !== 0) {
         res.sendStatus(200);

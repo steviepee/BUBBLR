@@ -324,6 +324,7 @@ const PastDrink = sequelize.define('PastDrinks', {
   drink: {
     type: DataTypes.STRING,
     required: true,
+    defaultValue: 'water'
   },
   shot: {
     type: DataTypes.INTEGER,

@@ -18,23 +18,33 @@ const HangoverForm = ({
   editArr,
 }) => {
   // set state for all table variables
-  const [hangoverName, setHangoverName] = useState('');
-  const [hangoverDate, setHangoverDate] = useState(0);
-  const [hangoverAddSub, setHangoverAddSub] = useState(false);
-  const [hangoverNote, setHangoverNote] = useState('');
-  const [symptomName, setSymptomName] = useState('');
-  const [symptomSeverity, setSymptomSeverity] = useState(0);
-  const [symptomDuration, setSymptomDuration] = useState(0);
-  const [pastDrink, setPastDrink] = useState('');
-  const [pastShot, setPastShot] = useState(0);
-  const [timespan, setTimespan] = useState(0);
-  const [pastFood, setPastFood] = useState('');
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    reset
-  } = useForm();
+  // const [hangoverName, setHangoverName] = useState('');
+  // const [hangoverDate, setHangoverDate] = useState(0);
+  // const [hangoverAddSub, setHangoverAddSub] = useState(false);
+  // const [hangoverNote, setHangoverNote] = useState('');
+  // const [symptomName, setSymptomName] = useState('');
+  // const [symptomSeverity, setSymptomSeverity] = useState(0);
+  // const [symptomDuration, setSymptomDuration] = useState(0);
+  // const [pastDrink, setPastDrink] = useState('');
+  // const [pastShot, setPastShot] = useState(0);
+  // const [timespan, setTimespan] = useState(0);
+  // const [pastFood, setPastFood] = useState('');
+  const { register, handleSubmit, setValue, reset } = useForm({
+    defaultValues: {
+      hangoverName: '',
+      hangoverDate: '',
+      hangoverAddSub: false,
+      hangoverNote: '',
+      symptomName: '',
+      symptomSeverity: 0,
+      symptomDuration: 0,
+      pastDrink: '',
+      pastShot: 0,
+      timespan: 0,
+      pastFood: '',
+    },
+  });
+  // not sure I need to set formData, pretty sure useForm is taking care of this..
   const [formData, setFormData] = useState({
     hangoverName: '',
     hangoverDate: '',
@@ -65,211 +75,140 @@ const HangoverForm = ({
       //   timespan,
       //   pastFood,
       // } = editArr;
-      setValue(
-        'hangoverName',
-        editArr[0].hangoverName,
-        {
-          shouldDirty: true,
-          // shouldTouch: true,
-          shouldUnregister: false,
-        },
-        [],
-      );
-      setValue(
-        'hangoverDate',
-        editArr[0].hangoverDate,
-        {
-          shouldDirty: true,
-          // shouldTouch: true,
-          shouldUnregister: false,
-        },
-        [],
-      );
-      setValue(
-        'hangoverAddSub',
-        editArr[0].hangoverAddSub,
-        {
-          shouldDirty: true,
-          // shouldTouch: true,
-          shouldUnregister: false,
-        },
-        [],
-      );
-      setValue(
-        'hangoverNote',
-        editArr[0].hangoverNote,
-        {
-          shouldDirty: true,
-          // shouldTouch: true,
-          shouldUnregister: false,
-        },
-        [],
-      );
-      setValue(
-        'symptomName',
-        editArr[1].symptomName,
-        {
-          shouldDirty: true,
-          // shouldTouch: true,
-          shouldUnregister: false,
-        },
-        [],
-      );
-      setValue(
-        'symptomSeverity',
-        editArr[1].symptomSeverity,
-        {
-          shouldDirty: true,
-          // shouldTouch: true,
-          shouldUnregister: false,
-        },
-        [],
-      );
-      setValue(
-        'symptomDuration',
-        editArr[1].symptomDuration,
-        {
-          shouldDirty: true,
-          // shouldTouch: true,
-          shouldUnregister: false,
-        },
-        [],
-      );
-      setValue(
-        'pastDrink',
-        editArr[2].pastDrink,
-        {
-          shouldDirty: true,
-          // shouldTouch: true,
-          shouldUnregister: false,
-        },
-        [],
-      );
-      setValue(
-        'pastShot',
-        editArr[2].pastShot,
-        {
-          shouldDirty: true,
-          // shouldTouch: true,
-          shouldUnregister: false,
-        },
-        [],
-      );
-      setValue(
-        'timespan',
-        editArr[2].timespan,
-        {
-          shouldDirty: true,
-          // shouldTouch: true,
-          shouldUnregister: false,
-        },
-        [],
-      );
-      setValue(
-        'pastFood',
-        editArr[3].pastFood,
-        {
-          shouldDirty: true,
-          // shouldTouch: true,
-          shouldUnregister: false,
-        },
-        [],
-      );
-    }
-  }, [editMode]);
-
-  function handleInputChange(e) {
-    // const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-    // key(event.target.value);
-  }
-
-  useEffect(() => {
-    if (editMode) {
-      const chosenHangover = {
-        hangoverName: editArr[0].hangoverName || '',
-        hangoverDate: editArr[0].hangoverDate,
-        hangoverAddSub: editArr[0].addSub,
-        hangoverNote: editArr[0].hangoverNote || '',
-        symptomName: editArr[1].symptomName,
-        symptomSeverity: editArr[1].symptomSeverity,
-        symptomDuration: editArr[1].symptomDuration,
-        pastDrink: editArr[2].drink,
-        pastShot: editArr[2].shot,
-        timespan: editArr[2].timespan,
-        pastFood: editArr[3].food || '',
-      };
-      setFormData(chosenHangover);
-      Object.keys(chosenHangover).forEach((property) => {
-        setValue(property, chosenHangover[property]);
+      setValue('hangoverName', editArr[0].hangoverName, {
+        shouldDirty: true,
+        // shouldTouch: true,
+        shouldUnregister: false,
+      });
+      setValue('hangoverDate', editArr[0].hangoverDate, {
+        shouldDirty: true,
+        // shouldTouch: true,
+        shouldUnregister: false,
+      });
+      setValue('hangoverAddSub', editArr[0].hangoverAddSub, {
+        shouldDirty: true,
+        // shouldTouch: true,
+        shouldUnregister: false,
+      });
+      setValue('hangoverNote', editArr[0].hangoverNote, {
+        shouldDirty: true,
+        // shouldTouch: true,
+        shouldUnregister: false,
+      });
+      setValue('symptomName', editArr[1].symptomName, {
+        shouldDirty: true,
+        // shouldTouch: true,
+        shouldUnregister: false,
+      });
+      setValue('symptomSeverity', editArr[1].symptomSeverity, {
+        shouldDirty: true,
+        // shouldTouch: true,
+        shouldUnregister: false,
+      });
+      setValue('symptomDuration', editArr[1].symptomDuration, {
+        shouldDirty: true,
+        // shouldTouch: true,
+        shouldUnregister: false,
+      });
+      setValue('pastDrink', editArr[2].drink, {
+        shouldDirty: true,
+        // shouldTouch: true,
+        shouldUnregister: false,
+      });
+      setValue('pastShot', editArr[2].shot, {
+        shouldDirty: true,
+        // shouldTouch: true,
+        shouldUnregister: false,
+      });
+      setValue('timespan', editArr[2].timespan, {
+        shouldDirty: true,
+        // shouldTouch: true,
+        shouldUnregister: false,
+      });
+      setValue('pastFood', editArr[3].food, {
+        shouldDirty: true,
+        // shouldTouch: true,
+        shouldUnregister: false,
       });
     }
-  }, []);
+  }, [editArr]);
 
-  const postForm = () => {
-    const info = {
-      info: {
-        hangoverName,
-        hangoverDate,
-        addSub: hangoverAddSub === 'on',
-        hangoverNote,
-        symptomName,
-        symptomSeverity,
-        symptomDuration,
-        drink: pastDrink,
-        shot: pastShot,
-        timespan,
-        food: pastFood,
-      },
-    };
-    axios
-      .post('api/hangover', info)
-      // .then(() => resetStateAndForm())
-      .then(() => getAllHangoverInfo())
-      .catch((err) => console.error('unable to post form', err));
+  const submitForm = (data) => {
+    const {
+      hangoverName,
+      hangoverDate,
+      hangoverAddSub,
+      hangoverNote,
+      symptomName,
+      symptomSeverity,
+      symptomDuration,
+      pastDrink,
+      pastShot,
+      timespan,
+      pastFood,
+    } = data;
+
+    if (!editMode) {
+      const info = {
+        info: {
+          hangoverName,
+          hangoverDate,
+          addSub: hangoverAddSub === 'on',
+          hangoverNote,
+          symptomName,
+          symptomSeverity: +symptomSeverity,
+          symptomDuration: +symptomDuration,
+          drink: pastDrink,
+          shot: +pastShot,
+          timespan: +timespan,
+          food: pastFood,
+        },
+      };
+      axios
+        .post('api/hangover', info)
+        .then(() => {
+          getAllHangoverInfo();
+          reset();
+        })
+        .catch((err) => console.error('unable to post form', err));
+    } else {
+      const patchInfo = {
+        hangInfo: {
+          hangoverName,
+          hangoverDate,
+          addSub: hangoverAddSub === 'on',
+          hangoverNote,
+        },
+        symInfo: {
+          symptomName,
+          symptomSeverity,
+          symptomDuration,
+        },
+        drinkInfo: {
+          drink: pastDrink,
+          shot: pastShot,
+          timespan,
+        },
+        foodInfo: {
+          food: pastFood,
+        },
+      };
+      // console.log('all ids', `0: ${editArr[0].id} 1: ${editArr[1].id} 2: ${editArr[2].id} 3: ${editArr[3].id}`)
+      Promise.all([
+        axios.patch(`/api/hangover/hangover/${editArr[0].id}`, patchInfo),
+        axios.patch(`/api/hangover/symptom/${editArr[1].id}`, patchInfo),
+        axios.patch(`/api/hangover/drink/${editArr[2].id}`, patchInfo),
+        axios.patch(`/api/hangover/food/${editArr[3].id}`, patchInfo),
+      ])
+        .then(() => {
+          setEditMode(false);
+          getAllHangoverInfo();
+          reset();
+        })
+        .catch((err) => console.error(err));
+    }
   };
-
-  const patchForm = () => {
-    const patchInfo = {
-      hangInfo: {
-        hangoverName,
-        hangoverDate,
-        addSub: hangoverAddSub === 'on',
-        hangoverNote,
-      },
-      symInfo: {
-        symptomName,
-        symptomSeverity,
-        symptomDuration,
-      },
-      drinkInfo: {
-        drink: pastDrink,
-        shot: pastShot,
-        timespan,
-      },
-      foodInfo: {
-        food: pastFood || '',
-      },
-    };
-    Promise.all([
-      axios.patch(`/api/hangover/hangover/${editArr[0].id}`, patchInfo),
-      axios.patch(`/api/hangover/symptom/${editArr[1].id}`, patchInfo),
-      axios.patch(`/api/hangover/drink/${editArr[2].id}`, patchInfo),
-      axios.patch(`/api/hangover/food/${editArr[3].id}`, patchInfo),
-    ])
-      .then(() => {
-        setEditMode(false);
-        // resetStateAndForm();
-        getAllHangoverInfo();
-      })
-      .catch((err) => console.error(err));
-  };
-
-  const submitForm = () => (editMode ? patchForm : postForm);
-
+// accordion extended?
   return (
     <Container>
       <Accordion className='hangover_accordion' data-bs-theme='dark'>
@@ -285,13 +224,8 @@ const HangoverForm = ({
                       label='hangover-name'
                       type='text'
                       {...register('hangoverName')}
-                      // defaultValue={editArr.hangoverName || ''}
-                      value={hangoverName}
                       name='hangoverName'
                       placeholder='what caused this'
-                      onChange={(e) => {
-                        handleInputChange(e);
-                      }}
                     />
                   </Col>
                   <Col>
@@ -299,12 +233,8 @@ const HangoverForm = ({
                       label='hangoverDate'
                       {...register('hangoverDate')}
                       type='date'
-                      value={hangoverDate}
                       name='hangoverDate'
                       placeholder='2/25/25'
-                      onChange={(e) => {
-                        handleInputChange(e);
-                      }}
                     />
                   </Col>
                   <Col>
@@ -314,9 +244,6 @@ const HangoverForm = ({
                       name='hangoverAddSub'
                       {...register('hangoverAddSub')}
                       type='radio'
-                      onChange={(e) => {
-                        handleInputChange(e);
-                      }}
                     />
                   </Col>
                   <Col>
@@ -325,11 +252,7 @@ const HangoverForm = ({
                       label='hangoverNote'
                       name='hangoverNote'
                       {...register('hangoverNote')}
-                      value={hangoverNote}
                       placeholder='what substances'
-                      onChange={(e) => {
-                        handleInputChange(e);
-                      }}
                     />
                   </Col>
                 </Row>
@@ -341,11 +264,7 @@ const HangoverForm = ({
                       label='symptomName'
                       name='symptomName'
                       {...register('symptomName')}
-                      value={symptomName}
                       placeholder='Symptom'
-                      onChange={(e) => {
-                        handleInputChange(e);
-                      }}
                     />
                   </Col>
                   <Col>
@@ -355,11 +274,7 @@ const HangoverForm = ({
                       name='symptomSeverity'
                       {...register('symptomSeverity')}
                       type='number'
-                      value={symptomSeverity}
                       placeholder='How bad'
-                      onChange={(e) => {
-                        handleInputChange(e);
-                      }}
                     />
                   </Col>
                   <Col>
@@ -369,11 +284,7 @@ const HangoverForm = ({
                       label='symptomDuration'
                       name='symptomDuration'
                       {...register('symptomDuration')}
-                      value={symptomDuration}
                       placeholder=''
-                      onChange={(e) => {
-                        handleInputChange(e);
-                      }}
                     />
                   </Col>
                 </Row>
@@ -385,11 +296,7 @@ const HangoverForm = ({
                       name='pastDrink'
                       {...register('pastDrink')}
                       type='text'
-                      value={pastDrink}
                       placeholder=''
-                      onChange={(event) => {
-                        handleInputChange(event);
-                      }}
                     />
                   </Col>
                   <Col>
@@ -399,11 +306,6 @@ const HangoverForm = ({
                       name='pastShot'
                       {...register('pastShot')}
                       type='number'
-                      value={pastShot}
-                      // placeholder='3'
-                      onChange={(event) => {
-                        handleInputChange(event);
-                      }}
                     />
                   </Col>
                   <Col>
@@ -413,11 +315,7 @@ const HangoverForm = ({
                       name='timespan'
                       {...register('timespan')}
                       type='number'
-                      value={timespan}
                       placeholder='in hours'
-                      onChange={(event) => {
-                        handleInputChange(event);
-                      }}
                     />
                   </Col>
                 </Row>
@@ -427,18 +325,14 @@ const HangoverForm = ({
                   name='pastFood'
                   {...register('pastFood')}
                   type='text'
-                  value={pastFood}
                   placeholder='tacos'
-                  onChange={(event) => {
-                    handleInputChange(event);
-                  }}
                 />
               </Form.Group>
               <Form.Group className='mb-3'></Form.Group>
               {editMode ? (
-                <Button onClick={patchForm}>Confirm edit</Button>
+                <Button type='submit'>Confirm edit</Button>
               ) : (
-                <Button onClick={postForm}>Submit</Button>
+                <Button type='submit'>Submit</Button>
               )}
             </Form>
           </Accordion.Body>
