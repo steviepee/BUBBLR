@@ -193,13 +193,20 @@ const HangoverForm = ({
           food: pastFood,
         },
       };
-      // console.log('all ids', `0: ${editArr[0].id} 1: ${editArr[1].id} 2: ${editArr[2].id} 3: ${editArr[3].id}`)
-      Promise.all([
-        axios.patch(`/api/hangover/hangover/${editArr[0].id}`, patchInfo),
-        axios.patch(`/api/hangover/symptom/${editArr[1].id}`, patchInfo),
-        axios.patch(`/api/hangover/drink/${editArr[2].id}`, patchInfo),
-        axios.patch(`/api/hangover/food/${editArr[3].id}`, patchInfo),
-      ])
+      console.log('all ids', `0: ${editArr[0].id} 1: ${editArr[1].id} 2: ${editArr[2].id} 3: ${editArr[3].id}`)
+      // Promise.all([
+      axios
+        .patch(`/api/hangover/hangover/${editArr[0].id}`, patchInfo)
+        .then(() => {
+          axios.patch(`/api/hangover/symptom/${editArr[1].id}`, patchInfo);
+        })
+        .then(() => {
+          axios.patch(`/api/hangover/drink/${editArr[2].id}`, patchInfo);
+        })
+        .then(() => {
+          axios.patch(`/api/hangover/food/${editArr[3].id}`, patchInfo);
+        })
+        // ])
         .then(() => {
           setEditMode(false);
           getAllHangoverInfo();
@@ -208,7 +215,7 @@ const HangoverForm = ({
         .catch((err) => console.error(err));
     }
   };
-// accordion extended?
+  // accordion extended?
   return (
     <Container>
       <Accordion className='hangover_accordion' data-bs-theme='dark'>

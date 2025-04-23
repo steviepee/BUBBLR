@@ -101,99 +101,144 @@ hangoverRouter.post('/', async (req, res) => {
 });
 
 // change hangover info
-hangoverRouter.patch('/hangover/:id', (req, res) => {
+hangoverRouter.patch('/hangover/:id', async (req, res) => {
   const { hangInfo } = req.body;
-  console.log('hangover stuff', hangInfo);
   const { id } = req.params;
-  Hangover.update({ hangInfo }, { returning: true, where: { id } })
-    .then((ret) => {
-      if (ret[0] !== 0) {
-        res.sendStatus(200);
-      } else {
-        res.status(404).send('Unable to change hangover info');
-      }
-    })
-    .catch((err) => {
-      console.error('could not complete request', err);
-      res.sendStatus(500);
-    });
+  console.log('hangover stuff', hangInfo, 'id:', id);
+  const {
+    hangoverName,
+    hangoverDate,
+    addSub,
+    hangoverNote,
+  } = req.body;
+  try {
+    const hangChange = await Hangover.update(
+      {
+        hangoverName,
+        hangoverDate,
+        addSub,
+        hangoverNote,
+      },
+      { where: { id: +id }, returning: true },
+    );
+    // .then(
+    // (ret) => {
+    console.log('hangchange', hangChange);
+    // if (hangChange[0] !== 0) {
+    res.sendStatus(200);
+    // } else {
+    // res.status(404).send('Unable to change hangover info');
+    // }
+    // }
+    // );
+    // .catch((err) => {
+  } catch (err) {
+    console.error('could not complete request', err);
+    res.sendStatus(500);
+  }
+  // });
 });
 
 // change symptom info
-hangoverRouter.patch('/symptom/:id', (req, res) => {
+hangoverRouter.patch('/symptom/:id', async (req, res) => {
   const { symInfo } = req.body;
   console.log('symptom info', symInfo);
   const { id } = req.params;
-  Symptom.update(
-    { symInfo },
-    {
-      returning: true,
-      where: {
-        hangoverId: id,
+  const { symptomName, symptomSeverity, symptomDuration } = req.body;
+  try {
+    const symChange = await Symptom.update(
+      {
+        symptomName,
+        symptomSeverity,
+        symptomDuration,
       },
-    },
-  )
-    .then((ret) => {
-      if (ret[0] !== 0) {
-        res.sendStatus(200);
-      } else {
-        res.status(404).send('Unable to change symptom info');
-      }
-    })
-    .catch((err) => {
-      console.error('could not complete request', err);
-      res.sendStatus(500);
-    });
+      {
+        returning: true,
+        where: {
+          id,
+        },
+      },
+    );
+    // .then((ret) => {
+    if (symChange[0] !== 0) {
+    res.sendStatus(200);
+    } else {
+    res.status(404).send('Unable to change symptom info');
+    }
+    // })
+  } catch (err) {
+    // .catch((err) => {
+    console.error('could not complete request', err);
+    res.sendStatus(500);
+  }
+  // });
 });
 
 // change drink info
-hangoverRouter.patch('/drink/:id', (req, res) => {
+hangoverRouter.patch('/drink/:id', async (req, res) => {
   const { drinkInfo } = req.body;
   console.log('drinkInfo', drinkInfo);
   const { id } = req.params;
-  PastFood.update(
-    { drinkInfo },
-    {
+  const {
+    drink,
+    shot,
+    timespan,
+  } = req.body;
+  try {
+    const drinkChange = await PastDrink.update(
+      {
+        drink,
+        shot,
+        timespan,
+       },
+      {
+        returning: true,
+        where: {
+          hangoverId: id,
+        },
+      },
+    );
+    // .then((ret) => {
+    if (drinkChange[0] !== 0) {
+    res.sendStatus(200);
+    } else {
+    res.status(404).send('Unable to change drink info');
+    }
+    // })
+  } catch (err) {
+    // .catch((err) => {
+    console.error('could not complete request', err);
+    res.sendStatus(500);
+  }
+  // });
+});
+
+// change food info
+hangoverRouter.patch('/food/:id', async (req, res) => {
+  const { foodInfo } = req.body;
+  console.log('foodz', foodInfo);
+  const { id } = req.params;
+  const { food } = req.body;
+  try {
+    const foodChange = await PastFood.update({ food }, {
       returning: true,
       where: {
         hangoverId: id,
       },
-    },
-  )
-    .then((ret) => {
-      if (ret[0] !== 0) {
-        res.sendStatus(200);
-      } else {
-        res.status(404).send('Unable to change drink info');
-      }
-    })
-    .catch((err) => {
-      console.error('could not complete request', err);
-      res.sendStatus(500);
     });
-});
-
-// change food info
-hangoverRouter.patch('/food/:id', (req, res) => {
-  const { foodInfo } = req.body;
-  console.log('foodz', foodInfo);
-  const { id } = req.params;
-  PastFood.update(foodInfo, {
-    where: {
-      hangoverId: id,
-    },
-  })
-    .then((ret) => {
-      if (ret[0] !== 0) {
-        res.sendStatus(200);
-      } else {
-        res.status(404).send('Unable to change food');
-      }
-    })
-    .catch((err) => {
-      console.error('could not complete request', err);
-      res.sendStatus(500);
-    });
+    // .then((ret) => {
+    if (foodChange[0] !== 0) {
+    res.sendStatus(200);
+    } else {
+    res.status(404).send('Unable to change food');
+    }
+    // })
+    // .catch((err) => {
+  } catch (err) {
+    console.error('could not complete request', err);
+    res.sendStatus(500);
+  }
+  // });
 });
 
 // delete hangovers
