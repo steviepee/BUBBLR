@@ -113,22 +113,23 @@ hangoverRouter.patch('/hangover/:id', async (req, res) => {
   } = req.body;
   try {
     const hangChange = await Hangover.update(
-      {
-        hangoverName,
-        hangoverDate,
-        addSub,
-        hangoverNote,
-      },
+      // {
+        // hangoverName,
+        // hangoverDate,
+        // addSub,
+        // hangoverNote,
+        hangInfo,
+      // },
       { where: { id: +id }, returning: true },
     );
     // .then(
     // (ret) => {
     console.log('hangchange', hangChange);
-    // if (hangChange[0] !== 0) {
+    if (hangChange[0] !== 0) {
     res.sendStatus(200);
-    // } else {
-    // res.status(404).send('Unable to change hangover info');
-    // }
+    } else {
+    res.status(404).send('Unable to change hangover info');
+    }
     // }
     // );
     // .catch((err) => {

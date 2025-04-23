@@ -198,13 +198,13 @@ const HangoverForm = ({
       axios
         .patch(`/api/hangover/hangover/${editArr[0].id}`, patchInfo)
         .then(() => {
-          axios.patch(`/api/hangover/symptom/${editArr[1].id}`, patchInfo);
+          axios.patch(`/api/hangover/symptom/${editArr[0].id}`, patchInfo);
         })
         .then(() => {
-          axios.patch(`/api/hangover/drink/${editArr[2].id}`, patchInfo);
+          axios.patch(`/api/hangover/drink/${editArr[0].id}`, patchInfo);
         })
         .then(() => {
-          axios.patch(`/api/hangover/food/${editArr[3].id}`, patchInfo);
+          axios.patch(`/api/hangover/food/${editArr[0].id}`, patchInfo);
         })
         // ])
         .then(() => {
