@@ -1,6 +1,11 @@
 // don't forget to res.json instead of res.send info
 const express = require('express');
-const { Hangover, Symptom, PastDrink, PastFood } = require('../db/index');
+const {
+  Hangover,
+  Symptom,
+  PastDrink,
+  PastFood,
+} = require('../db/index');
 
 const hangoverRouter = express.Router();
 /**
@@ -26,11 +31,6 @@ hangoverRouter.get('/', (req, res) => {
 // POST request should take all form info and separate it into linked tables
 hangoverRouter.post('/', async (req, res) => {
   // Extract the individual elements from the request body object
-  for (let i = 0; i < Object.keys(req.body).length; i += 1) {
-    console.log('the government is keeping it away');
-    console.log(Object.keys(req.body.info)[i]);
-    // console.log(Object.values(req.body.info)[i]);
-  }
   const {
     hangoverName,
     hangoverDate,
@@ -104,148 +104,90 @@ hangoverRouter.post('/', async (req, res) => {
 hangoverRouter.patch('/hangover/:id', async (req, res) => {
   const { hangInfo } = req.body;
   const { id } = req.params;
-  console.log('hangover stuff', hangInfo, 'id:', id);
-  const {
-    hangoverName,
-    hangoverDate,
-    addSub,
-    hangoverNote,
-  } = req.body;
   try {
-    const hangChange = await Hangover.update(
-      // {
-        // hangoverName,
-        // hangoverDate,
-        // addSub,
-        // hangoverNote,
-        hangInfo,
-      // },
-      { where: { id: +id }, returning: true },
-    );
-    // .then(
-    // (ret) => {
-    console.log('hangchange', hangChange);
+    const hangChange = await Hangover.update(hangInfo, {
+      where: { id: +id },
+      returning: true,
+    });
     if (hangChange[0] !== 0) {
-    res.sendStatus(200);
+      res.sendStatus(200);
     } else {
-    res.status(404).send('Unable to change hangover info');
+      res.status(404).send('Unable to change hangover info');
     }
-    // }
-    // );
-    // .catch((err) => {
   } catch (err) {
     console.error('could not complete request', err);
     res.sendStatus(500);
   }
-  // });
 });
 
 // change symptom info
 hangoverRouter.patch('/symptom/:id', async (req, res) => {
   const { symInfo } = req.body;
-  console.log('symptom info', symInfo);
   const { id } = req.params;
-  const { symptomName, symptomSeverity, symptomDuration } = req.body;
   try {
-    const symChange = await Symptom.update(
-      {
-        symptomName,
-        symptomSeverity,
-        symptomDuration,
+    const symChange = await Symptom.update(symInfo, {
+      returning: true,
+      where: {
+        id,
       },
-      {
-        returning: true,
-        where: {
-          id,
-        },
-      },
-    );
-    // .then((ret) => {
+    });
     if (symChange[0] !== 0) {
-    res.sendStatus(200);
+      res.sendStatus(200);
     } else {
-    res.status(404).send('Unable to change symptom info');
+      res.status(404).send('Unable to change symptom info');
     }
-    // })
   } catch (err) {
-    // .catch((err) => {
     console.error('could not complete request', err);
     res.sendStatus(500);
   }
-  // });
 });
 
 // change drink info
 hangoverRouter.patch('/drink/:id', async (req, res) => {
   const { drinkInfo } = req.body;
-  console.log('drinkInfo', drinkInfo);
   const { id } = req.params;
-  const {
-    drink,
-    shot,
-    timespan,
-  } = req.body;
   try {
-    const drinkChange = await PastDrink.update(
-      {
-        drink,
-        shot,
-        timespan,
-       },
-      {
-        returning: true,
-        where: {
-          hangoverId: id,
-        },
-      },
-    );
-    // .then((ret) => {
-    if (drinkChange[0] !== 0) {
-    res.sendStatus(200);
-    } else {
-    res.status(404).send('Unable to change drink info');
-    }
-    // })
-  } catch (err) {
-    // .catch((err) => {
-    console.error('could not complete request', err);
-    res.sendStatus(500);
-  }
-  // });
-});
-
-// change food info
-hangoverRouter.patch('/food/:id', async (req, res) => {
-  const { foodInfo } = req.body;
-  console.log('foodz', foodInfo);
-  const { id } = req.params;
-  const { food } = req.body;
-  try {
-    const foodChange = await PastFood.update({ food }, {
+    const drinkChange = await PastDrink.update(drinkInfo, {
       returning: true,
       where: {
         hangoverId: id,
       },
     });
-    // .then((ret) => {
-    if (foodChange[0] !== 0) {
-    res.sendStatus(200);
+    if (drinkChange[0] !== 0) {
+      res.sendStatus(200);
     } else {
-    res.status(404).send('Unable to change food');
+      res.status(404).send('Unable to change drink info');
     }
-    // })
-    // .catch((err) => {
   } catch (err) {
     console.error('could not complete request', err);
     res.sendStatus(500);
   }
-  // });
+});
+
+// change food info
+hangoverRouter.patch('/food/:id', async (req, res) => {
+  const { foodInfo } = req.body;
+  const { id } = req.params;
+  try {
+    const foodChange = await PastFood.update(foodInfo, {
+      returning: true,
+      where: {
+        hangoverId: id,
+      },
+    });
+    if (foodChange[0] !== 0) {
+      res.sendStatus(200);
+    } else {
+      res.status(404).send('Unable to change food');
+    }
+  } catch (err) {
+    console.error('could not complete request', err);
+    res.sendStatus(500);
+  }
 });
 
 // delete hangovers
 hangoverRouter.delete('/:id', (req, res) => {
-  // const { element } = req.body;
-  // const { id } = req.params;
   Hangover.destroy({ where: { id: req.params.id } })
     .then((row) => {
       if (row !== 0) {
@@ -262,7 +204,6 @@ hangoverRouter.delete('/:id', (req, res) => {
 
 // delete symptoms
 hangoverRouter.delete('/symptom/:id', (req, res) => {
-  // const { element } = req.body;
   const { id } = req.params;
   Symptom.destroy({ where: { id } })
     .then((row) => {
@@ -280,7 +221,6 @@ hangoverRouter.delete('/symptom/:id', (req, res) => {
 
 // delete drinks
 hangoverRouter.delete('/drink/:id', (req, res) => {
-  // const { element } = req.body;
   const { id } = req.params;
   PastDrink.destroy({ where: { id } })
     .then((row) => {
@@ -298,7 +238,6 @@ hangoverRouter.delete('/drink/:id', (req, res) => {
 
 // delete food
 hangoverRouter.delete('/food/:id', (req, res) => {
-  // const { element } = req.body;
   const { id } = req.params;
   PastFood.destroy({ where: { id } })
     .then((row) => {
